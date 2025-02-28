@@ -1,6 +1,7 @@
-# Typescript Backend Boilerplate
+# AIMConstruction-Backend 
+Template Used :  Typescript Backend Boilerplate
 
-This is a template for building backend applications using **Node.js**, **Express**, **TypeScript**, **Mongoose**, **JWT**, **Bcrypt**, **Stripe**, and more. It aims to reduce setup time for new backend projects by providing a preconfigured environment.
+backend applications using **Node.js**, **Express**, **TypeScript**, **Mongoose**, **JWT**, **Bcrypt**, **Stripe**, and more. It aims to reduce setup time for new backend projects by providing a preconfigured environment.
 
 ## Features
 
