@@ -13,7 +13,7 @@ const projectModel = new Schema<IProject>(
       type: String,
       required: [false, 'Project logo is required'],
     },
-    // IDEA : project Manager er id o ki ekhane rakhte hobe kina.. 
+    // IDEA : project Manager er id o ki ekhane rakhte hobe kina..
     projectSuperVisorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -21,31 +21,31 @@ const projectModel = new Schema<IProject>(
     },
 
     address: {
-      streetAddress : {
+      streetAddress: {
         type: String,
-        required: [false, 'Street Address is required']
+        required: [false, 'Street Address is required'],
       },
-      city : {
+      city: {
         type: String,
-        required: [false, 'City is required']
+        required: [false, 'City is required'],
       },
-      zipCode : {
+      zipCode: {
         type: String,
-        required: [false, 'Address is required']
+        required: [false, 'Address is required'],
       },
-      country : {
+      country: {
         type: String,
-        required: [false, 'Address is required']
+        required: [false, 'Address is required'],
       },
     },
-    deadline : {
-      startDate : {
+    deadline: {
+      startDate: {
         type: Date,
-        required: [false, 'Start Date is required']
+        required: [false, 'Start Date is required'],
       },
-      endDate : {
+      endDate: {
         type: Date,
-        required: [false, 'End Date is required']
+        required: [false, 'End Date is required'],
       },
     },
     attachments: [
@@ -53,7 +53,7 @@ const projectModel = new Schema<IProject>(
         type: Schema.Types.ObjectId,
         ref: 'Attachment',
         required: [false, 'Attachments is required'],
-      }
+      },
     ],
   },
   { timestamps: true }
@@ -61,7 +61,4 @@ const projectModel = new Schema<IProject>(
 
 projectModel.plugin(paginate);
 
-export const Project = model<IProject, IProjectModel>(
-  'Project',
-  projectModel
-);
+export const Project = model<IProject, IProjectModel>('Project', projectModel);

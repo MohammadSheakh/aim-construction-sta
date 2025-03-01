@@ -11,42 +11,41 @@ const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
-// router.route("/").get(
-//     auth('projectManager'),
-//     // validateRequest(UserValidation.createUserValidationSchema),
-//     ProjectController.getAllProject
-// )
+//info : pagination route must be before the route with params
+router.route('/paginate').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.getAllProjectWithPagination
+);
 
-router.route("/:projectId").get(
-    auth('projectManager'),
-    // validateRequest(UserValidation.createUserValidationSchema),
-    ProjectController.getAProject
-)
+router.route('/:projectId').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.getAProject
+);
 
+router.route('/update/:projectId').put(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.updateById
+);
 
-router.route("/paginate").get(
-    auth('projectManager'),
-    // validateRequest(UserValidation.createUserValidationSchema),
-    ProjectController.getAllProjectWithPagination
-)
+router.route('/').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.getAllProject
+);
 
-router.route("/create").post(
-    auth('projectManager'),
-    // validateRequest(UserValidation.createUserValidationSchema),
-    ProjectController.createProject
-)
+router.route('/create').post(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.createProject
+);
 
-// router.route("/update/:projectId").put(
-//     auth('projectManager'),
-//     // validateRequest(UserValidation.createUserValidationSchema),
-//     ProjectController.updateById
-// )
-
-// router.route("/delete/:projectId").delete(
-//     auth('projectManager'),
-//     // validateRequest(UserValidation.createUserValidationSchema),
-//     ProjectController.deleteById
-// )
-
+router.route('/delete/:projectId').delete(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  ProjectController.deleteById
+);
 
 export const ProjectRoutes = router;
