@@ -21,18 +21,23 @@ export type TUser = {
   email: string;
   password: string;
   profileImage?: TProfileImage;
-  photoGallery?: TPhotoGallery[];
+  // photoGallery?: TPhotoGallery[];
   // status: TUserStatus;
-  location: {
-    latitude: number;
-    longitude: number;
+  // location: {
+  //   latitude: number;
+  //   longitude: number;
+  // };
+  // gender: TGender;
+  address: {
+    streetAddress: string;
+    city: string;
+    zipCode: string;
+    country: string;
   };
-  gender: TGender;
-  city: string;
-  address: string;
-  aboutMe?: string;
+  companyName : string;
   role: Role;
   isEmailVerified: boolean;
+  phoneNumber : string;
   isDeleted: boolean;
   lastPasswordChange: Date;
   isResetPassword: boolean;

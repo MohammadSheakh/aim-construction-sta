@@ -49,28 +49,44 @@ const userSchema = new Schema<TUser, UserModal>(
       required: false,
       default: { imageUrl: '/uploads/users/user.png' },
     },
-    photoGallery: {
-      type: [profileImageSchema],
-      required: false,
-    },
+    // photoGallery: {
+    //   type: [profileImageSchema],
+    //   required: false,
+    // },
 
     // location: {
     //   latitude: { type: Number, required: true },
     //   longitude: { type: Number, required: true },
     // },
-    gender: {
-      type: String,
-      enum: {
-        values: Gender,
-        message: '{VALUE} is not a valid gender',
+    // gender: {
+    //   type: String,
+    //   enum: {
+    //     values: Gender,
+    //     message: '{VALUE} is not a valid gender',
+    //   },
+    //   required: [true, 'Gender is required'],
+    // },
+
+    address: {
+      streetAddress : {
+        type: String,
+        required: [true, 'Street Address is required']
       },
-      required: [true, 'Gender is required'],
+      city : {
+        type: String,
+        required: [true, 'City is required']
+      },
+      zipCode : {
+        type: String,
+        required: [true, 'Address is required']
+      },
+      country : {
+        type: String,
+        required: [true, 'Address is required']
+      },
     },
 
-    city: { type: String },
-    address: { type: String },
-
-    aboutMe: { type: String },
+    companyName: { type: String },
     role: {
       type: String,
       enum: {
@@ -82,6 +98,9 @@ const userSchema = new Schema<TUser, UserModal>(
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    phoneNumber : {
+      type: String,
     },
 
     isDeleted: {
@@ -126,6 +145,7 @@ userSchema.statics.isMatchPassword = async function (
   return await bcrypt.compare(password, hashPassword);
 };
 
+// FIX : ts issue 
 // Middleware to hash password before saving
 userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
