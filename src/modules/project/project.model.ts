@@ -11,7 +11,7 @@ const projectModel = new Schema<IProject>(
     },
     projectLogo: {
       type: String,
-      required: [true, 'Project logo is required'],
+      required: [false, 'Project logo is required'],
     },
     // IDEA : project Manager er id o ki ekhane rakhte hobe kina.. 
     projectSuperVisorId: {
@@ -23,36 +23,36 @@ const projectModel = new Schema<IProject>(
     address: {
       streetAddress : {
         type: String,
-        required: [true, 'Street Address is required']
+        required: [false, 'Street Address is required']
       },
       city : {
         type: String,
-        required: [true, 'City is required']
+        required: [false, 'City is required']
       },
       zipCode : {
         type: String,
-        required: [true, 'Address is required']
+        required: [false, 'Address is required']
       },
       country : {
         type: String,
-        required: [true, 'Address is required']
+        required: [false, 'Address is required']
       },
     },
     deadline : {
       startDate : {
         type: Date,
-        required: [true, 'Start Date is required']
+        required: [false, 'Start Date is required']
       },
       endDate : {
         type: Date,
-        required: [true, 'End Date is required']
+        required: [false, 'End Date is required']
       },
     },
     attachments: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Attachment',
-        required: [true, 'Attachments is required'],
+        required: [false, 'Attachments is required'],
       }
     ],
   },

@@ -4,19 +4,19 @@ import { PaginateOptions, PaginateResult } from '../../types/paginate';
 export interface IProject {
   _id?: Types.ObjectId;
   projectName: string;
-  projectLogo: string;
+  projectLogo?: string;
   projectSuperVisorId?: Types.ObjectId | string;
-  address: {
-    streetAddress: string;
-    city: string;
-    zipCode: string;
-    country: string;
+  address?: {
+    streetAddress?: string;
+    city?: string;
+    zipCode?: string;
+    country?: string;
   };
-  deadline: {
-    startDate: Date;
-    endDate: Date;
+  deadline?: {
+    startDate?: Date;
+    endDate?: Date;
   };
-  attachments: Types.ObjectId[]; // Array of ObjectId references to Attachment
+  attachments?: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdAt?: Date;
   updatedAt?: Date;
 }
