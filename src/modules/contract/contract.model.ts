@@ -1,9 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-import { roles } from '../../middlewares/roles';
 import paginate from '../../common/plugins/paginate';
+import { IContract, IContractModel } from './contract.interface';
 
-const contractModel = new Schema<INotification>(
+const contractModel = new Schema<IContract>(
   {
     attachments: [
       {
@@ -34,7 +33,7 @@ const contractModel = new Schema<INotification>(
 
 contractModel.plugin(paginate);
 
-export const Contract = model<INotification, INotificationModal>(
+export const Contract = model<IContract, IContractModel>(
   'Contract',
   contractModel
 );

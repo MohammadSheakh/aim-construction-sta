@@ -36,6 +36,7 @@ const createUser = async (userData: TUser) => {
   }
 
   const user = await User.create(userData);
+  // cantunderstand :  
   //create verification email token
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   //create verification email otp
@@ -100,6 +101,7 @@ const login = async (email: string, reqpassword: string) => {
   };
 };
 
+//[🚧][🧑‍💻✅][🧪]  // 🆗
 const verifyEmail = async (email: string, token: string, otp: string) => {
   const user = await User.findOne({ email });
   if (!user) {

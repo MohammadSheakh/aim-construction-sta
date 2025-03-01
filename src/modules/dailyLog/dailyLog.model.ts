@@ -1,9 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-import { roles } from '../../middlewares/roles';
 import paginate from '../../common/plugins/paginate';
+import { IDailyLog, IDailyLogModel } from './dailyLog.interface';
 
-const dailyLogModel = new Schema<INotification>(
+const dailyLogModel = new Schema<IDailyLog>(
   {
     // TODO : multiple notes can be added
     noteId: {
@@ -29,7 +28,7 @@ const dailyLogModel = new Schema<INotification>(
 
 dailyLogModel.plugin(paginate);
 
-export const dailyLog = model<INotification, INotificationModal>(
+export const DailyLog = model<IDailyLog, IDailyLogModel>(
   'DailyLog',
   dailyLogModel
 );

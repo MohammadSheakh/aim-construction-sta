@@ -19,7 +19,7 @@ app.use(Morgan.errorHandler);
 app.use(
   cors({
     origin: [
-      'http://localhost:7002',
+      'http://localhost:8084',
       'http://localhost:3000',
       'https://rakib7002.sobhoy.com/',
     ],

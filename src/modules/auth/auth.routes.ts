@@ -6,6 +6,8 @@ import { AuthValidation } from './auth.validations';
 import auth from '../../middlewares/auth';
 
 const router = Router();
+
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.post(
   '/register',
   validateRequest(UserValidation.createUserValidationSchema),
@@ -18,6 +20,7 @@ router.post(
   AuthController.login,
 );
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.post(
   '/forgot-password',
   validateRequest(AuthValidation.forgotPasswordValidationSchema),
@@ -39,6 +42,7 @@ router.post(
   AuthController.changePassword,
 );
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.post(
   '/verify-email',
   validateRequest(AuthValidation.verifyEmailValidationSchema),

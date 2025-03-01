@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-//Issue
-import { roles } from '../../middlewares/roles';
-import paginate from '../../common/plugins/paginate';
 
-const attachmentModel = new Schema<INotification>(
+import paginate from '../../common/plugins/paginate';
+import { IAttachment, IAttachmentModel } from './attachment.interface';
+import { Roles } from '../../middlewares/roles';
+
+const attachmentModel = new Schema<IAttachment>(
   {
     attachment: {
       type: String,
@@ -21,7 +21,7 @@ const attachmentModel = new Schema<INotification>(
     },
     uploaderRole: {
       type: String,
-      enum: roles,
+      enum: Roles,
       required: true,
     },
     
@@ -32,8 +32,7 @@ const attachmentModel = new Schema<INotification>(
 
 attachmentModel.plugin(paginate);
 
-// FIXME :  type change korte hobe 
-export const Attachment = model<INotification, INotificationModal>(
+export const Attachment = model<IAttachment, IAttachmentModel>(
   'Attachment',
   attachmentModel
 );

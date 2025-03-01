@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-import { roles } from '../../middlewares/roles';
-import paginate from '../../common/plugins/paginate';
 
-const projectModel = new Schema<INotification>(
+import paginate from '../../common/plugins/paginate';
+import { IProject, IProjectModel } from './project.interface';
+
+const projectModel = new Schema<IProject>(
   {
     projectName: {
       type: String,
@@ -61,7 +61,7 @@ const projectModel = new Schema<INotification>(
 
 projectModel.plugin(paginate);
 
-export const Notification = model<INotification, INotificationModal>(
+export const Project = model<IProject, IProjectModel>(
   'Project',
   projectModel
 );

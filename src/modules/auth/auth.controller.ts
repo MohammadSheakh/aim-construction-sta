@@ -3,7 +3,7 @@ import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { AuthService } from './auth.service';
 
-// register
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 const register = catchAsync(async (req, res) => {
   const result = await AuthService.createUser(req.body);
   sendResponse(res, {
@@ -31,6 +31,7 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+//[🚧][🧑‍💻✅][🧪]  // 🆗
 const verifyEmail = catchAsync(async (req, res) => {
   console.log(req.body);
   const { email, token, otp } = req.body;

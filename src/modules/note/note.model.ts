@@ -1,9 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-import { roles } from '../../middlewares/roles';
 import paginate from '../../common/plugins/paginate';
+import { INote, INoteModel } from './note.interface';
 
-const noteModel = new Schema<INotification>(
+const noteModel = new Schema<INote>(
   {
     title: {
       type: String,
@@ -41,7 +40,7 @@ const noteModel = new Schema<INotification>(
 noteModel.plugin(paginate);
 
 // FIXME : type fix korte hobe ..  
-export const Note = model<INotification, INotificationModal>(
+export const Note = model<INote, INoteModel>(
   'Note',
   noteModel
 );

@@ -1,9 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { INotification, INotificationModal } from './notification.interface';
-import { roles } from '../../middlewares/roles';
 import paginate from '../../common/plugins/paginate';
+import { ITask, ITaskModel } from './task.interface';
 
-const taskModel = new Schema<INotification>(
+const taskModel = new Schema<ITask>(
   {
     task_status: {
       type: String,
@@ -47,7 +46,7 @@ const taskModel = new Schema<INotification>(
 
 taskModel.plugin(paginate);
 
-export const Task = model<INotification, INotificationModal>(
+export const Task = model<ITask, ITaskModel>(
   'Task',
   taskModel
 );
