@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IProject, IProjectModel } from './project.interface';
 
-const projectModel = new Schema<IProject>(
+const projectSchema = new Schema<IProject>(
   {
     projectName: {
       type: String,
@@ -65,6 +65,22 @@ const projectModel = new Schema<IProject>(
   { timestamps: true }
 );
 
-projectModel.plugin(paginate);
+projectSchema.plugin(paginate);
 
-export const Project = model<IProject, IProjectModel>('Project', projectModel);
+projectSchema.pre('save', function(next) {
+  
+  next();
+});
+
+// Use transform to rename _id to _projectId
+projectSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._projectId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
+});
+
+
+
+export const Project = model<IProject, IProjectModel>('Project', projectSchema);

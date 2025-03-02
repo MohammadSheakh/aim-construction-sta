@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { ITask, ITaskModel } from './task.interface';
 
-const taskModel = new Schema<ITask>(
+const taskSchema = new Schema<ITask>(
   {
     task_status: {
       type: String,
@@ -44,9 +44,27 @@ const taskModel = new Schema<ITask>(
   { timestamps: true }
 );
 
-taskModel.plugin(paginate);
+taskSchema.plugin(paginate);
+
+// taskSchema.pre('save', function(next) {
+//   // Rename _id to _projectId
+//   this._taskId = this._id;
+//   this._id = undefined;  // Remove the default _id field
+//   next();
+// });
+
+
+// Use transform to rename _id to _projectId
+taskSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._taskId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
+});
+
 
 export const Task = model<ITask, ITaskModel>(
   'Task',
-  taskModel
+  taskSchema
 );

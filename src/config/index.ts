@@ -3,8 +3,8 @@ dotenv.config();
 
 export const config = {
   environment: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 8083,
-  socketPort: process.env.SOCKET || 8082,
+  port: process.env.PORT || 6730,
+  socketPort: process.env.SOCKET || 6730,
 
   database: {
     mongoUrl:

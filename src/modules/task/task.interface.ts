@@ -2,7 +2,8 @@ import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
 
 export interface ITask {
-  _id?: Types.ObjectId;
+  // _taskId: undefined | Types.ObjectId;
+  _id?: Types.ObjectId; // undefined |  Types.ObjectId |
   task_status: 'complete' | 'open' | 'done'; // Enum for task status
   assignedTo?: Types.ObjectId | string; // Optional field, user assignment
   projectId?: Types.ObjectId | string; // Optional field, project reference

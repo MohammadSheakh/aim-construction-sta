@@ -2,7 +2,9 @@ import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
 
 export interface IProject {
-  _id?: Types.ObjectId;
+  // _id?: Types.ObjectId;
+  _projectId: undefined | Types.ObjectId;
+  _id:  undefined; // Types.ObjectId |
   projectName: string;
   projectLogo?: string;
   projectSuperVisorId?: Types.ObjectId | string;

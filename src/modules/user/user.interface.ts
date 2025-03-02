@@ -14,7 +14,8 @@ export type TPhotoGallery = {
 };
 
 export type TUser = {
-  _id: Types.ObjectId;
+  _userId: undefined | Types.ObjectId;
+  _id:  undefined; // Types.ObjectId |
   // fullName: string;
   fname: string;
   lname: string;
@@ -36,7 +37,7 @@ export type TUser = {
   };
   companyName : string;
   role: Role;
-  createdByManagerId?: Types.ObjectId;
+  superVisorsManagerId?: Types.ObjectId;
   isEmailVerified: boolean;
   phoneNumber : string;
   isDeleted: boolean;

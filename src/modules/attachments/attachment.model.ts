@@ -4,7 +4,7 @@ import paginate from '../../common/plugins/paginate';
 import { IAttachment, IAttachmentModel } from './attachment.interface';
 import { Roles } from '../../middlewares/roles';
 
-const attachmentModel = new Schema<IAttachment>(
+const attachmentSchema = new Schema<IAttachment>(
   {
     attachment: {
       type: String,
@@ -30,9 +30,20 @@ const attachmentModel = new Schema<IAttachment>(
   { timestamps: true }
 );
 
-attachmentModel.plugin(paginate);
+attachmentSchema.plugin(paginate);
+
+// Use transform to rename _id to _projectId
+attachmentSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._attachmentId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
+});
+
+
 
 export const Attachment = model<IAttachment, IAttachmentModel>(
   'Attachment',
-  attachmentModel
+  attachmentSchema
 );

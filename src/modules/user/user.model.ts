@@ -95,7 +95,7 @@ const userSchema = new Schema<TUser, UserModal>(
       },
       required: [true, 'Role is required'],
     },
-    createdByManagerId : 
+    superVisorsManagerId : 
     {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -154,6 +154,7 @@ userSchema.statics.isMatchPassword = async function (
 // FIX : ts issue 
 // Middleware to hash password before saving
 userSchema.pre('save', async function (next) {
+
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(
       this.password,
@@ -161,6 +162,15 @@ userSchema.pre('save', async function (next) {
     );
   }
   next();
+});
+
+// Use transform to rename _id to _projectId
+userSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._userId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
 });
 
 // Export the User model

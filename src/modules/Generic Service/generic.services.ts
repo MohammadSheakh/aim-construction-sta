@@ -16,7 +16,7 @@ export class GenericService<T> {
 
   async getAll() {
     // pagination er jonno fix korte hobe ..
-    return await this.model.find();
+    return await this.model.find().select('-__v');
   }
 
   async getAllWithPagination(
@@ -28,7 +28,7 @@ export class GenericService<T> {
   }
 
   async getById(id: string) {
-    const object = await this.model.findById(id);
+    const object = await this.model.findById(id).select('-__v');
     if (!object) {
       // throw new ApiError(StatusCodes.BAD_REQUEST, 'No file uploaded');
       return null;
@@ -37,16 +37,16 @@ export class GenericService<T> {
   }
 
   async updateById(id: string, data: T) {
-    const object = await this.model.findById(id);
+    const object = await this.model.findById(id).select('-__v');
     if (!object) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'No Object Found');
       //   return null;
     }
 
-    return await this.model.findByIdAndUpdate(id, data, { new: true });
+    return await this.model.findByIdAndUpdate(id, data, { new: true }).select('-__v');
   }
 
   async deleteById(id: string) {
-    return await this.model.findByIdAndDelete(id);
+    return await this.model.findByIdAndDelete(id).select('-__v');
   }
 }

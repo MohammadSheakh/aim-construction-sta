@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IDailyLog, IDailyLogModel } from './dailyLog.interface';
 
-const dailyLogModel = new Schema<IDailyLog>(
+const dailyLogSchema = new Schema<IDailyLog>(
   {
     // TODO : multiple notes can be added
     noteId: {
@@ -26,9 +26,18 @@ const dailyLogModel = new Schema<IDailyLog>(
   { timestamps: true }
 );
 
-dailyLogModel.plugin(paginate);
+dailyLogSchema.plugin(paginate);
+
+// Use transform to rename _id to _projectId
+dailyLogSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._dailyLogId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
+});
 
 export const DailyLog = model<IDailyLog, IDailyLogModel>(
   'DailyLog',
-  dailyLogModel
+  dailyLogSchema
 );

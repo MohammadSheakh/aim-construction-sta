@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IContract, IContractModel } from './contract.interface';
 
-const contractModel = new Schema<IContract>(
+const contractSchema = new Schema<IContract>(
   {
     attachments: [
       {
@@ -31,9 +31,20 @@ const contractModel = new Schema<IContract>(
   { timestamps: true }
 );
 
-contractModel.plugin(paginate);
+contractSchema.plugin(paginate);
+
+
+// Use transform to rename _id to _projectId
+contractSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret._contractId = ret._id;  // Rename _id to _projectId
+    delete ret._id;  // Remove the original _id field
+    return ret;
+  }
+});
+
 
 export const Contract = model<IContract, IContractModel>(
   'Contract',
-  contractModel
+  contractSchema
 );
