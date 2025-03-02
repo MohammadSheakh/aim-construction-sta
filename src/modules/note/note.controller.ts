@@ -1,0 +1,79 @@
+import { GenericService } from '../Generic/generic.services';
+import catchAsync from '../../shared/catchAsync';
+import sendResponse from '../../shared/sendResponse';
+import { StatusCodes } from 'http-status-codes';
+import pick from '../../shared/pick';
+import { Note } from './note.model';
+
+const noteService = new GenericService(Note);
+
+const createNote = catchAsync(async (req, res) => {
+  console.log('req.body 🧪', req.body);
+  const result = await noteService.create(req.body);
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Note created successfully',
+  });
+});
+
+const getANote = catchAsync(async (req, res) => {
+  const result = await noteService.getById(req.params.noteId);
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Note retrieved successfully',
+  });
+});
+
+const getAllNote = catchAsync(async (req, res) => {
+  const result = await noteService.getAll();
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All notes',
+  });
+});
+
+const getAllNoteWithPagination = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['noteName', '_id']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+
+  const result = await noteService.getAllWithPagination(filters, options);
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All notes with Pagination',
+  });
+});
+
+const updateById = catchAsync(async (req, res) => {
+  const result = await noteService.updateById(
+    req.params.noteId,
+    req.body
+  );
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Note updated successfully',
+  });
+});
+
+const deleteById = catchAsync(async (req, res) => {
+  await noteService.deleteById(req.params.noteId);
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    message: 'Note deleted successfully',
+  });
+});
+
+export const NoteController = {
+  createNote,
+  getAllNote,
+  getAllNoteWithPagination,
+  getANote,
+  updateById,
+  deleteById,
+};

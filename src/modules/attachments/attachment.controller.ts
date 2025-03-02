@@ -19,7 +19,7 @@ const createAttachment = catchAsync(async (req, res) => {
 });
 
 const getAAttachment = catchAsync(async (req, res) => {
-  const result = await projectService.getById(req.params.projectId);
+  const result = await attachmentService.getById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
@@ -27,8 +27,8 @@ const getAAttachment = catchAsync(async (req, res) => {
   });
 });
 
-const getAllProject = catchAsync(async (req, res) => {
-  const result = await projectService.getAll();
+const getAllAttachment = catchAsync(async (req, res) => {
+  const result = await attachmentService.getAll();
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
@@ -36,11 +36,11 @@ const getAllProject = catchAsync(async (req, res) => {
   });
 });
 
-const getAllProjectWithPagination = catchAsync(async (req, res) => {
+const getAllAttachmentWithPagination = catchAsync(async (req, res) => {
   const filters = pick(req.query, ['projectName', '_id']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
-  const result = await projectService.getAllWithPagination(filters, options);
+  const result = await attachmentService.getAllWithPagination(filters, options);
 
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -50,8 +50,8 @@ const getAllProjectWithPagination = catchAsync(async (req, res) => {
 });
 
 const updateById = catchAsync(async (req, res) => {
-  const result = await projectService.updateById(
-    req.params.projectId,
+  const result = await attachmentService.updateById(
+    req.params.attachmentId,
     req.body
   );
   sendResponse(res, {
@@ -62,18 +62,18 @@ const updateById = catchAsync(async (req, res) => {
 });
 
 const deleteById = catchAsync(async (req, res) => {
-  await projectService.deleteById(req.params.projectId);
+  await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Project deleted successfully',
   });
 });
 
-export const ProjectController = {
-  createProject,
-  getAllProject,
-  getAllProjectWithPagination,
-  getAProject,
+export const AttachmentController = {
+  createAttachment,
+  getAllAttachment,
+  getAllAttachmentWithPagination,
+  getAAttachment,
   updateById,
   deleteById,
 };
