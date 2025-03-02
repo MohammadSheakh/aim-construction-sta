@@ -1,11 +1,12 @@
-import { GenericService } from '../Generic/generic.services';
+import { GenericService } from '../Generic Service/generic.services';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
 import { Note } from './note.model';
+import { NoteService } from './note.service';
 
-const noteService = new GenericService(Note);
+const noteService = new NoteService();
 
 const createNote = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);

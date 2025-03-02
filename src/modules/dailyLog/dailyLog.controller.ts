@@ -1,12 +1,13 @@
 
-import { GenericService } from '../Generic/generic.services';
+import { GenericService } from '../Generic Service/generic.services';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
 import { DailyLog } from './dailyLog.model';
+import { DailyLogService } from './dailyLog.service';
 
-const dailyLogService = new GenericService(DailyLog);
+const dailyLogService = new DailyLogService();
 
 const createDailyLog = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);

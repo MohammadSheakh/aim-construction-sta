@@ -1,12 +1,26 @@
 import { Project } from './project.model';
-import { GenericService } from '../Generic/generic.services';
+import { GenericService } from '../Generic Service/generic.services';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
+import { ProjectService } from './project.service';
 
-const projectService = new GenericService(Project);
+const projectService = new ProjectService();
 
+// const getProjectByProjectName = catchAsync(async (req, res) => {
+//   const result = await projectService.getProjectByProjectName(
+//     req.params.projectName
+//   );
+//   sendResponse(res, {
+//     code: StatusCodes.OK,
+//     data: result,
+//     message: 'Project retrieved successfully',
+//   });
+// });
+
+
+///////////////////////////////////////////
 const createProject = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);
   const result = await projectService.create(req.body);
@@ -76,4 +90,5 @@ export const ProjectController = {
   getAProject,
   updateById,
   deleteById,
+  getProjectByProjectName
 };
