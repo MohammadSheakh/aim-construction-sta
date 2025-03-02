@@ -54,6 +54,15 @@ const projectSchema = new Schema<IProject>(
         required: [false, 'End Date is required'],
       },
     },
+
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Note',
+        required: [false, 'Note is required'],
+      },
+    ] ,
+
     attachments: [
       {
         type: Schema.Types.ObjectId,

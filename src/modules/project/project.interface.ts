@@ -22,6 +22,13 @@ export interface IProject {
   attachments?: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdAt?: Date;
   updatedAt?: Date;
+  notes : [
+    {
+      type: Types.ObjectId,
+      ref: 'Note',
+      required: [false, 'Note is required'],
+    },
+  ]
 }
 
 export interface IProjectModel extends Model<IProject> {
