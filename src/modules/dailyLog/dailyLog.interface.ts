@@ -3,7 +3,7 @@ import { PaginateOptions, PaginateResult } from '../../types/paginate';
 
 export interface IDailyLog {
   _id?: Types.ObjectId;
-  noteId?: Types.ObjectId | string;
+  notes?: Types.ObjectId | string;
   createdBy?: Types.ObjectId | string;
   projectId?: Types.ObjectId | string;
   viewStatus?: boolean;

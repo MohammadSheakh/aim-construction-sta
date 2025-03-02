@@ -5,11 +5,13 @@ import { IDailyLog, IDailyLogModel } from './dailyLog.interface';
 const dailyLogSchema = new Schema<IDailyLog>(
   {
     // TODO : multiple notes can be added
-    noteId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Note',
-      required: [false, 'Note is required'],
-    },
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Note',
+        required: [false, 'Note is required'],
+      },
+    ] ,
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

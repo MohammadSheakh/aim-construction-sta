@@ -26,7 +26,12 @@ const contractSchema = new Schema<IContract>(
       required: [false, 'User Id is required'],
     },
     // IDEA : ekhane creator role nam e ekta field rakhbo kina .. 
-    
+    // INFO :  creatorRole rakhlam 
+    creatorRole : {
+      enum: ['projectManager', 'projectSupervisor'],
+      type: String,
+      required: [true, 'Creator Role is required. It can be projectManager / projectSupervisor'],
+    }
   },
   { timestamps: true }
 );
