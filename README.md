@@ -1,5 +1,16 @@
 # AIMConstruction-Backend 
+
+-------- Written By :  https://github.com/mohammadsheakh 
+
+
 Template Used :  Typescript Backend Boilerplate  https://github.com/bdCalling-Sdt-hub/typescript-backend-boilerplate
+
+
+I use Inheritance...  Example:: All Service inherits from GenericService.  and Generic Programming here .. 
+
+
+
+-------- Written By :  https://github.com/rakibislam2233
 
 backend applications using **Node.js**, **Express**, **TypeScript**, **Mongoose**, **JWT**, **Bcrypt**, **Stripe**, and more. It aims to reduce setup time for new backend projects by providing a preconfigured environment.
 
