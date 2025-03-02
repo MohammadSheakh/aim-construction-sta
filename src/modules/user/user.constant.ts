@@ -1,5 +1,5 @@
 export type Role = 'super_admin' | 'admin' | 'user';
-
+// TODO : fix korte hobe .. 
 export type TUserStatus = 'active' | 'delete' | 'block';
 
 export const UserStatus: TUserStatus[] = ['active', 'block', 'delete'];

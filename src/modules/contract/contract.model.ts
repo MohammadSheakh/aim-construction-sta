@@ -11,10 +11,10 @@ const contractSchema = new Schema<IContract>(
         required: [true, 'Attachments is required'],
       }
     ],
-    description: {
-      type: String,
-      required: [true, 'Description is required'],
-    },
+    // description: {
+    //   type: String,
+    //   required: [true, 'Description is required'],
+    // },
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
@@ -32,7 +32,6 @@ const contractSchema = new Schema<IContract>(
 );
 
 contractSchema.plugin(paginate);
-
 
 // Use transform to rename _id to _projectId
 contractSchema.set('toJSON', {

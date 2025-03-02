@@ -10,22 +10,44 @@ const attachmentSchema = new Schema<IAttachment>(
       type: String,
       required: [true, 'attachment is required'],
     },
-    attachedTo : {
+    attachmentType : {
+      enum : ['pdf', 'image'],
       type: String,
-      required: [true, 'AttachedTo is required'],
+      required: [true, 'Attached Type is required. It can be pdf / image'],
+    },
+    attachedToId : {
+      type: String,
+      required: [true, 'AttachedToId is required.'],
+    },
+    attachedToType : {
+      enum: ['note', 'task'],
+      type: String,
+      required: [true, 'AttachedToType is required. It can be note / task'],
+    },
+    projectId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: [true, 'Project Id is required'],
     },
     uploadedByUserId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [false, 'User is required'],
+      required: [false, 'User Id is required'],
     },
     uploaderRole: {
       type: String,
       enum: Roles,
       required: true,
     },
+
+    // Add reactions field to track user reactions to the attachment
+    reactions: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      }
+    ],
     
-    viewStatus: { type: Boolean, default: false },
+    // viewStatus: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
