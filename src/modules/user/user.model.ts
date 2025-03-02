@@ -95,6 +95,12 @@ const userSchema = new Schema<TUser, UserModal>(
       },
       required: [true, 'Role is required'],
     },
+    createdByManagerId : 
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [false, 'Created By Manager Id is required'],
+    },
     isEmailVerified: {
       type: Boolean,
       default: false,

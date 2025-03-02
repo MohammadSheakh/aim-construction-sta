@@ -17,7 +17,13 @@ const projectModel = new Schema<IProject>(
     projectSuperVisorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [false, 'User is required'],
+      required: [false, 'ProjectSuperVisorId is not required'],
+    },
+
+    projectManagerId : {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Project Manager Id is required'],
     },
 
     address: {

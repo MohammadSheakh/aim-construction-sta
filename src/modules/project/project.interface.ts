@@ -6,6 +6,7 @@ export interface IProject {
   projectName: string;
   projectLogo?: string;
   projectSuperVisorId?: Types.ObjectId | string;
+  projectManagerId: Types.ObjectId | string;
   address?: {
     streetAddress?: string;
     city?: string;
