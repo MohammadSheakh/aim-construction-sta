@@ -1,7 +1,7 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
-import { NoteController } from './note.controller';
+import { DailyLogController } from './dailyLog.controller';
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -14,37 +14,37 @@ const router = express.Router();
 router.route('/paginate').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNoteWithPagination
+  DailyLogController.getAllDailyLogWithPagination
 );
 
-router.route('/:noteId').get(
+router.route('/:dailyLogId').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getANote
+  DailyLogController.getADailyLog
 );
 
-router.route('/update/:noteId').put(
+router.route('/update/:dailyLogId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.updateById
+  DailyLogController.updateById
 );
 
 router.route('/').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNote
+  DailyLogController.getAllDailyLog
 );
 
 router.route('/create').post(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.createNote
+  DailyLogController.createDailyLog
 );
 
-router.route('/delete/:noteId').delete(
+router.route('/delete/:dailyLogId').delete(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.deleteById
+  DailyLogController.deleteById
 );
 
 // router.route('/search/:projectName').get(
@@ -53,4 +53,4 @@ router.route('/delete/:noteId').delete(
 //   ProjectController.getProjectByProjectName
 // );
 
-export const NoteRoutes = router;
+export const DailyLogRoutes = router;

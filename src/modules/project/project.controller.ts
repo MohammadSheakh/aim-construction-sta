@@ -90,5 +90,5 @@ export const ProjectController = {
   getAProject,
   updateById,
   deleteById,
-  getProjectByProjectName
+  // getProjectByProjectName
 };

@@ -1,15 +1,57 @@
 import express from 'express';
-// import { UserController } from './user.controller';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
-// import { UserValidation } from './user.validation';
-import fileUploadHandler from '../../shared/fileUploadHandler';
-import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
-const UPLOADS_FOLDER = 'uploads/users';
-const upload = fileUploadHandler(UPLOADS_FOLDER);
+
+import { TaskController } from './task.controller';
+
+// import fileUploadHandler from '../../shared/fileUploadHandler';
+// import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
+// const UPLOADS_FOLDER = 'uploads/users';
+// const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
+//info : pagination route must be before the route with params
+router.route('/paginate').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.getAllTaskWithPagination
+);
 
+router.route('/:noteId').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.getATask
+);
+
+router.route('/update/:noteId').put(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.updateById
+);
+
+router.route('/').get(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.getAllTask
+);
+
+router.route('/create').post(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.createTask
+);
+
+router.route('/delete/:noteId').delete(
+  auth('projectManager'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  TaskController.deleteById
+);
+
+// router.route('/search/:projectName').get(
+//   // auth('projectManager'),
+//   // validateRequest(UserValidation.createUserValidationSchema),
+//   ProjectController.getProjectByProjectName
+// );
 
 export const TaskRoutes = router;

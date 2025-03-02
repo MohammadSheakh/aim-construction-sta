@@ -1,7 +1,8 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
-import { NoteController } from './note.controller';
+import { AttachmentController } from './attachment.controller';
+
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -14,37 +15,37 @@ const router = express.Router();
 router.route('/paginate').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNoteWithPagination
+  AttachmentController.getAllAttachmentWithPagination
 );
 
-router.route('/:noteId').get(
+router.route('/:attachmentId').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getANote
+  AttachmentController.getAAttachment
 );
 
-router.route('/update/:noteId').put(
+router.route('/update/:attachmentId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.updateById
+  AttachmentController.updateById
 );
 
 router.route('/').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNote
+  AttachmentController.getAllAttachment
 );
 
 router.route('/create').post(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.createNote
+  AttachmentController.createAttachment
 );
 
-router.route('/delete/:noteId').delete(
+router.route('/delete/:attachmentId').delete(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.deleteById
+  AttachmentController.deleteById
 );
 
 // router.route('/search/:projectName').get(
@@ -53,4 +54,4 @@ router.route('/delete/:noteId').delete(
 //   ProjectController.getProjectByProjectName
 // );
 
-export const NoteRoutes = router;
+export const AttachmentRoutes = router;

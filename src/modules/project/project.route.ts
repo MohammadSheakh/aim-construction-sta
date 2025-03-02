@@ -48,10 +48,10 @@ router.route('/delete/:projectId').delete(
   ProjectController.deleteById
 );
 
-router.route('/search/:projectName').get(
-  // auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
-  ProjectController.getProjectByProjectName
-);
+// router.route('/search/:projectName').get(
+//   // auth('projectManager'),
+//   // validateRequest(UserValidation.createUserValidationSchema),
+//   ProjectController.getProjectByProjectName
+// );
 
 export const ProjectRoutes = router;

@@ -1,7 +1,8 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
-import { NoteController } from './note.controller';
+import { ContractController } from './contract.controller';
+
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -14,37 +15,37 @@ const router = express.Router();
 router.route('/paginate').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNoteWithPagination
+  ContractController.getAllContractWithPagination
 );
 
-router.route('/:noteId').get(
+router.route('/:contractId').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getANote
+  ContractController.getAContract
 );
 
-router.route('/update/:noteId').put(
+router.route('/update/:contractId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.updateById
+  ContractController.updateById
 );
 
 router.route('/').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.getAllNote
+  ContractController.getAllContract
 );
 
 router.route('/create').post(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.createNote
+  ContractController.createContract
 );
 
-router.route('/delete/:noteId').delete(
+router.route('/delete/:contractId').delete(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
-  NoteController.deleteById
+   ContractController.deleteById
 );
 
 // router.route('/search/:projectName').get(
@@ -53,4 +54,4 @@ router.route('/delete/:noteId').delete(
 //   ProjectController.getProjectByProjectName
 // );
 
-export const NoteRoutes = router;
+export const ContractRoutes = router;

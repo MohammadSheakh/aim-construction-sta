@@ -3,11 +3,13 @@ import { UserRoutes } from '../modules/user/user.route';
 import { AuthRoutes } from '../modules/auth/auth.routes';
 import { SettingsRoutes } from '../modules/settings/settings.routes';
  import { AdminRoutes } from '../modules/admin/admin.routes';
-import { ContractRoutes } from '../modules/contract/contract.routes';
-import { DailyLogRoutes } from '../modules/dailyLog/dailyLog.routes';
-import { NoteRoutes } from '../modules/note/note.route';
+
 import { ProjectRoutes } from '../modules/project/project.route';
+import { NoteRoutes } from '../modules/note/note.route';
+import { DailyLogRoutes } from '../modules/dailyLog/dailyLog.route';
+import { ContractRoutes } from '../modules/contract/contract.route';
 import { TaskRoutes } from '../modules/task/task.route';
+
 // import { ChatRoutes } from '../modules/chat/chat.routes';
 // import { MessageRoutes } from '../modules/message/message.routes';
 const router = express.Router();
