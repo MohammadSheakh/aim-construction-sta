@@ -36,7 +36,8 @@ const logger = createLogger({
         'success',
         '%DATE%-success.log'
       ),
-      datePattern: 'DD-MM-YYYY-HH',
+      datePattern: 'YYYY-MM-DD', // Ensure one file per day // rakib vai jevabe korsilo ... DD-MM-YYYY-HH
+      zippedArchive: true, // Archive old logs
       maxSize: '20m',
       maxFiles: '1d',
     }),
@@ -55,7 +56,8 @@ const errorLogger = createLogger({
         'error',
         '%DATE%-error.log'
       ),
-      datePattern: 'DD-MM-YYYY-HH',
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true, // Archive old logs
       maxSize: '20m',
       maxFiles: '1d',
     }),

@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
+import { Status } from './project.constant';
 
 export interface IProject {
   // _id?: Types.ObjectId;
@@ -22,13 +23,15 @@ export interface IProject {
   attachments?: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdAt?: Date;
   updatedAt?: Date;
-  notes : [
+  dailyLogs ?: [
     {
       type: Types.ObjectId,
-      ref: 'Note',
-      required: [false, 'Note is required'],
+      ref: 'DailyLog',
+      required: [false, 'DailyLogs is not required'],
     },
-  ]
+  ],
+  projectStatus : Status.completed | Status.open
+  // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
 }
 
 export interface IProjectModel extends Model<IProject> {

@@ -1,6 +1,22 @@
+import { GenericService } from "../../Generic Service/generic.services";
 import { IPrivacyPolicy } from "./privacyPolicy.interface";
 import { PrivacyPolicy } from "./privacyPolicy.model";
 
+
+//[🚧][🧑‍💻✅][🧪] // 🆗 
+
+export class PrivacyPolicyService extends GenericService<typeof PrivacyPolicy> {
+    constructor() {
+        super(PrivacyPolicy);
+    }
+    // FIx korte hobe  privacy policy  service 
+    
+    // async getProjectByProjectName(projectName: string) {
+    //     return this.model.findOne({ projectName }); 
+    // }
+}
+
+/*
 const createOrUpdatePrivacyPolicy = async (payload: Partial<IPrivacyPolicy>) => {
   const existingPrivacyPolicy = await PrivacyPolicy.findOne();
 
@@ -23,3 +39,6 @@ export const PrivacyPolicyService = {
   createOrUpdatePrivacyPolicy,
   getPrivacyPolicy,
 };
+
+
+*/

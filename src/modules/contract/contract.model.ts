@@ -1,6 +1,8 @@
 import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IContract, IContractModel } from './contract.interface';
+import { CreatorRole } from './contract.constant';
+
 
 const contractSchema = new Schema<IContract>(
   {
@@ -11,10 +13,7 @@ const contractSchema = new Schema<IContract>(
         required: [true, 'Attachments is required'],
       }
     ],
-    // description: {
-    //   type: String,
-    //   required: [true, 'Description is required'],
-    // },
+    
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
@@ -28,7 +27,10 @@ const contractSchema = new Schema<IContract>(
     // IDEA : ekhane creator role nam e ekta field rakhbo kina .. 
     // INFO :  creatorRole rakhlam 
     creatorRole : {
-      enum: ['projectManager', 'projectSupervisor'],
+      enum: [
+          CreatorRole.projectManager,
+          CreatorRole.projectSupervisor
+      ],
       type: String,
       required: [true, 'Creator Role is required. It can be projectManager / projectSupervisor'],
     }

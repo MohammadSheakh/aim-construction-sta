@@ -1,5 +1,23 @@
+import { GenericService } from '../../Generic Service/generic.services';
 import { ITermsConditions } from './termsConditions.interface';
 import { TermsConditions } from './termsConditions.model';
+
+
+//[🚧][🧑‍💻✅][🧪] // 🆗 
+
+export class TermsConditionService extends GenericService<typeof TermsConditions> {
+    constructor() {
+        super(TermsConditions);
+    }
+    // FIx korte hobe  terms condition service 
+    
+    // async getProjectByProjectName(projectName: string) {
+    //     return this.model.findOne({ projectName }); 
+    // }
+}
+
+
+/*
 
 const createOrUpdateTermsConditions = async (
   payload: Partial<ITermsConditions>
@@ -25,3 +43,5 @@ export const TermsConditionsService = {
   createOrUpdateTermsConditions,
   getTermsConditions,
 };
+
+*/

@@ -1,18 +1,20 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
 import { Roles } from '../../middlewares/roles';
-import { TAttachedToType, TAttachmentType, TUploaderRole } from './attachment.constant';
+import {AttachmentType, AttachedToType, UploaderRole } from './attachment.constant';
 
 // FIX  // TODO : joto jaygay role ase .. role gula check dite hobe .. 
 export interface IAttachment {
   _id?: Types.ObjectId;
   attachment: string;
-  attachmentType: TAttachmentType;
+  attachmentType: AttachmentType.image | AttachmentType.pdf;
   attachedToId: string;
-  attachedToType: TAttachedToType;
+  attachedToType: 
+    AttachedToType.note | 
+    AttachedToType.task;
   projectId : Types.ObjectId | string;
   uploadedByUserId?: Types.ObjectId | string;
-  uploaderRole: TUploaderRole;
+  uploaderRole: UploaderRole.projectManager | UploaderRole.projectSupervisor;
   viewStatus?: boolean;
   createdAt?: Date;
   updatedAt?: Date;

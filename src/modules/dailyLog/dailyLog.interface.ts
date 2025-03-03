@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
+import { Accepted } from './dailyLog.constant';
 
 export interface IDailyLog {
   _id?: Types.ObjectId;
@@ -9,6 +10,7 @@ export interface IDailyLog {
   viewStatus?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  isAccepted? : Accepted.accepted | Accepted.pending,
 }
 
 export interface IDailyLogModel extends Model<IDailyLog> {

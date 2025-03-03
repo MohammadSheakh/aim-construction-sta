@@ -1,12 +1,13 @@
 import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { ITask, ITaskModel } from './task.interface';
+import { TaskStatus } from './task.constant';
 
 const taskSchema = new Schema<ITask>(
   {
     task_status: {
       type: String,
-      enum: ['complete', 'open', 'done'],
+      enum: [TaskStatus.complete, TaskStatus.done, TaskStatus.open],
       required: [true, 'Task status is required'],
     },
     assignedTo: {
