@@ -1,0 +1,1 @@
+export type TAccepted = 'accepted' | 'pending' ;

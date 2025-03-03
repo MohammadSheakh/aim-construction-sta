@@ -22,11 +22,11 @@ export interface IProject {
   attachments?: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdAt?: Date;
   updatedAt?: Date;
-  notes : [
+  dailyLogs ?: [
     {
       type: Types.ObjectId,
-      ref: 'Note',
-      required: [false, 'Note is required'],
+      ref: 'DailyLog',
+      required: [false, 'DailyLogs is not required'],
     },
   ]
 }

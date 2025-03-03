@@ -55,14 +55,13 @@ const projectSchema = new Schema<IProject>(
       },
     },
 
-    notes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Note',
-        required: [false, 'Note is required'],
-      },
-    ] ,
-
+    // dailyLogs: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'DailyLog',
+    //     required: [false, 'DailyLog is required'],
+    //   },
+    // ] ,
     attachments: [
       {
         type: Schema.Types.ObjectId,

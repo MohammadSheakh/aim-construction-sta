@@ -11,10 +11,7 @@ const contractSchema = new Schema<IContract>(
         required: [true, 'Attachments is required'],
       }
     ],
-    // description: {
-    //   type: String,
-    //   required: [true, 'Description is required'],
-    // },
+    
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
