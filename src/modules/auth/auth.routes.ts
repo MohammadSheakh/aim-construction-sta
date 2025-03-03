@@ -14,6 +14,7 @@ router.post(
   AuthController.register,
 );
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.post(
   '/login',
   validateRequest(AuthValidation.loginValidationSchema),
@@ -29,6 +30,7 @@ router.post(
 
 router.post('/resend-otp', AuthController.resendOtp);
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.post(
   '/reset-password',
   validateRequest(AuthValidation.resetPasswordValidationSchema),

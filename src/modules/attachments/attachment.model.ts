@@ -3,6 +3,7 @@ import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IAttachment, IAttachmentModel } from './attachment.interface';
 import { Roles } from '../../middlewares/roles';
+import { AttachedToType, AttachmentType, UploaderRole } from './attachment.constant';
 
 const attachmentSchema = new Schema<IAttachment>(
   {
@@ -11,7 +12,10 @@ const attachmentSchema = new Schema<IAttachment>(
       required: [true, 'attachment is required'],
     },
     attachmentType : {
-      enum : ['pdf', 'image'],
+      enum : [
+         AttachmentType.pdf,
+            AttachmentType.image,
+       ],
       type: String,
       required: [true, 'Attached Type is required. It can be pdf / image'],
     },
@@ -20,7 +24,10 @@ const attachmentSchema = new Schema<IAttachment>(
       required: [true, 'AttachedToId is required.'],
     },
     attachedToType : {
-      enum: ['note', 'task'],
+      enum: [
+        AttachedToType.note,
+        AttachedToType.task,
+      ],
       type: String,
       required: [true, 'AttachedToType is required. It can be note / task'],
     },
@@ -36,7 +43,10 @@ const attachmentSchema = new Schema<IAttachment>(
     },
     uploaderRole: {
       type: String,
-      enum: Roles,
+      enum: [
+        UploaderRole.projectManager,
+        UploaderRole.projectSupervisor
+      ],
       required: true,
     },
 

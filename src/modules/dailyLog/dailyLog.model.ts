@@ -1,6 +1,8 @@
 import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { IDailyLog, IDailyLogModel } from './dailyLog.interface';
+import { Accepted } from './dailyLog.constant';
+
 
 const dailyLogSchema = new Schema<IDailyLog>(
   {
@@ -22,8 +24,12 @@ const dailyLogSchema = new Schema<IDailyLog>(
       ref: 'Project',
       required: [false, 'Project Id is required'],
     },
-    
-    viewStatus: { type: Boolean, default: false },
+    isAccepted : {
+      type: String,
+      enum:  [Accepted.accepted ,Accepted.pending],  
+      required: [false, 'Status is required. It can be accepted / pending'],
+    },
+    // viewStatus: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

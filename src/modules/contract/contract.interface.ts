@@ -1,12 +1,14 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
+import { CreatorRole } from './contract.constant';
 
 export interface IContract {
   attachments: Types.ObjectId[]; // Array of ObjectId references to Attachment
   description: string;
   projectId?: Types.ObjectId | string;
   createdBy?: Types.ObjectId | string;
-  creatorRole?: 'admin' | 'technician' | 'company'; // Optional field for creator role
+  creatorRole?: CreatorRole.projectManager |
+            CreatorRole.projectSupervisor
   createdAt?: Date;
   updatedAt?: Date;
 }
