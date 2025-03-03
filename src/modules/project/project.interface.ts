@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
+import { Status } from './project.constant';
 
 export interface IProject {
   // _id?: Types.ObjectId;
@@ -28,7 +29,9 @@ export interface IProject {
       ref: 'DailyLog',
       required: [false, 'DailyLogs is not required'],
     },
-  ]
+  ],
+  projectStatus : Status.completed | Status.open
+  // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
 }
 
 export interface IProjectModel extends Model<IProject> {

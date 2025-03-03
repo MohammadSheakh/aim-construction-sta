@@ -2,6 +2,8 @@ import { model, Schema } from 'mongoose';
 
 import paginate from '../../common/plugins/paginate';
 import { IProject, IProjectModel } from './project.interface';
+import { Status } from './project.constant';
+
 
 const projectSchema = new Schema<IProject>(
   {
@@ -69,9 +71,22 @@ const projectSchema = new Schema<IProject>(
         required: [false, 'Attachments is required'],
       },
     ],
+    projectStatus : {
+      type: String,
+      enum : [
+        Status.completed,
+        Status.open
+      ],
+      required: [true, 'Project Status is required. It can be completed / open'],
+      // default : Status.open
+      // TODO : shob enume  default set korte hobe 
+      // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
+    }
   },
   { timestamps: true }
 );
+
+
 
 projectSchema.plugin(paginate);
 

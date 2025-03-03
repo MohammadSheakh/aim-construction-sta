@@ -1,9 +1,7 @@
 import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { INote, INoteModel } from './note.interface';
-import { TAccepted } from './note.constant';
-
-const acceptedValues: TAccepted[] = ['accepted', 'pending'];
+import { Accepted } from '../dailyLog/dailyLog.constant';
 
 const noteSchema = new Schema<INote>(
   {
@@ -42,8 +40,9 @@ const noteSchema = new Schema<INote>(
     // viewStatus: { type: Boolean, default: false },
  
     isAccepted : {
-      enum: acceptedValues,  
-      required: [true, 'Status is required. It can be accepted / pending'],
+      type: String,
+      enum: [Accepted.accepted ,Accepted.pending],  
+      required: [false, 'Status is required. It can be accepted / pending'],
     },
   },
   { timestamps: true }

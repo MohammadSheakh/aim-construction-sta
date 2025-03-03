@@ -1,6 +1,7 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
-import { TAccepted } from './note.constant';
+import { Accepted } from '../dailyLog/dailyLog.constant';
+
 
 export interface INote {
   _id?: Types.ObjectId;
@@ -13,7 +14,7 @@ export interface INote {
   viewStatus?: boolean; // Optional field for viewStatus
   createdAt?: Date;
   updatedAt?: Date;
-  isAccepted : TAccepted;
+  isAccepted? : Accepted.accepted | Accepted.pending;
 }
 
 export interface INoteModel extends Model<INote> {

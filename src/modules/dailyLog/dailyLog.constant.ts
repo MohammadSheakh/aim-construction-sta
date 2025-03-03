@@ -1,1 +1,4 @@
-export type TAccepted = 'accepted' | 'pending' ;
+export enum Accepted {
+    accepted = 'accepted',
+    pending = 'pending',
+}
