@@ -7,7 +7,7 @@ import {AttachmentType, AttachedToType, UploaderRole } from './attachment.consta
 export interface IAttachment {
   _id?: Types.ObjectId;
   attachment: string;
-  attachmentType: AttachmentType.image | AttachmentType.pdf;
+  attachmentType: AttachmentType.image | AttachmentType.document;
   attachedToId: string;
   attachedToType: 
     AttachedToType.note | 

@@ -14,13 +14,11 @@ const router = express.Router();
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ContractController.getAllContractWithPagination
 );
 
 router.route('/:contractId').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ContractController.getAContract
 );
 
@@ -32,7 +30,6 @@ router.route('/update/:contractId').put(
 
 router.route('/').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ContractController.getAllContract
 );
 
@@ -44,7 +41,6 @@ router.route('/create').post(
 
 router.route('/delete/:contractId').delete(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
    ContractController.deleteById
 );
 

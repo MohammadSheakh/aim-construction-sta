@@ -14,13 +14,11 @@ const router = express.Router();
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.getAllTaskWithPagination
 );
 
 router.route('/:noteId').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.getATask
 );
 
@@ -32,7 +30,6 @@ router.route('/update/:noteId').put(
 
 router.route('/').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.getAllTask
 );
 
@@ -44,7 +41,6 @@ router.route('/create').post(
 
 router.route('/delete/:noteId').delete(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.deleteById
 );
 

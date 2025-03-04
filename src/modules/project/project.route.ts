@@ -14,13 +14,12 @@ const router = express.Router();
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  
   ProjectController.getAllProjectWithPagination
 );
 
 router.route('/:projectId').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.getAProject
 );
 
@@ -33,7 +32,6 @@ router.route('/update/:projectId').put(
 //[🚧][🧑‍💻✅][🧪] // 🆗 
 router.route('/').get(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.getAllProject
 );
 
@@ -46,14 +44,10 @@ router.route('/create').post(
 
 router.route('/delete/:projectId').delete(
   auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.deleteById
 );
 
 ////////////////////////////////////////////////////////////////
-
-
-
 
 
 // router.route('/search/:projectName').get(

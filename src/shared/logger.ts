@@ -64,25 +64,25 @@ const errorLogger = createLogger({
   ],
 });
 
-// Override console.log
-const originalConsoleLog = console.log;
-console.log = (...args) => {
-  logger.info(args.join(' ')); // Redirect console.log to Winston's info level
-  originalConsoleLog(...args); // Optionally preserve the original console.log behavior
-};
+// // Override console.log
+// const originalConsoleLog = console.log;
+// console.log = (...args) => {
+//   logger.info(args.join(' ')); // Redirect console.log to Winston's info level
+//   originalConsoleLog(...args); // Optionally preserve the original console.log behavior
+// };
 
-// Override console.error
-const originalConsoleError = console.error;
-console.error = (...args) => {
-  errorLogger.error(args.join(' ')); // Redirect console.error to Winston's error level
-  originalConsoleError(...args); // Optionally preserve the original console.error behavior
-};
+// // Override console.error
+// const originalConsoleError = console.error;
+// console.error = (...args) => {
+//   errorLogger.error(args.join(' ')); // Redirect console.error to Winston's error level
+//   originalConsoleError(...args); // Optionally preserve the original console.error behavior
+// };
 
-// Override console.warn
-const originalConsoleWarn = console.warn;
-console.warn = (...args) => {
-  logger.warn(args.join(' ')); // Redirect console.warn to Winston's warn level
-  originalConsoleWarn(...args); // Optionally preserve the original console.warn behavior
-};
+// // Override console.warn
+// const originalConsoleWarn = console.warn;
+// console.warn = (...args) => {
+//   logger.warn(args.join(' ')); // Redirect console.warn to Winston's warn level
+//   originalConsoleWarn(...args); // Optionally preserve the original console.warn behavior
+// };
 
 export { errorLogger, logger };

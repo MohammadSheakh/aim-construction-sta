@@ -2,6 +2,10 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { NoteController } from './note.controller';
+///////////////////////////////////////
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -10,16 +14,18 @@ import { NoteController } from './note.controller';
 
 const router = express.Router();
 
+
+
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   NoteController.getAllNoteWithPagination
 );
 
+
+
 router.route('/:noteId').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   NoteController.getANote
 );
 
@@ -30,20 +36,27 @@ router.route('/update/:noteId').put(
 );
 
 router.route('/').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   NoteController.getAllNote
 );
 
+//[🚧][🧑‍💻✅][🧪🆗] //  
 router.route('/create').post(
-  auth('projectManager'),
+  [
+    upload.fields([
+      { name: "attachments", maxCount: 15 }, // Allow up to 5 cover photos
+    ]),
+  ],
+  auth('common'), // INFO :  but eta only superVisor er create korar kotha 
   // validateRequest(UserValidation.createUserValidationSchema),
+  // TODO : attachment upload handle kora lagbe 
   NoteController.createNote
 );
 
+
+
 router.route('/delete/:noteId').delete(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   NoteController.deleteById
 );
 
@@ -52,5 +65,12 @@ router.route('/delete/:noteId').delete(
 //   // validateRequest(UserValidation.createUserValidationSchema),
 //   ProjectController.getProjectByProjectName
 // );
+
+//////////////////////////////////////////////////////
+//[🚧][🧑‍💻✅][🧪🆗]
+router.route('/getAllByDateAndProjectId/:projectId/:date').get(
+   auth('common'),
+  NoteController.getAllByDateAndProjectId
+);
 
 export const NoteRoutes = router;
