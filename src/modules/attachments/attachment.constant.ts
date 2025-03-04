@@ -8,6 +8,7 @@ export enum AttachmentType {
 export enum AttachedToType {
     note = 'note',
     task = 'task',
+    project = 'project',
 }
   
 export enum UploaderRole {

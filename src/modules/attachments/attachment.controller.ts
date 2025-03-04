@@ -78,6 +78,9 @@ const deleteById = catchAsync(async (req, res) => {
 
 
 
+
+
+
 export const AttachmentController = {
   // createAttachment,
   getAllAttachment,
