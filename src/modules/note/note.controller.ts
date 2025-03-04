@@ -48,15 +48,10 @@ const createNote = catchAsync(async (req, res) => {
     );
   }
 
-
-
-
   // INFO : its useful for update .. 
   // else{
   //   attachments = [...note.attachments]
   // }
-
-
 
   req.body.attachments = attachments;
 
@@ -150,7 +145,12 @@ const deleteById = catchAsync(async (req, res) => {
 /////////////////////////////////
 
 const getAllByDateAndProjectId = catchAsync(async (req, res) => {
-  const result = await noteService.getAllByDateAndProjectId(req.params.date, req.params.projectId);
+  console.log(req.query)
+  const { projectId, date } = req.query;
+  let result ;
+   if(date && projectId){
+    result = await noteService.getAllByDateAndProjectId(projectId , date );
+   }
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,

@@ -23,6 +23,15 @@ router.route('/paginate').get(
 );
 
 
+//////////////////////////////////////////////////////
+//[🚧][🧑‍💻✅][🧪🆗] // query :: projectId  date
+router.route('/getAllByDateAndProjectId/').get(
+  auth('common'),
+ NoteController.getAllByDateAndProjectId
+);
+
+
+
 
 router.route('/:noteId').get(
   auth('common'),
@@ -53,8 +62,6 @@ router.route('/create').post(
   NoteController.createNote
 );
 
-
-
 router.route('/delete/:noteId').delete(
   auth('common'),
   NoteController.deleteById
@@ -66,11 +73,10 @@ router.route('/delete/:noteId').delete(
 //   ProjectController.getProjectByProjectName
 // );
 
-//////////////////////////////////////////////////////
-//[🚧][🧑‍💻✅][🧪🆗]
-router.route('/getAllByDateAndProjectId/:projectId/:date').get(
-   auth('common'),
-  NoteController.getAllByDateAndProjectId
-);
+
+
+
+
+
 
 export const NoteRoutes = router;
