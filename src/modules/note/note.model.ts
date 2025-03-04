@@ -25,11 +25,11 @@ const noteSchema = new Schema<INote>(
       ref: 'User',
       required: [false, 'User is required'],
     },
-    dailyLogId: {
-      type: Schema.Types.ObjectId,
-      ref: 'DailyLog',
-      required: [false, 'DailyLog is required'],
-    },
+    // dailyLogId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'DailyLog',
+    //   required: [false, 'DailyLog is required'],
+    // },
     // TODO : project Id ki dorkar ase ?
     projectId: {
       type: Schema.Types.ObjectId,

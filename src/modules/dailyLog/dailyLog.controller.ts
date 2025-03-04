@@ -7,6 +7,9 @@ import pick from '../../shared/pick';
 import { DailyLog } from './dailyLog.model';
 import { DailyLogService } from './dailyLog.service';
 
+// INFO :  Daily Log is not needed  
+// INFO :  We can remove total dailyLog module .. 
+
 const dailyLogService = new DailyLogService();
 
 const createDailyLog = catchAsync(async (req, res) => {

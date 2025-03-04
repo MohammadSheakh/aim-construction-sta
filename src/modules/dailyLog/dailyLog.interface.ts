@@ -2,6 +2,9 @@ import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
 import { Accepted } from './dailyLog.constant';
 
+// INFO :  Daily Log is not needed  
+// INFO :  We can remove total dailyLog module .. 
+
 export interface IDailyLog {
   _id?: Types.ObjectId;
   notes?: Types.ObjectId | string;

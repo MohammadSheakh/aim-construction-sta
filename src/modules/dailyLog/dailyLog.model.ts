@@ -4,16 +4,19 @@ import { IDailyLog, IDailyLogModel } from './dailyLog.interface';
 import { Accepted } from './dailyLog.constant';
 
 
+// INFO :  Daily Log is not needed  
+// INFO :  We can remove total dailyLog module .. 
+
 const dailyLogSchema = new Schema<IDailyLog>(
   {
     // TODO : multiple notes can be added
-    notes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Note',
-        required: [false, 'Note is required'],
-      },
-    ] ,
+    // notes: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Note',
+    //     required: [false, 'Note is required'],
+    //   },
+    // ] ,
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

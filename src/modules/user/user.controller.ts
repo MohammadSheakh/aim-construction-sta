@@ -243,6 +243,35 @@ const deleteMyProfile = catchAsync(async (req, res) => {
   });
 });
 
+
+//////////////////////////////////////////////////////////
+
+
+//get all Projects by User Id
+const getAllProjectsByUserId = catchAsync(async (req, res) => {
+
+  if (!req.user ) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'User ID not found in request');
+  }
+
+  console.log("🧪🧪🧪🧪",req.user)
+  // const { id } = req.user;
+ 
+  const result = await UserService.getAllProjectsByUserId(req.user.userId);
+
+  if (!result) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'No Projects found');
+  }
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All Project By User Id ',
+  });
+});
+
+
+
 export const UserController = {
   createAdminOrSuperAdmin,
   getAllUsers,
@@ -253,4 +282,6 @@ export const UserController = {
   getMyProfile,
   updateUserProfile,
   deleteMyProfile,
+  //////////////////////////
+  getAllProjectsByUserId
 };

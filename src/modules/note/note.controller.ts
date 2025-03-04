@@ -10,6 +10,9 @@ const noteService = new NoteService();
 
 const createNote = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);
+
+  
+
   const result = await noteService.create(req.body);
 
   sendResponse(res, {
