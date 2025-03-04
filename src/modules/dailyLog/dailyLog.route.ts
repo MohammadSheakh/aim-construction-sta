@@ -3,6 +3,10 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { DailyLogController } from './dailyLog.controller';
 
+// INFO :  Daily Log is not needed  
+// INFO :  We can remove total dailyLog module .. 
+
+
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
 // const UPLOADS_FOLDER = 'uploads/users';

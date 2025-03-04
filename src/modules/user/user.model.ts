@@ -108,7 +108,6 @@ const userSchema = new Schema<TUser, UserModal>(
     phoneNumber : {
       type: String,
     },
-
     isDeleted: {
       type: Boolean,
       default: false,
@@ -123,7 +122,7 @@ const userSchema = new Schema<TUser, UserModal>(
       type: Number,
       default: 0,
     },
-    lockUntil: { type: Date },
+    lockUntil: { type: Date }, // 🔴 not sure 
   },
   {
     timestamps: true,

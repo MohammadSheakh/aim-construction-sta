@@ -10,6 +10,12 @@ const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
+//[🚧][🧑‍💻✅][🧪🆗] //  
+// get all Projects by User Id  // :userId
+router.route('/projects').get(auth('common'),
+UserController.getAllProjectsByUserId
+);
+
 router
   .route('/profile-image')
   .post(
@@ -47,5 +53,9 @@ router
     validateRequest(UserValidation.changeUserStatusValidationSchema),
     UserController.updateUserStatus
   );
+
+  ///////////////////////////////////////////////
+
+  
 
 export const UserRoutes = router;

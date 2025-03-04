@@ -30,12 +30,14 @@ router.route('/update/:projectId').put(
   ProjectController.updateById
 );
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.route('/').get(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.getAllProject
 );
 
+//[🚧][🧑‍💻✅][🧪] // 🆗 
 router.route('/create').post(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
@@ -47,6 +49,12 @@ router.route('/delete/:projectId').delete(
   // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.deleteById
 );
+
+////////////////////////////////////////////////////////////////
+
+
+
+
 
 // router.route('/search/:projectName').get(
 //   // auth('projectManager'),

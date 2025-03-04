@@ -4,7 +4,9 @@ import { PaginateOptions, PaginateResult } from '../../types/paginate';
 import { TUser } from './user.interface';
 import { User } from './user.model';
 import { sendAdminOrSuperAdminCreationEmail } from '../../helpers/emailService';
-import { Connection } from '../connections/connections.model';
+
+import { Project } from '../project/project.model';
+import { CreatorRole } from '../contract/contract.constant';
 
 interface IAdminOrSuperAdminPayload {
   email: string;
@@ -157,6 +159,30 @@ const deleteMyProfile = async (userId: string): Promise<TUser | null> => {
   return result;
 };
 
+
+///////////////////////////////////////////////////////
+
+const getAllProjectsByUserId = async (userId: string) => {
+ 
+  const user = await User.findById(userId);
+ 
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+  let result ;
+  if(user.role == CreatorRole.projectManager){
+    
+    result = await Project.find({ projectManagerId: user._id });
+    
+    console.log("result 🚀1", result);
+  }else{
+    result = await Project.find({ projectSuperVisorId: user._id });
+    console.log("result 🚀2", result);
+  }
+  return user;
+};
+
+
 export const UserService = {
   createAdminOrSuperAdmin,
   getAllUsers,
@@ -168,5 +194,7 @@ export const UserService = {
   getMyProfile,
   updateProfileImage,
   deleteMyProfile,
+  //////////////////////////
+  getAllProjectsByUserId
 };
 ``;
