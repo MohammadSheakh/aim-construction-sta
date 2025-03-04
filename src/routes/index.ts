@@ -6,7 +6,7 @@ import { SettingsRoutes } from '../modules/settings/settings.routes';
 
 import { ProjectRoutes } from '../modules/project/project.route';
 import { NoteRoutes } from '../modules/note/note.route';
-import { DailyLogRoutes } from '../modules/dailyLog/dailyLog.route';
+
 import { ContractRoutes } from '../modules/contract/contract.route';
 import { TaskRoutes } from '../modules/task/task.route';
 import { AttachmentRoutes } from '../modules/attachments/attachment.route';
@@ -38,10 +38,7 @@ const apiRoutes = [
     path: '/note',
     route: NoteRoutes,
   },
-  {
-    path: '/dailyLog',
-    route: DailyLogRoutes,
-  },
+  
   {
     path: '/contract',
     route: ContractRoutes,

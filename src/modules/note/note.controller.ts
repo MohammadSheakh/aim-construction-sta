@@ -61,8 +61,6 @@ const createNote = catchAsync(async (req, res) => {
 
   console.log('attachments 🔴result🔴', result);
 
-
-
     // Now loop through the attachments array and update the attachedToId and attachedToType
 if (attachments.length > 0) {
   await Promise.all(
@@ -157,6 +155,9 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
     message: 'All notes by date and project id',
   });
 });
+
+// const getAllDailyLog = catchAsync(async (req, res) => { 
+
 
 export const NoteController = {
   createNote,

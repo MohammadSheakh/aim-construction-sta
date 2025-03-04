@@ -6,6 +6,7 @@ import validateRequest from '../../shared/validateRequest';
 import fileUploadHandler from '../../shared/fileUploadHandler';
 import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
 import { ProjectController } from './project.controller';
+import { NoteController } from '../note/note.controller';
 const UPLOADS_FOLDER = 'uploads/users';
 const upload = fileUploadHandler(UPLOADS_FOLDER);
 
@@ -48,6 +49,12 @@ router.route('/delete/:projectId').delete(
 );
 
 ////////////////////////////////////////////////////////////////
+
+
+// router.route('/dailyLog').get(
+//   auth('common'),
+//   NoteController.getAllDailyLog
+// );
 
 
 // router.route('/search/:projectName').get(

@@ -31,8 +31,6 @@ router.route('/getAllByDateAndProjectId/').get(
 );
 
 
-
-
 router.route('/:noteId').get(
   auth('common'),
   NoteController.getANote
