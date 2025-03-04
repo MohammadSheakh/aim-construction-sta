@@ -9,4 +9,10 @@ export class NoteService extends GenericService<typeof Note> {
     // async getProjectByProjectName(projectName: string) {
     //     return this.model.findOne({ projectName }); 
     // }
+
+    async getAllByDateAndProjectId(projectId: string, date: string) {
+        return this.model.find({ projectId
+             , createdAt: { $gte: date }
+        }); 
+    }
 }

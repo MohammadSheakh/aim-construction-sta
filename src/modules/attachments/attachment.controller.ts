@@ -70,8 +70,16 @@ const deleteById = catchAsync(async (req, res) => {
   });
 });
 
+
+/////////////////////////////////////////////
+
+
+
+
+
+
 export const AttachmentController = {
-  createAttachment,
+  // createAttachment,
   getAllAttachment,
   getAllAttachmentWithPagination,
   getAAttachment,

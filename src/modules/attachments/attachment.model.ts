@@ -12,16 +12,17 @@ const attachmentSchema = new Schema<IAttachment>(
       required: [true, 'attachment is required'],
     },
     attachmentType : {
-      enum : [
-         AttachmentType.pdf,
-            AttachmentType.image,
-       ],
       type: String,
+      enum : [
+         AttachmentType.document,
+         AttachmentType.image,
+      ],
+     
       required: [true, 'Attached Type is required. It can be pdf / image'],
     },
     attachedToId : {
       type: String,
-      required: [true, 'AttachedToId is required.'],
+      required: [false, 'AttachedToId is required.'],
     },
     attachedToType : {
       enum: [
@@ -29,7 +30,7 @@ const attachmentSchema = new Schema<IAttachment>(
         AttachedToType.task,
       ],
       type: String,
-      required: [true, 'AttachedToType is required. It can be note / task'],
+      required: [false, 'AttachedToType is required. It can be note / task'],
     },
     projectId: {
       type: Schema.Types.ObjectId,

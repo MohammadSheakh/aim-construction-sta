@@ -13,38 +13,36 @@ const router = express.Router();
 
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   AttachmentController.getAllAttachmentWithPagination
 );
 
 router.route('/:attachmentId').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
+  
   AttachmentController.getAAttachment
 );
 
 router.route('/update/:attachmentId').put(
-  auth('projectManager'),
+  auth('common'),
   // validateRequest(UserValidation.createUserValidationSchema),
   AttachmentController.updateById
 );
 
 router.route('/').get(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
+  
   AttachmentController.getAllAttachment
 );
 
-router.route('/create').post(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
-  AttachmentController.createAttachment
-);
+// router.route('/create').post(
+//   auth('projectManager'),
+//   // validateRequest(UserValidation.createUserValidationSchema),
+//   AttachmentController.createAttachment
+// );
 
 router.route('/delete/:attachmentId').delete(
-  auth('projectManager'),
-  // validateRequest(UserValidation.createUserValidationSchema),
+  auth('common'),
   AttachmentController.deleteById
 );
 
