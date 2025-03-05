@@ -106,7 +106,7 @@ export class NoteService extends GenericService<typeof Note> {
     const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999));
 
     //🟢 Query Notes with exact date match for the given projectId and date range
-    const result = await Attachment.find({
+    const attachments = await Attachment.find({
       attachedToType: noteOrTaskOrProject, // 'note'
       projectId: projectId,
       attachmentType: imageOrDocument, // 'image'
@@ -118,7 +118,48 @@ export class NoteService extends GenericService<typeof Note> {
       )
       .exec();
 
-    console.log('result :: 🔖🔖🔖', result);
+      //////////////////////////////////////////////////////////////////////////////////////////
+
+
+       // Helper function to extract the date portion (YYYY-MM-DD)
+
+      //  const extractDate = (date) => {
+      //   return new Date(date).toISOString().split('T')[0]; // Extract YYYY-MM-DD
+      // };
+
+  // Helper function to format date as "Sunday, February 23, 2025"
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  };
+
+
+
+  // Group attachments by date
+  const groupedByDate = attachments.reduce((acc, attachment) => {
+    //const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
+    const dateKey = formatDate(attachment.createdAt);
+    if (!acc[dateKey]) {
+      acc[dateKey] = []; // Initialize array for the date
+    }
+    acc[dateKey].push(attachment); // Add the attachment to the corresponding date
+    return acc;
+  }, {});
+
+  // console.log('Grouped by Date:', groupedByDate);
+
+  // Transform into the desired output format
+  const result = Object.keys(groupedByDate).map((date) => ({
+    date: date,
+    attachments: groupedByDate[date]
+  }));
+
+
+
+
+
+      //////////////////////////////////////////////////////////////////////////////////////////
+
 
     return result;
   }
