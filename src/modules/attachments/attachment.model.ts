@@ -17,7 +17,6 @@ const attachmentSchema = new Schema<IAttachment>(
          AttachmentType.document,
          AttachmentType.image,
       ],
-     
       required: [true, 'Attached Type is required. It can be pdf / image'],
     },
     attachedToId : {
@@ -28,6 +27,7 @@ const attachmentSchema = new Schema<IAttachment>(
       enum: [
         AttachedToType.note,
         AttachedToType.task,
+        AttachedToType.project,
       ],
       type: String,
       required: [false, 'AttachedToType is required. It can be note / task'],

@@ -47,7 +47,8 @@ const createNote = catchAsync(async (req, res) => {
             file,
             FolderName.note,
             req.body.projectId,
-            req.user
+            req.user,
+            AttachedToType.note
           );
           return attachmenId;
         })
@@ -75,7 +76,6 @@ const createNote = catchAsync(async (req, res) => {
           attachmentId, // Pass the attachment ID
           {
             attachedToId: result._id,
-            attachedToType: AttachedToType.note,
           }
         );
       })

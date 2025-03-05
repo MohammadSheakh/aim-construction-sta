@@ -2,6 +2,7 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { NoteController } from './note.controller';
+import { AttachmentController } from '../attachments/attachment.controller';
 ///////////////////////////////////////
 const multer = require('multer');
 const storage = multer.memoryStorage();
@@ -63,6 +64,18 @@ router.route('/create').post(
   // TODO : attachment upload handle kora lagbe
   NoteController.createNote
 );
+
+// INFO : Create Attachment 
+router.route('/uploadImagesOrDocuments').post(
+  [
+    upload.fields([
+      { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
+    ]),
+
+  ],
+  auth('common'),
+  AttachmentController.createAttachment
+)
 
 router
   .route('/delete/:noteId')
