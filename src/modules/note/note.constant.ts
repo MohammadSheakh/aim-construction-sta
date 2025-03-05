@@ -3,4 +3,3 @@ export enum noteStatus {
   accepted = 'accepted',
   denied = 'denied',
 }
-

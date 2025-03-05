@@ -86,8 +86,9 @@ export class NoteService extends GenericService<typeof Note> {
   async getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId(
     projectId: string,
     date: string,
-    noteOrTask: string,
-    imageOrDocument: string
+    noteOrTaskOrProject: string,
+    imageOrDocument: string,
+    uploaderRole : string
   ) {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Invalid projectId');
@@ -106,9 +107,10 @@ export class NoteService extends GenericService<typeof Note> {
 
     //🟢 Query Notes with exact date match for the given projectId and date range
     const result = await Attachment.find({
-      attachedToType: noteOrTask, // 'note'
+      attachedToType: noteOrTaskOrProject, // 'note'
       projectId: projectId,
       attachmentType: imageOrDocument, // 'image'
+      uploaderRole : uploaderRole,
       createdAt: { $gte: startOfDay, $lte: endOfDay },
     })
       .select(

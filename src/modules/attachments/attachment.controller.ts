@@ -7,15 +7,21 @@ import { Attachment } from './attachment.model';
 import { AttachmentService } from './attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from './attachment.constant';
+import ApiError from '../../errors/ApiError';
+import { NoteService } from '../note/note.service';
 
 const attachmentService = new AttachmentService();
+const noteService = new NoteService();
 
+//[🚧][🧑‍💻✅][🧪🆗]
 const createAttachment = catchAsync(async (req, res) => {
-  console.log('req.body 🧪', req.body);
+  console.log('req.body from createAttachment 🧪', req.body);
 
-  // if (req.user.userId) {
-  //   req.body.createdBy = req.user.userId;
-  // }
+  const { noteOrTaskOrProject } = req.body;
+  if(noteOrTaskOrProject !== AttachedToType.note && noteOrTaskOrProject !== AttachedToType.task && noteOrTaskOrProject !== AttachedToType.project)
+  {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'noteOrTaskOrProject should be note or task or project');
+  }
   let attachments = [];
   
     if (req.files && req.files.attachments) {
@@ -27,7 +33,7 @@ const createAttachment = catchAsync(async (req, res) => {
               FolderName.note,
               req.body.projectId,
               req.user,
-              AttachedToType.project
+              noteOrTaskOrProject
             );
             return attachmenId;
           })
@@ -35,17 +41,12 @@ const createAttachment = catchAsync(async (req, res) => {
       );
     }
 
-
-    // req.body.attachments = attachments;
-
-
-
-  const result = await attachmentService.create(req.body);
+  // const result = await attachmentService.create(req.body);
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: result,
-    message: 'Project created successfully',
+    data: null,
+    message: 'Attachment created successfully',
   });
 });
 
@@ -92,11 +93,45 @@ const updateById = catchAsync(async (req, res) => {
   });
 });
 
+//[🚧][🧑‍💻✅][🧪🆗]
+
 const deleteById = catchAsync(async (req, res) => {
-  await attachmentService.deleteById(req.params.attachmentId);
+
+  const attachment = await attachmentService.getById(req.params.attachmentId);
+  if (!attachment) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
+  }
+
+  console.log('attachment :: 🧪', attachment);
+
+  let results;
+
+  if(req.user.role == attachment.uploaderRole)
+  {
+    if(attachment.attachedToType == 'project')
+      {
+        // taile amra just attachment  delete korbo 
+        results = await attachmentService.deleteById(req.params.attachmentId);
+      }else if (attachment.attachedToType == 'note'){
+        const note =  await noteService.getById(attachment.attachedToId);
+        note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
+        const result =  await noteService.updateById(note._id, note)
+        if(result){
+          results = await attachmentService.deleteById(req.params.attachmentId);
+        }
+      }
+      // TODO :  task er jonno kaj korte hobe ... 
+  }else{
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized to delete this attachment');
+  }
+  
+
+
+  // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Project deleted successfully',
+    data : results
   });
 });
 
