@@ -155,18 +155,19 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
 
 //////////////////////////////
 
-const getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId = catchAsync(
+const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId = catchAsync(
   async (req, res) => {
     console.log(req.query);
-    const { projectId, date, noteOrTask, imageOrDocument } = req.query;
+    const { projectId, date, noteOrTaskOrProject, imageOrDocument, uploaderRole } = req.query;
     let result;
     if (date && projectId) {
       result =
         await noteService.getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId(
           projectId,
           date,
-          noteOrTask,
-          imageOrDocument
+          noteOrTaskOrProject,
+          imageOrDocument,
+          uploaderRole
         );
     }
     sendResponse(res, {
@@ -208,6 +209,6 @@ export const NoteController = {
   deleteById,
   /////////
   getAllByDateAndProjectId,
-  getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId,
+  getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId,
   changeStatusOfANote,
 };

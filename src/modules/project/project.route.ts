@@ -18,6 +18,12 @@ router.route('/paginate').get(
   
   ProjectController.getAllProjectWithPagination
 );
+///////////////////////////////////////////////////////////////////////
+router.route('/getAllImagesOfAllNotesOfAProjectId')
+  .get(
+    auth('common'),
+    ProjectController.getAllimagesOrDocumentOFnoteOrTaskOrProjectByProjectId
+  );
 
 router.route('/:projectId').get(
   auth('projectManager'),
@@ -49,6 +55,8 @@ router.route('/delete/:projectId').delete(
 );
 
 ////////////////////////////////////////////////////////////////
+
+
 
 
 // router.route('/dailyLog').get(

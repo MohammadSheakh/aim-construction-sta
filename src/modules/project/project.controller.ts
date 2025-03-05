@@ -83,6 +83,31 @@ const deleteById = catchAsync(async (req, res) => {
   });
 });
 
+
+///////////////////////////////////////
+
+const getAllimagesOrDocumentOFnoteOrTaskOrProjectByProjectId = catchAsync(
+  async (req, res) => {
+    console.log(req.query);
+    const { projectId, noteOrTaskOrProject, imageOrDocument, uploaderRole } = req.query;
+    let result;
+    if (projectId) {
+      result =
+        await projectService.getAllimagesOrDocumentOFnoteOrTaskByProjectId(
+          projectId,
+          noteOrTaskOrProject,
+          imageOrDocument,
+          uploaderRole
+        );
+    }
+    sendResponse(res, {
+      code: StatusCodes.OK,
+      data: result,
+      message: 'All notes by date and project id',
+    });
+  }
+);
+
 export const ProjectController = {
   createProject,
   getAllProject,
@@ -90,5 +115,7 @@ export const ProjectController = {
   getAProject,
   updateById,
   deleteById,
+  ///////////////////////
+  getAllimagesOrDocumentOFnoteOrTaskOrProjectByProjectId
   // getProjectByProjectName
 };

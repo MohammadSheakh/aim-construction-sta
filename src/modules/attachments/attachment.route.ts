@@ -41,6 +41,7 @@ router.route('/').get(
 //   AttachmentController.createAttachment
 // );
 
+//[🚧][🧑‍💻✅][🧪🆗] 
 router.route('/delete/:attachmentId').delete(
   auth('common'),
   AttachmentController.deleteById

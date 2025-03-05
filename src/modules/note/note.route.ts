@@ -26,12 +26,12 @@ router
   .route('/getAllByDateAndProjectId/')
   .get(auth('common'), NoteController.getAllByDateAndProjectId);
 
-//[🚧][🧑‍💻✅][🧪🆗] // query :: projectId, date, noteOrTask, imageOrDocument
+//[🚧][🧑‍💻✅][🧪🆗] // query :: projectId, date, noteOrTaskOrProject, imageOrDocument
 router
   .route('/getAllImagesOfAllNotesOfADateAndProjectId/')
   .get(
     auth('common'),
-    NoteController.getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId
+    NoteController.getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId
   );
 
 //////////////////////////////////////////////////////
