@@ -33,6 +33,7 @@ export class ProjectService extends GenericService<typeof Project> {
           )
           .exec();
 
+          // TODO :  query aro optimize korar try korte hobe 
         
    // Helper function to extract the date portion (YYYY-MM-DD)
   //  const extractDate = (date) => {
@@ -44,7 +45,6 @@ export class ProjectService extends GenericService<typeof Project> {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(date).toLocaleDateString('en-US', options);
   };
-
   // Group attachments by date
   const groupedByDate = attachments.reduce((acc, attachment) => {
     // const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
