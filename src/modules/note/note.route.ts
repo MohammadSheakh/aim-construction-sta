@@ -3,7 +3,7 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { NoteController } from './note.controller';
 ///////////////////////////////////////
-const multer = require("multer");
+const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -14,27 +14,34 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-
-
 //info : pagination route must be before the route with params
-router.route('/paginate').get(
-  auth('common'),
-  NoteController.getAllNoteWithPagination
-);
-
+router
+  .route('/paginate')
+  .get(auth('common'), NoteController.getAllNoteWithPagination);
 
 //////////////////////////////////////////////////////
 //[🚧][🧑‍💻✅][🧪🆗] // query :: projectId  date
-router.route('/getAllByDateAndProjectId/').get(
-  auth('common'),
- NoteController.getAllByDateAndProjectId
-);
+router
+  .route('/getAllByDateAndProjectId/')
+  .get(auth('common'), NoteController.getAllByDateAndProjectId);
 
+//[🚧][🧑‍💻✅][🧪🆗] // query :: projectId, date, noteOrTask, imageOrDocument
+router
+  .route('/getAllImagesOfAllNotesOfADateAndProjectId/')
+  .get(
+    auth('common'),
+    NoteController.getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId
+  );
 
-router.route('/:noteId').get(
-  auth('common'),
-  NoteController.getANote
-);
+//////////////////////////////////////////////////////
+
+//[🚧][🧑‍💻✅][🧪🆗]
+router.route('/:noteId').get(auth('common'), NoteController.getANote);
+
+//[🚧][🧑‍💻✅][🧪🆗]
+router
+  .route('/changeStatus/:noteId')
+  .get(auth('common'), NoteController.changeStatusOfANote);
 
 router.route('/update/:noteId').put(
   auth('projectManager'),
@@ -42,39 +49,29 @@ router.route('/update/:noteId').put(
   NoteController.updateById
 );
 
-router.route('/').get(
-  auth('common'),
-  NoteController.getAllNote
-);
+router.route('/').get(auth('common'), NoteController.getAllNote);
 
-//[🚧][🧑‍💻✅][🧪🆗] //  
+//[🚧][🧑‍💻✅][🧪🆗] //
 router.route('/create').post(
   [
     upload.fields([
-      { name: "attachments", maxCount: 15 }, // Allow up to 5 cover photos
+      { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
     ]),
   ],
-  auth('common'), // INFO :  but eta only superVisor er create korar kotha 
+  auth('common'), // INFO :  but eta only superVisor er create korar kotha
   // validateRequest(UserValidation.createUserValidationSchema),
-  // TODO : attachment upload handle kora lagbe 
+  // TODO : attachment upload handle kora lagbe
   NoteController.createNote
 );
 
-router.route('/delete/:noteId').delete(
-  auth('common'),
-  NoteController.deleteById
-);
+router
+  .route('/delete/:noteId')
+  .delete(auth('common'), NoteController.deleteById);
 
 // router.route('/search/:projectName').get(
 //   // auth('projectManager'),
 //   // validateRequest(UserValidation.createUserValidationSchema),
 //   ProjectController.getProjectByProjectName
 // );
-
-
-
-
-
-
 
 export const NoteRoutes = router;
