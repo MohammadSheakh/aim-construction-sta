@@ -5,11 +5,41 @@ import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
 import { Attachment } from './attachment.model';
 import { AttachmentService } from './attachment.service';
+import { FolderName } from '../../enums/folderNames';
+import { AttachedToType } from './attachment.constant';
 
 const attachmentService = new AttachmentService();
 
 const createAttachment = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);
+
+  // if (req.user.userId) {
+  //   req.body.createdBy = req.user.userId;
+  // }
+  let attachments = [];
+  
+    if (req.files && req.files.attachments) {
+      attachments.push(
+        ...(await Promise.all(
+          req.files.attachments.map(async file => {
+            const attachmenId = await attachmentService.uploadSingleAttachment(
+              file,
+              FolderName.note,
+              req.body.projectId,
+              req.user,
+              AttachedToType.project
+            );
+            return attachmenId;
+          })
+        ))
+      );
+    }
+
+
+    // req.body.attachments = attachments;
+
+
+
   const result = await attachmentService.create(req.body);
 
   sendResponse(res, {
@@ -74,15 +104,8 @@ const deleteById = catchAsync(async (req, res) => {
 /////////////////////////////////////////////
 
 
-
-
-
-
-
-
-
 export const AttachmentController = {
-  // createAttachment,
+  createAttachment,
   getAllAttachment,
   getAllAttachmentWithPagination,
   getAAttachment,
