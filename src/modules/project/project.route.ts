@@ -44,6 +44,7 @@ router.route('/').get(
 
 //[🚧][🧑‍💻✅][🧪] // 🆗 
 router.route('/create').post(
+  [upload.single("projectLogo")],
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.createProject

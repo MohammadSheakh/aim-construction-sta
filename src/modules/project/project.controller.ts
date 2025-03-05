@@ -5,8 +5,12 @@ import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
 import { ProjectService } from './project.service';
+import { AttachmentService } from '../attachments/attachment.service';
+import { FolderName } from '../../enums/folderNames';
+import { AttachedToType } from '../attachments/attachment.constant';
 
 const projectService = new ProjectService();
+const attachmentService = new AttachmentService();
 
 // const getProjectByProjectName = catchAsync(async (req, res) => {
 //   const result = await projectService.getProjectByProjectName(
@@ -22,7 +26,25 @@ const projectService = new ProjectService();
 
 ///////////////////////////////////////////
 const createProject = catchAsync(async (req, res) => {
-  console.log('req.body 🧪', req.body);
+  // console.log('req.body 🧪', req.body);
+  req.body.projectStatus = 'open';
+
+  let attachment = null;
+  console.log("🔴🔴🔴🔴🔴", req.file )
+  if(req.file){
+    attachment  = await attachmentService.uploadSingleAttachment(
+                req.file,
+                FolderName.aimConstruction,
+                null,
+                req.user,
+                AttachedToType.project
+      );
+  }
+
+  // console.log( "attachment 🔴🔴🔴🔴🔴🔴", attachment)
+
+  req.body.projectLogo = attachment.attachment;
+
   const result = await projectService.create(req.body);
 
   sendResponse(res, {
