@@ -77,7 +77,7 @@ const projectSchema = new Schema<IProject>(
         Status.completed,
         Status.open
       ],
-      required: [true, 'Project Status is required. It can be completed / open'],
+      required: [false, 'Project Status is required. It can be completed / open'],
       // default : Status.open
       // TODO : shob enume  default set korte hobe 
       // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 

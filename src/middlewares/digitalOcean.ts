@@ -5,6 +5,10 @@ const {
   PutObjectCommand,
   S3Client,
 } = require("@aws-sdk/client-s3");
+const { Readable } = require("stream");
+
+const { Upload } = require("@aws-sdk/lib-storage");
+
 
 // Initialize the S3 client with DigitalOcean Spaces config
 const s3 = new S3Client({
@@ -16,6 +20,8 @@ const s3 = new S3Client({
   endpoint: `https://${process.env.AWS_REGION}.digitaloceanspaces.com`,
 });
 
+
+/////////// From Rakib Vai .. 
 // Upload file to DigitalOcean Space
 const uploadFileToSpace = async (
   file: Express.Multer.File, // : Express.Multer.File
@@ -43,6 +49,86 @@ const uploadFileToSpace = async (
     throw new Error("Failed to upload file to DigitalOcean Space");
   }
 };
+
+
+
+// Upload file to DigitalOcean Space using the Upload utility
+// const uploadFileToSpace = async (
+//   file, // Express.Multer.File
+//   folder // string
+// ) => {
+//   const fileName = `${folder}/${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`;
+//   const uploadParams = {
+//     Bucket: process.env.AWS_BUCKET_NAME,
+//     Key: fileName,
+//     Body: Readable.from(file.buffer), // Convert Buffer to a readable stream
+//     ACL: "public-read", // Use string directly instead of ObjectCannedACL
+//     ContentType: file.mimetype,
+//   };
+
+//   try {
+//     // Use the Upload utility for better handling of large files or streams
+//     const upload = new Upload({
+//       client: s3,
+//       params: uploadParams,
+//       queueSize: 4, // Number of concurrent uploads (default is 4)
+//       partSize: 5 * 1024 * 1024, // Size of each part in bytes (default is 5MB)
+//       leavePartsOnError: false, // Automatically clean up failed uploads
+//     });
+
+//     // Start the upload
+//     await upload.done();
+
+//     // Use the CDN URL for better performance
+//     const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${fileName}`;
+//     return fileUrl;
+//   } catch (error) {
+//     console.error("Error uploading to DigitalOcean Space:", error);
+//     throw new Error("Failed to upload file to DigitalOcean Space");
+//   }
+// };
+
+
+
+
+////////////////// FRom Chat gpt 
+// // Upload file to DigitalOcean Space using the Upload utility
+// const uploadFileToSpace = async (
+//   file, // Express.Multer.File
+//   folder // string
+// ) => {
+//   const fileName = `${folder}/${Date.now()}-${file.originalname.replace(/\s+/g, '-')}`;
+//   const uploadParams = {
+//     Bucket: process.env.AWS_BUCKET_NAME,
+//     Key: fileName,
+//     Body: file.buffer, // Can also handle streams if needed
+//     ACL: "public-read", // Use string directly instead of ObjectCannedACL
+//     ContentType: file.mimetype,
+//   };
+
+//   try {
+//     // Use the Upload utility for better handling of large files or streams
+//     const upload = new Upload({
+//       client: s3,
+//       params: uploadParams,
+//       queueSize: 4, // Number of concurrent uploads (default is 4)
+//       partSize: 5 * 1024 * 1024, // Size of each part in bytes (default is 5MB)
+//       leavePartsOnError: false, // Automatically clean up failed uploads
+//     });
+
+//     // Start the upload
+//     await upload.done();
+
+//     // Use the CDN URL for better performance
+//     const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${fileName}`;
+//     return fileUrl;
+//   } catch (error) {
+//     console.error("Error uploading to DigitalOcean Space:", error);
+//     throw new Error("Failed to upload file to DigitalOcean Space");
+//   }
+// };
+
+
 
 // Delete a specific file from DigitalOcean Space
 const deleteFileFromSpace = async (fileUrl : string) => {

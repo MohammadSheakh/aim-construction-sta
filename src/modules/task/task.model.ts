@@ -23,12 +23,6 @@ const taskSchema = new Schema<ITask>(
     dueDate: {
       type: Date,
     },
-    deadline: {
-      type: Date,
-    },
-    completedAt: {
-      type: Date,
-    },
     description : {
       type: String,
       required: [true, 'Description is required'],

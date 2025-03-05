@@ -35,7 +35,7 @@ const attachmentSchema = new Schema<IAttachment>(
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project Id is required'],
+      required: [false, 'Project Id is required'],
     },
     uploadedByUserId: {
       type: Schema.Types.ObjectId,
