@@ -182,7 +182,7 @@ const createProject = catchAsync(async (req, res) => {
       );
     }
 
-   req.body.projectLogo = attachments;
+   req.body.projectLogo = attachments[0].attachment;
 
    const result = await projectService.create(req.body);
 
