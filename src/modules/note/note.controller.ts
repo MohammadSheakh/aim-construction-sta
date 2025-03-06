@@ -86,6 +86,7 @@ const createNote = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Note created successfully',
+    success: true,
   });
 });
 
@@ -95,6 +96,7 @@ const getANote = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Note retrieved successfully',
+    success: true,
   });
 });
 
@@ -104,6 +106,7 @@ const getAllNote = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All notes',
+    success: true,
   });
 });
 
@@ -117,6 +120,7 @@ const getAllNoteWithPagination = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All notes with Pagination',
+    success: true,
   });
 });
 
@@ -126,6 +130,7 @@ const updateById = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Note updated successfully',
+    success: true,
   });
 });
 
@@ -157,6 +162,7 @@ const deleteById = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Note deleted successfully',
+    success: true,
   });
 });
 
@@ -173,6 +179,7 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All notes by date and project id',
+    success: true,
   });
 });
 
@@ -197,6 +204,7 @@ const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId = catchAsync
       code: StatusCodes.OK,
       data: result,
       message: 'All notes by date and project id',
+      success: true,
     });
   }
 );
@@ -218,6 +226,7 @@ const changeStatusOfANote = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Note status changed successfully',
+    success: true,
   });
 });
 

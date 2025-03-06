@@ -18,6 +18,7 @@ const getALLNotification = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Notifications fetched successfully',
+    success: true,
   });
 });
 
@@ -42,6 +43,7 @@ const getSingleNotification = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Notification fetched successfully',
+    success: true,
   });
 });
 
@@ -52,6 +54,7 @@ const viewNotification = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Notification viewed successfully',
+    success: true,
   });
 });
 
@@ -61,6 +64,7 @@ const deleteNotification = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Notification deleted successfully',
+    success: true,
     data: {},
   });
 });
@@ -71,6 +75,7 @@ const clearAllNotification = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'All notifications cleared successfully',
+    success: true,
     data: {},
   });
 });

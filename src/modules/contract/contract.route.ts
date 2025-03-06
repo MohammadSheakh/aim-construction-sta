@@ -3,6 +3,9 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { ContractController } from './contract.controller';
 
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -34,6 +37,11 @@ router.route('/').get(
 );
 
 router.route('/create').post(
+  [
+    upload.fields([
+      { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
+    ]),
+  ],
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   ContractController.createContract

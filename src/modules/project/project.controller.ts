@@ -106,6 +106,7 @@ const createProjectTest = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: null,
     message: 'Project created successfully',
+    success: true,
   });
 });
 
@@ -183,12 +184,13 @@ const createProject = catchAsync(async (req, res) => {
 
    req.body.projectLogo = attachments;
 
-  // const result = await projectService.create(req.body);
+   const result = await projectService.create(req.body);
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: null,
+    data: result,
     message: 'Project created successfully',
+    success: true
   });
 });
 
@@ -199,6 +201,7 @@ const getAProject = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Project retrieved successfully',
+    success: true,
   });
 });
 
@@ -208,6 +211,7 @@ const getAllProject = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All projects',
+    success: true,
   });
 });
 
@@ -227,6 +231,7 @@ const getAllProjectWithPagination = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All projects with Pagination',
+    success: true,
   });
 });
 
@@ -239,6 +244,7 @@ const updateById = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Project updated successfully',
+    success: true,
   });
 });
 
@@ -247,6 +253,7 @@ const deleteById = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Project deleted successfully',
+    success: true,
   });
 });
 
@@ -271,6 +278,7 @@ const getAllimagesOrDocumentOFnoteOrTaskOrProjectByProjectId = catchAsync(
       code: StatusCodes.OK,
       data: result,
       message: 'All notes by date and project id',
+      success: true,
     });
   }
 );
