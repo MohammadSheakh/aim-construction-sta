@@ -47,6 +47,7 @@ const createAttachment = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: null,
     message: 'Attachment created successfully',
+    success: true,
   });
 });
 
@@ -56,6 +57,7 @@ const getAAttachment = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Project retrieved successfully',
+    success: true,
   });
 });
 
@@ -65,6 +67,7 @@ const getAllAttachment = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All projects',
+    success: true,
   });
 });
 
@@ -78,6 +81,7 @@ const getAllAttachmentWithPagination = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'All projects with Pagination',
+    success: true,
   });
 });
 
@@ -90,6 +94,7 @@ const updateById = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     data: result,
     message: 'Project updated successfully',
+    success: true,
   });
 });
 
@@ -131,7 +136,8 @@ const deleteById = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Project deleted successfully',
-    data : results
+    data : results,
+    success: true,
   });
 });
 

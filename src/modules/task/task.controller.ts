@@ -63,7 +63,6 @@ if (attachments.length > 0) {
   );
 }
 
-
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
