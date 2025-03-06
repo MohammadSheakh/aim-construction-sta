@@ -7,10 +7,14 @@ import pick from '../../shared/pick';
 import { ProjectService } from './project.service';
 import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
-import { AttachedToType } from '../attachments/attachment.constant';
+import { AttachedToType, AttachmentType } from '../attachments/attachment.constant';
+import {uploadFileToSpace}  from "../../middlewares/digitalOcean";
+import {uploadFileToSpaceMohammadSheakh} from "../../middlewares/digitalOcean";
+import ApiError from '../../errors/ApiError';
 
 const projectService = new ProjectService();
 const attachmentService = new AttachmentService();
+
 
 // const getProjectByProjectName = catchAsync(async (req, res) => {
 //   const result = await projectService.getProjectByProjectName(
@@ -25,34 +29,169 @@ const attachmentService = new AttachmentService();
 
 
 ///////////////////////////////////////////
+const createProjectTest = catchAsync(async (req, res) => {
+  // console.log('req.body 🧪', req.body);
+  req.body.projectStatus = 'open';
+
+  // let attachment = null;
+  // if(req.file){
+  //   attachment  = await attachmentService.uploadSingleAttachment(
+  //               req.file,
+  //               FolderName.aimConstruction,
+  //               null,
+  //               req.user,
+  //               AttachedToType.project
+  //     );
+  // }
+
+  let attachments = [];
+
+  console.log("req.files :1:", req.files);
+
+  console.log("req.files.projectLogo :1:", req.files.projectLogo);
+
+  
+    if (req.files && req.files.projectLogo) {
+      attachments.push(
+        ...(await Promise.all(
+          req.files.projectLogo.map(async file => {
+            // const attachmenId = await attachmentService.uploadSingleAttachment(
+            //   file,
+            //   FolderName.note,
+            //   null,
+            //   req.user,
+            //   AttachedToType.project
+            // );
+            // return attachmenId;
+
+            /////////////////////////////////////////////////////////////
+
+            let uploadedFileUrl =  await uploadFileToSpace(file, FolderName.note);
+            
+                  console.log("uploadedFileUrl :🔴🔴: ",uploadedFileUrl);
+            
+                  let fileType;
+                  if(file.mimetype.includes("image"))
+                  {
+                      fileType = AttachmentType.image
+                  }else if(file.mimetype.includes("application"))
+                  {
+                      fileType = AttachmentType.document 
+                  }
+
+                  const attachmentResult = await attachmentService.create({
+                    attachment : uploadedFileUrl,
+                    attachmentType : fileType,
+                    // attachedToId : "", 
+                    // attachedToType : "",
+                    attachedToType : AttachedToType.project,
+                    projectId :  null,
+                    uploadedByUserId : req.user.userId,
+                    uploaderRole : req.user.role,
+                  });
+
+                  return attachmentResult;
+            ///////////////////////////////////////////////////////////////
+
+          })
+        ))
+      );
+    }
+
+   req.body.projectLogo = attachments;
+
+  // const result = await projectService.create(req.body);
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: null,
+    message: 'Project created successfully',
+  });
+});
+
+
+
 const createProject = catchAsync(async (req, res) => {
   // console.log('req.body 🧪', req.body);
   req.body.projectStatus = 'open';
 
-  let attachment = null;
-  console.log("🔴🔴🔴🔴🔴", req.file )
-  if(req.file){
-    attachment  = await attachmentService.uploadSingleAttachment(
-                req.file,
-                FolderName.aimConstruction,
-                null,
-                req.user,
-                AttachedToType.project
+  // let attachment = null;
+  // if(req.file){
+  //   attachment  = await attachmentService.uploadSingleAttachment(
+  //               req.file,
+  //               FolderName.aimConstruction,
+  //               null,
+  //               req.user,
+  //               AttachedToType.project
+  //     );
+  // }
+
+
+  let attachments = [];
+
+  console.log("req.files :1:", req.files);
+
+  console.log("req.files.projectLogo :1:", req.files.projectLogo);
+
+  
+    if (req.files && req.files.projectLogo) {
+      attachments.push(
+        ...(await Promise.all(
+          req.files.projectLogo.map(async file => {
+            // const attachmenId = await attachmentService.uploadSingleAttachment(
+            //   file,
+            //   FolderName.note,
+            //   null,
+            //   req.user,
+            //   AttachedToType.project
+            // );
+            // return attachmenId;
+
+            /////////////////////////////////////////////////////////////
+
+            let uploadedFileUrl =  await uploadFileToSpace(file, FolderName.note);
+            
+                  console.log("uploadedFileUrl :🔴🔴: ",uploadedFileUrl);
+            
+                  let fileType;
+                  if(file.mimetype.includes("image"))
+                  {
+                      fileType = AttachmentType.image
+                  }else if(file.mimetype.includes("application"))
+                  {
+                      fileType = AttachmentType.document 
+                  }
+
+                  const attachmentResult = await attachmentService.create({
+                    attachment : uploadedFileUrl,
+                    attachmentType : fileType,
+                    // attachedToId : "", 
+                    // attachedToType : "",
+                    attachedToType : AttachedToType.project,
+                    projectId :  null,
+                    uploadedByUserId : req.user.userId,
+                    uploaderRole : req.user.role,
+                  });
+
+                  return attachmentResult;
+            ///////////////////////////////////////////////////////////////
+
+          })
+        ))
       );
-  }
+    }
 
-  // console.log( "attachment 🔴🔴🔴🔴🔴🔴", attachment)
+   req.body.projectLogo = attachments;
 
-  req.body.projectLogo = attachment.attachment;
-
-  const result = await projectService.create(req.body);
+  // const result = await projectService.create(req.body);
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: result,
+    data: null,
     message: 'Project created successfully',
   });
 });
+
 
 const getAProject = catchAsync(async (req, res) => {
   const result = await projectService.getById(req.params.projectId);
@@ -73,7 +212,13 @@ const getAllProject = catchAsync(async (req, res) => {
 });
 
 const getAllProjectWithPagination = catchAsync(async (req, res) => {
-  const filters = pick(req.query, ['projectName', '_id']);
+
+  
+  const filters = pick(req.query, ['projectName', '_id',
+    'projectSuperVisorId',
+    'projectManagerId',
+    'projectStatus'
+  ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
   const result = await projectService.getAllWithPagination(filters, options);

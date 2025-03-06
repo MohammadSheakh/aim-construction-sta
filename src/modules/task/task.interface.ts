@@ -11,8 +11,10 @@ export interface ITask {
   dueDate?: Date; // Optional field for due date
   deadline?: Date; // Optional field for deadline
   completedAt?: Date; // Optional field for when task is completed
+  title :string;
   description: string; // Required field for task description
   attachments: Types.ObjectId[]; // Array of ObjectId references to Attachment
+  createdBy: Types.ObjectId | string; 
   createdAt?: Date;
   updatedAt?: Date;
 }

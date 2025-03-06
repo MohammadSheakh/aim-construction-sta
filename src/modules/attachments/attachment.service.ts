@@ -20,9 +20,7 @@ export class AttachmentService extends GenericService<typeof Attachment> {
     async uploadSingleAttachment(file: Express.Multer.File, folderName: string, projectId : any, user: any, attachedToType:any ) {
       let uploadedFileUrl =  await uploadFileToSpace(file, folderName);
 
-      console.log("user 🔖🔖", user)
-
-      // console.log(file)
+      console.log("uploadedFileUrl :: ",uploadedFileUrl);
 
       let fileType;
       if(file.mimetype.includes("image"))
@@ -40,7 +38,7 @@ export class AttachmentService extends GenericService<typeof Attachment> {
         // attachedToId : "", 
         // attachedToType : "",
         attachedToType : attachedToType,
-        projectId : projectId,
+        projectId : projectId ? projectId : null,
         uploadedByUserId : user.userId,
         uploaderRole : user.role,
       });
