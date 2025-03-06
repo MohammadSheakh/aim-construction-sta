@@ -28,6 +28,7 @@ const attachmentSchema = new Schema<IAttachment>(
         AttachedToType.note,
         AttachedToType.task,
         AttachedToType.project,
+        AttachedToType.contract,
       ],
       type: String,
       required: [false, 'AttachedToType is required. It can be note / task'],

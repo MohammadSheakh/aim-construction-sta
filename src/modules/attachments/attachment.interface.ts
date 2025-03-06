@@ -11,7 +11,8 @@ export interface IAttachment {
   attachedToId: string;
   attachedToType: 
     AttachedToType.note | 
-    AttachedToType.task;
+    AttachedToType.task 
+    | AttachedToType.contract ; // INFO :  contract pore add kora hoise .. 
   projectId : Types.ObjectId | string;
   uploadedByUserId?: Types.ObjectId | string;
   uploaderRole: UploaderRole.projectManager | UploaderRole.projectSupervisor;
