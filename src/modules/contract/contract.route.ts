@@ -7,10 +7,6 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// import fileUploadHandler from '../../shared/fileUploadHandler';
-// import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
-// const UPLOADS_FOLDER = 'uploads/users';
-// const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
@@ -53,10 +49,5 @@ router.route('/delete/:contractId').delete(
    ContractController.deleteById
 );
 
-// router.route('/search/:projectName').get(
-//   // auth('projectManager'),
-//   // validateRequest(UserValidation.createUserValidationSchema),
-//   ProjectController.getProjectByProjectName
-// );
 
 export const ContractRoutes = router;

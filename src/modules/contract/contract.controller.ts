@@ -1,16 +1,14 @@
 
-import { GenericService } from '../Generic Service/generic.services';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
-import { Contract } from './contract.model';
 import { ContractService } from './contract.service';
 import ApiError from '../../errors/ApiError';
 import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from '../attachments/attachment.constant';
-import { Roles } from '../../middlewares/roles';
+
 
 const contractService = new ContractService();
 const attachmentService = new AttachmentService();
@@ -18,9 +16,6 @@ const attachmentService = new AttachmentService();
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const createContract = catchAsync(async (req, res) => {
-  console.log('req.body 🧪', req.body);
-
-
   if (req.user.role !== 'projectManager') {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,

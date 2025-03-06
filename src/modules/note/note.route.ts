@@ -3,16 +3,9 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { NoteController } from './note.controller';
 import { AttachmentController } from '../attachments/attachment.controller';
-///////////////////////////////////////
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
-// import fileUploadHandler from '../../shared/fileUploadHandler';
-// import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
-// const UPLOADS_FOLDER = 'uploads/users';
-// const upload = fileUploadHandler(UPLOADS_FOLDER);
-
 const router = express.Router();
 
 //info : pagination route must be before the route with params
@@ -80,11 +73,5 @@ router.route('/uploadImagesOrDocuments').post(
 router
   .route('/delete/:noteId')
   .delete(auth('common'), NoteController.deleteById);
-
-// router.route('/search/:projectName').get(
-//   // auth('projectManager'),
-//   // validateRequest(UserValidation.createUserValidationSchema),
-//   ProjectController.getProjectByProjectName
-// );
 
 export const NoteRoutes = router;

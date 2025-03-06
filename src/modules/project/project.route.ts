@@ -1,5 +1,4 @@
 import express from 'express';
-// import { UserController } from './user.controller';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 // import { UserValidation } from './user.validation';
@@ -59,22 +58,5 @@ router.route('/delete/:projectId').delete(
   auth('projectManager'),
   ProjectController.deleteById
 );
-
-////////////////////////////////////////////////////////////////
-
-
-
-
-// router.route('/dailyLog').get(
-//   auth('common'),
-//   NoteController.getAllDailyLog
-// );
-
-
-// router.route('/search/:projectName').get(
-//   // auth('projectManager'),
-//   // validateRequest(UserValidation.createUserValidationSchema),
-//   ProjectController.getProjectByProjectName
-// );
 
 export const ProjectRoutes = router;

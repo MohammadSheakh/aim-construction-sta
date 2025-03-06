@@ -3,7 +3,6 @@ import paginate from '../../common/plugins/paginate';
 import { IContract, IContractModel } from './contract.interface';
 import { CreatorRole } from './contract.constant';
 
-
 const contractSchema = new Schema<IContract>(
   {
     attachments: [
