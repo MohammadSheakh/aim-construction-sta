@@ -1,8 +1,11 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
-
 import { TaskController } from './task.controller';
+///////////////////////////////////////
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
@@ -17,12 +20,12 @@ router.route('/paginate').get(
   TaskController.getAllTaskWithPagination
 );
 
-router.route('/:noteId').get(
+router.route('/:taskId').get(
   auth('projectManager'),
   TaskController.getATask
 );
 
-router.route('/update/:noteId').put(
+router.route('/update/:taskId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.updateById
@@ -34,12 +37,17 @@ router.route('/').get(
 );
 
 router.route('/create').post(
+  [
+    upload.fields([
+      { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
+    ]),
+  ],
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   TaskController.createTask
 );
 
-router.route('/delete/:noteId').delete(
+router.route('/delete/:taskId').delete(
   auth('projectManager'),
   TaskController.deleteById
 );

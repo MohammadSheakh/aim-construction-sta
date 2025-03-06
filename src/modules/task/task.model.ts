@@ -23,9 +23,18 @@ const taskSchema = new Schema<ITask>(
     dueDate: {
       type: Date,
     },
+    title : {
+      type: String,
+      required: [false, 'Description is required'],
+    },
     description : {
       type: String,
       required: [true, 'Description is required'],
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [false, 'User is required'],
     },
     attachments: [
       {

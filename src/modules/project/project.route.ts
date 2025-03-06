@@ -44,7 +44,12 @@ router.route('/').get(
 
 //[🚧][🧑‍💻✅][🧪] // 🆗 
 router.route('/create').post(
-  [upload.single("projectLogo")],
+  // [upload.single("projectLogo")],
+  [
+    upload.fields([
+      { name: 'projectLogo', maxCount: 1 }, // Allow up to 1 cover photos
+    ]),
+  ],
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
   ProjectController.createProject

@@ -43,14 +43,14 @@ const createNote = catchAsync(async (req, res) => {
     attachments.push(
       ...(await Promise.all(
         req.files.attachments.map(async file => {
-          const attachmenId = await attachmentService.uploadSingleAttachment(
+          const attachmentId = await attachmentService.uploadSingleAttachment(
             file,
             FolderName.note,
             req.body.projectId,
             req.user,
             AttachedToType.note
           );
-          return attachmenId;
+          return attachmentId;
         })
       ))
     );
@@ -129,8 +129,31 @@ const updateById = catchAsync(async (req, res) => {
   });
 });
 
+//[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const deleteById = catchAsync(async (req, res) => {
-  await noteService.deleteById(req.params.noteId);
+
+  // note delete korar age .. note related attachment gula delete korte hobe .. 
+
+
+  const note = await noteService.getById(req.params.noteId);
+  if(note){
+
+    if(note.attachments && note.attachments.length > 0){
+      await Promise.all(
+        note.attachments.map(async (attachmentId) => {
+          // ei attachment id ta exist kore kina sheta age check korte hobe 
+          let attachment = await attachmentService.getById(attachmentId);
+          if(attachment){
+            const attachmentDeleteRes = await attachmentService.deleteById(attachmentId);
+            
+          }else{
+            console.log("attachment not found ...");
+          }
+        })
+    )}
+  }
+
+   await noteService.deleteById(req.params.noteId);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Note deleted successfully',
