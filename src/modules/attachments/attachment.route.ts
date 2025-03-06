@@ -3,7 +3,6 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { AttachmentController } from './attachment.controller';
 
-
 // import fileUploadHandler from '../../shared/fileUploadHandler';
 // import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
 // const UPLOADS_FOLDER = 'uploads/users';
@@ -47,10 +46,5 @@ router.route('/delete/:attachmentId').delete(
   AttachmentController.deleteById
 );
 
-// router.route('/search/:projectName').get(
-//   // auth('projectManager'),
-//   // validateRequest(UserValidation.createUserValidationSchema),
-//   ProjectController.getProjectByProjectName
-// );
 
 export const AttachmentRoutes = router;

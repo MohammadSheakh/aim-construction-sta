@@ -2,15 +2,9 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { TaskController } from './task.controller';
-///////////////////////////////////////
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
-// import fileUploadHandler from '../../shared/fileUploadHandler';
-// import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
-// const UPLOADS_FOLDER = 'uploads/users';
-// const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
@@ -51,11 +45,5 @@ router.route('/delete/:taskId').delete(
   auth('projectManager'),
   TaskController.deleteById
 );
-
-// router.route('/search/:projectName').get(
-//   // auth('projectManager'),
-//   // validateRequest(UserValidation.createUserValidationSchema),
-//   ProjectController.getProjectByProjectName
-// );
 
 export const TaskRoutes = router;

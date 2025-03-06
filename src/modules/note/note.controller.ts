@@ -139,7 +139,6 @@ const deleteById = catchAsync(async (req, res) => {
 
   // note delete korar age .. note related attachment gula delete korte hobe .. 
 
-
   const note = await noteService.getById(req.params.noteId);
   if(note){
 

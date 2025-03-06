@@ -25,20 +25,13 @@ const noteSchema = new Schema<INote>(
       ref: 'User',
       required: [false, 'User is required'],
     },
-    // dailyLogId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'DailyLog',
-    //   required: [false, 'DailyLog is required'],
-    // },
-    // TODO : project Id ki dorkar ase ?
+    
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'DailyLog',
       required: [false, 'DailyLog is required'],
     },
-    // TODO : viewStatus lagbe kina
-    // viewStatus: { type: Boolean, default: false },
- 
+    
     isAccepted : {
       type: String,
       enum: [noteStatus.accepted ,noteStatus.pending],  
@@ -58,9 +51,6 @@ noteSchema.set('toJSON', {
   }
 });
 
-
-
-// FIXME : type fix korte hobe ..  
 export const Note = model<INote, INoteModel>(
   'Note',
   noteSchema
