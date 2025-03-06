@@ -1,8 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
-
 import { noteStatus } from './note.constant';
-
 
 export interface INote {
   _id?: Types.ObjectId;

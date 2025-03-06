@@ -1,8 +1,6 @@
 import { model, Schema } from 'mongoose';
-
 import paginate from '../../common/plugins/paginate';
 import {  ICompany, ICompanyModel } from './company.interface';
-import { Roles } from '../../middlewares/roles';
 
 const companySchema = new Schema<ICompany>(
   {
@@ -10,7 +8,6 @@ const companySchema = new Schema<ICompany>(
       type: String,
       required: [true, 'attachment is required'],
     },
-    
   },
   { timestamps: true }
 );
@@ -25,8 +22,6 @@ companySchema.set('toJSON', {
     return ret;
   }
 });
-
-
 
 export const Company = model<ICompany, ICompanyModel>(
   'Company',

@@ -1,9 +1,7 @@
 import { model, Schema } from 'mongoose';
-
 import paginate from '../../common/plugins/paginate';
 import { IProject, IProjectModel } from './project.interface';
 import { Status } from './project.constant';
-
 
 const projectSchema = new Schema<IProject>(
   {
@@ -57,13 +55,6 @@ const projectSchema = new Schema<IProject>(
       },
     },
 
-    // dailyLogs: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'DailyLog',
-    //     required: [false, 'DailyLog is required'],
-    //   },
-    // ] ,
     attachments: [
       {
         type: Schema.Types.ObjectId,

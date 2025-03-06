@@ -6,7 +6,4 @@ export class TaskService extends GenericService<typeof Task> {
         super(Task);
     }
     
-    // async getProjectByProjectName(projectName: string) {
-    //     return this.model.findOne({ projectName }); 
-    // }
 }

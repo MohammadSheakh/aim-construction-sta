@@ -40,9 +40,7 @@ export class NoteService extends GenericService<typeof Note> {
     return object;
   }
 
-  // async getProjectByProjectName(projectName: string) {
-  //     return this.model.findOne({ projectName });
-  // }
+ 
 
   async getAllByDateAndProjectId(projectId: string, date: string) {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -154,12 +152,7 @@ export class NoteService extends GenericService<typeof Note> {
     attachments: groupedByDate[date]
   }));
 
-
-
-
-
       //////////////////////////////////////////////////////////////////////////////////////////
-
 
     return result;
   }

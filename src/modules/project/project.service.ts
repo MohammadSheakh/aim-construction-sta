@@ -10,7 +10,6 @@ export class ProjectService extends GenericService<typeof Project> {
         super(Project);
     }
 
-
     async getAllimagesOrDocumentOFnoteOrTaskByProjectId(
         projectId: string,
         noteOrTaskOrProject: string,
@@ -56,7 +55,7 @@ export class ProjectService extends GenericService<typeof Project> {
     return acc;
   }, {});
 
-  // console.log('Grouped by Date:', groupedByDate);
+ 
 
   // Transform into the desired output format
   const result = Object.keys(groupedByDate).map((date) => ({
@@ -64,14 +63,7 @@ export class ProjectService extends GenericService<typeof Project> {
     attachments: groupedByDate[date]
   }));
 
-  // console.log('Final Result:', result);
-
-  //       console.log('result :: 🔖🔖🔖', result);
         return result;
       }
     
-    // async getProjectByProjectName(projectName: string) {
-    //     return this.model.findOne({ projectName }); 
-    // }
-
-}
+    

@@ -106,9 +106,6 @@ const deleteById = catchAsync(async (req, res) => {
   if (!attachment) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
   }
-
-  console.log('attachment :: 🧪', attachment);
-
   let results;
 
   if(req.user.role == attachment.uploaderRole)
@@ -130,8 +127,6 @@ const deleteById = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized to delete this attachment');
   }
   
-
-
   // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -140,10 +135,6 @@ const deleteById = catchAsync(async (req, res) => {
     success: true,
   });
 });
-
-
-/////////////////////////////////////////////
-
 
 export const AttachmentController = {
   createAttachment,

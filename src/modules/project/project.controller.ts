@@ -9,23 +9,9 @@ import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType, AttachmentType } from '../attachments/attachment.constant';
 import {uploadFileToSpace}  from "../../middlewares/digitalOcean";
-import {uploadFileToSpaceMohammadSheakh} from "../../middlewares/digitalOcean";
-import ApiError from '../../errors/ApiError';
 
 const projectService = new ProjectService();
 const attachmentService = new AttachmentService();
-
-
-// const getProjectByProjectName = catchAsync(async (req, res) => {
-//   const result = await projectService.getProjectByProjectName(
-//     req.params.projectName
-//   );
-//   sendResponse(res, {
-//     code: StatusCodes.OK,
-//     data: result,
-//     message: 'Project retrieved successfully',
-//   });
-// });
 
 
 ///////////////////////////////////////////
