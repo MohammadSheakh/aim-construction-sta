@@ -1,5 +1,3 @@
-//[🚧][🧑‍💻✅][🧪] // 🆗 
-
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../errors/ApiError";
 import { GenericService } from "../Generic Service/generic.services";
@@ -12,11 +10,6 @@ export class AttachmentService extends GenericService<typeof Attachment> {
         super(Attachment);
     }
     
-    // async uploadSingleAttachment(file: Express.Multer.File, folderName: string) {
-    //   return await uploadFileToSpace(file, folderName); 
-    // }
-
-
     async uploadSingleAttachment(file: Express.Multer.File, folderName: string, projectId : any, user: any, attachedToType:any ) {
       let uploadedFileUrl =  await uploadFileToSpace(file, folderName);
 

@@ -3,12 +3,11 @@ import { PaginateOptions, PaginateResult } from '../../types/paginate';
 import { CreatorRole } from './contract.constant';
 
 export interface IContract {
-  attachments: Types.ObjectId[]; // Array of ObjectId references to Attachment
+  attachments: Types.ObjectId[];
   description: string;
   projectId?: Types.ObjectId | string;
   createdBy?: Types.ObjectId | string;
-  creatorRole?: CreatorRole.projectManager |
-            CreatorRole.projectSupervisor
+  creatorRole?: CreatorRole.projectManager | CreatorRole.projectSupervisor
   createdAt?: Date;
   updatedAt?: Date;
 }

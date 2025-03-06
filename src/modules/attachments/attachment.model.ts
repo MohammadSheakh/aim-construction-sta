@@ -52,14 +52,12 @@ const attachmentSchema = new Schema<IAttachment>(
       required: true,
     },
 
-    // Add reactions field to track user reactions to the attachment
     reactions: [
       {
         userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
       }
     ],
-    
-    // viewStatus: { type: Boolean, default: false },
+   
   },
   { timestamps: true }
 );
