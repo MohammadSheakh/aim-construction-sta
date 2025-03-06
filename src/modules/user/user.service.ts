@@ -90,7 +90,6 @@ const getFilteredUsersWithConnectionStatus = async (
   return usersResult;
 };
 
-
 const getSingleUser = async (userId: string): Promise<TUser | null> => {
   const result = await User.findById(userId);
   if (!result) {
@@ -159,7 +158,6 @@ const deleteMyProfile = async (userId: string): Promise<TUser | null> => {
   return result;
 };
 
-
 ///////////////////////////////////////////////////////
 
 const getAllProjectsByUserId = async (userId: string) => {
@@ -197,4 +195,3 @@ export const UserService = {
   //////////////////////////
   getAllProjectsByUserId
 };
-``;

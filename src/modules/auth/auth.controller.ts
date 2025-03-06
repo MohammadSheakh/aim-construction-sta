@@ -10,6 +10,7 @@ const register = catchAsync(async (req, res) => {
     code: StatusCodes.CREATED,
     message: 'User created successfully, please verify your email',
     data: result,
+    success: true,
   });
 });
 
@@ -28,6 +29,7 @@ const login = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     message: 'User logged in successfully',
     data: result,
+    success: true,
   });
 });
 
@@ -42,6 +44,7 @@ const verifyEmail = catchAsync(async (req, res) => {
     data: {
       result,
     },
+    success: true,
   });
 });
 
@@ -52,6 +55,7 @@ const resendOtp = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     message: 'Otp sent successfully',
     data: result,
+    success: true,
   });
 });
 const forgotPassword = catchAsync(async (req, res) => {
@@ -60,6 +64,7 @@ const forgotPassword = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     message: 'Password reset email sent successfully',
     data: result,
+    success: true,
   });
 });
 
@@ -75,6 +80,7 @@ const changePassword = catchAsync(async (req, res) => {
     code: StatusCodes.OK,
     message: 'Password changed successfully',
     data: result,
+    success: true,
   });
 });
 const resetPassword = catchAsync(async (req, res) => {
@@ -86,6 +92,7 @@ const resetPassword = catchAsync(async (req, res) => {
     data: {
       result,
     },
+    success: true,
   });
 });
 
