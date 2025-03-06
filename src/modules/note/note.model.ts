@@ -1,7 +1,6 @@
 import { model, Schema } from 'mongoose';
 import paginate from '../../common/plugins/paginate';
 import { INote, INoteModel } from './note.interface';
-import { Accepted } from '../dailyLog/dailyLog.constant';
 import { noteStatus } from './note.constant';
 
 const noteSchema = new Schema<INote>(

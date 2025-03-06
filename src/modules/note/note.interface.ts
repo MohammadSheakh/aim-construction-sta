@@ -1,6 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { PaginateOptions, PaginateResult } from '../../types/paginate';
-import { Accepted } from '../dailyLog/dailyLog.constant';
+
 import { noteStatus } from './note.constant';
 
 
