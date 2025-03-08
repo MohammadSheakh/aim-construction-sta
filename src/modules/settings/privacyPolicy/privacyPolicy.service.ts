@@ -9,36 +9,23 @@ export class PrivacyPolicyService extends GenericService<typeof PrivacyPolicy> {
     constructor() {
         super(PrivacyPolicy);
     }
-    // FIx korte hobe  privacy policy  service 
     
-    // async getProjectByProjectName(projectName: string) {
-    //     return this.model.findOne({ projectName }); 
-    // }
+    async createOrUpdatePrivacyPolicy (payload: Partial<IPrivacyPolicy>)  {
+      const existingPrivacyPolicy = await PrivacyPolicy.findOne();
+    
+      if (existingPrivacyPolicy) {
+        existingPrivacyPolicy.set(payload);
+        await existingPrivacyPolicy.save();
+        return existingPrivacyPolicy;
+      } else {
+        const newPrivacyPolicy = await PrivacyPolicy.create(payload);
+        return newPrivacyPolicy;
+      }
+    };
+
+    async getPrivacyPolicy () {
+      const result = await PrivacyPolicy.findOne().sort({ createdAt: -1 });
+      return result;
+    };
+  
 }
-
-/*
-const createOrUpdatePrivacyPolicy = async (payload: Partial<IPrivacyPolicy>) => {
-  const existingPrivacyPolicy = await PrivacyPolicy.findOne();
-
-  if (existingPrivacyPolicy) {
-    existingPrivacyPolicy.set(payload);
-    await existingPrivacyPolicy.save();
-    return existingPrivacyPolicy;
-  } else {
-    const newPrivacyPolicy = await PrivacyPolicy.create(payload);
-    return newPrivacyPolicy;
-  }
-};
-
-const getPrivacyPolicy = async () => {
-  const result = await PrivacyPolicy.findOne().sort({ createdAt: -1 });
-  return result;
-};
-
-export const PrivacyPolicyService = {
-  createOrUpdatePrivacyPolicy,
-  getPrivacyPolicy,
-};
-
-
-*/

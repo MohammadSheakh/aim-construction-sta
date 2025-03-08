@@ -10,6 +10,15 @@ const upload = fileUploadHandler(UPLOADS_FOLDER);
 
 const router = express.Router();
 
+
+//info : pagination route must be before the route with params
+router.route('/paginate').get(
+  auth('projectManager'),
+  UserController.getAllUserWithPagination
+);
+
+
+
 //[🚧][🧑‍💻✅][🧪🆗] //  
 // get all Projects by User Id  // :userId
 router.route('/projects').get(auth('common'),
@@ -56,6 +65,7 @@ router
 
   ///////////////////////////////////////////////
 
+  router.get
   
 
 export const UserRoutes = router;

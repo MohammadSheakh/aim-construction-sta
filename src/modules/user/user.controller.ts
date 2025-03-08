@@ -3,9 +3,11 @@ import catchAsync from '../../shared/catchAsync';
 import pick from '../../shared/pick';
 import sendResponse from '../../shared/sendResponse';
 import ApiError from '../../errors/ApiError';
-import { UserService } from './user.service';
+import { UserCustomService, UserService } from './user.service';
 import { User } from './user.model';
 import { Types } from 'mongoose';
+
+const userCustomService = new UserCustomService();
 
 const createAdminOrSuperAdmin = catchAsync(async (req, res) => {
   const payload = req.body;
@@ -271,6 +273,21 @@ const getAllProjectsByUserId = catchAsync(async (req, res) => {
 });
 
 
+const getAllUserWithPagination = catchAsync(async (req, res) => {
+  const filters = pick(req.query, [ '_id' , 'role', 'fname', 'lname']); // 'projectName',
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+
+  const result = await userCustomService.getAllWithPagination(filters, options);
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All tasks with Pagination',
+  });
+});
+
+
+
 
 export const UserController = {
   createAdminOrSuperAdmin,
@@ -283,5 +300,6 @@ export const UserController = {
   updateUserProfile,
   deleteMyProfile,
   //////////////////////////
-  getAllProjectsByUserId
+  getAllProjectsByUserId, 
+  getAllUserWithPagination
 };
