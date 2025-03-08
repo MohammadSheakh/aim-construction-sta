@@ -9,10 +9,10 @@ const notificationModel = new Schema<INotification>(
       type: String,
       required: [true, 'Title is required'],
     },
-    message: {
-      type: String,
-      required: [true, 'Message is required'],
-    },
+    // message: {
+    //   type: String,
+    //   required: [true, 'Message is required'],
+    // },
     receiverId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -23,9 +23,9 @@ const notificationModel = new Schema<INotification>(
       enum: Roles,
       required: true,
     },
-    image: {
-      type: String,
-    },
+    // image: {
+    //   type: String,
+    // },
     linkId: {
       type: String,
     },

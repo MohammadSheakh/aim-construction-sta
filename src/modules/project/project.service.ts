@@ -19,7 +19,7 @@ export class ProjectService extends GenericService<typeof Project> {
         if (!mongoose.Types.ObjectId.isValid(projectId)) {
           throw new ApiError(StatusCodes.NOT_FOUND, 'Invalid projectId');
         }
-    
+
         //🟢 Query Notes with exact date match for the given projectId and date range
         const attachments = await Attachment.find({
           //attachedToType: noteOrTaskOrProject, // 'note'

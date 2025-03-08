@@ -49,6 +49,9 @@ const userSchema = new Schema<TUser, UserModal>(
       required: false,
       default: { imageUrl: '/uploads/users/user.png' },
     },
+
+    fcmToken: { type: String, default: null }, // Store Firebase Token
+
     // photoGallery: {
     //   type: [profileImageSchema],
     //   required: false,

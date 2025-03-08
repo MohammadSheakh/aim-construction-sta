@@ -15,8 +15,8 @@ const register = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const result = await AuthService.login(email, password);
+  const { email, password, fcmToken } = req.body;
+  const result = await AuthService.login(email, password, fcmToken);
 
   //set refresh token in cookie
   res.cookie('refreshToken', result.tokens.refreshToken, {
