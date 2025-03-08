@@ -19,7 +19,7 @@ const createOrUpdateSettings = catchAsync(async (req, res, next) => {
 });
 
 const getDetailsByType = catchAsync(async (req, res, next) => {
-  const result = await settingsService.getDetailsByType(req.params.type);
+  const result = await settingsService.getDetailsByType(req.query.type);
 
   sendResponse(res, {
     code: StatusCodes.OK,
