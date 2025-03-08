@@ -44,7 +44,7 @@ const createUser = async (userData: TUser) => {
   return { verificationToken };
 };
 
-const login = async (email: string, reqpassword: string) => {
+const login = async (email: string, reqpassword: string, fcmToken : string) => {
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
@@ -83,6 +83,10 @@ const login = async (email: string, reqpassword: string) => {
         `Account locked for ${config.auth.lockTime} minutes due to too many failed attempts`,
       );
     }
+    // user.fcmToken = fcmToken;
+
+
+
     await user.save();
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
   }
@@ -94,7 +98,14 @@ const login = async (email: string, reqpassword: string) => {
   }
 
   const tokens = await TokenService.accessAndRefreshToken(user);
+
+  if(fcmToken){
+    user.fcmToken = fcmToken;
+    await user.save();  // INFO :  ekhane fcmToken save kora hocche 
+  }
+
   const { password, ...userWithoutPassword } = user.toObject();
+
   return {
     userWithoutPassword,
     tokens,
