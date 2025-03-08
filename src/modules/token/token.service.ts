@@ -91,7 +91,8 @@ const createResetPasswordToken = async (user: TUser) => {
 };
 
 const accessAndRefreshToken = async (user: TUser) => {
-  const payload = { userId: user._id, email: user.email, role: user.role };
+  const userFullname = user.fname + ' ' + user.lname;
+  const payload = { userId: user._id, userName:userFullname , email: user.email, role: user.role };
   await Token.deleteMany({ user: user._id });
   const accessToken = createToken(
     payload,

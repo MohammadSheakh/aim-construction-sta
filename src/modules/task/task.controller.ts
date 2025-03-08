@@ -10,15 +10,14 @@ import { TaskStatus } from './task.constant';
 import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from '../attachments/attachment.constant';
+import { NotificationService } from '../notification/notification.services';
+import { Project } from '../project/project.model';
 
 const taskService = new TaskService();
 const attachmentService = new AttachmentService();
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createTask = catchAsync(async (req, res) => {
-  
-  console.log('req.body 🧪', req.body);
-
   if (req.user.userId) {
     req.body.createdBy = req.user.userId;
   }
@@ -48,21 +47,52 @@ const createTask = catchAsync(async (req, res) => {
   
   const result = await taskService.create(req.body);
 
-// Now loop through the attachments array and update the attachedToId and attachedToType
-if (attachments.length > 0) {
-  await Promise.all(
-    attachments.map(async attachmentId => {
-      // Assuming you have a service or model method to update the attachment's attachedToId and attachedToType
-      await attachmentService.updateById(
-        attachmentId, // Pass the attachment ID
-        {
-          attachedToId: result._id,
-        }
-      );
-    })
-  );
-}
+  // Now loop through the attachments array and update the attachedToId and attachedToType
+  if (attachments.length > 0) {
+    await Promise.all(
+      attachments.map(async attachmentId => {
+        // Assuming you have a service or model method to update the attachment's attachedToId and attachedToType
+        await attachmentService.updateById(
+          attachmentId, // Pass the attachment ID
+          {
+            attachedToId: result._id,
+          }
+        );
+      })
+    );
+  }
 
+
+  /*** ✅ NOTIFICATION LOGIC STARTS HERE ✅ ***/
+  
+    // 1️⃣ Find the ProjectManager for the given projectId
+    const project = await Project.findById(req.body.projectId).populate("projectSuperVisorId");
+  
+    console.log("result🔴🔴", result)
+  
+    if (project && project.projectSuperVisorId || result.assignedTo) {
+      const notificationPayload = {
+        title: "New Task Created",
+        message: `A new task ${result.title} has been created by ${req.user.userName}.`,
+        receiverId: project.projectSuperVisorId, // Send to ProjectManager
+        role: "projectSupervisor", // TODO :  check korte hobe .. thik ase kina .. 
+        image: project.projectLogo || "", // req.user.profilePicture || "", // Optional
+        linkId: result._id, // Link to the note
+      };
+  
+      // 2️⃣ Save Notification to Database
+      const notification = await NotificationService.addNotification(notificationPayload);
+  
+      // 3️⃣ Send Real-Time Notification using Socket.io
+      io.to(project.projectManagerId.toString()).emit("newNotification", {
+        code: StatusCodes.OK,
+        message: "New notification",
+        data: notification,
+      });
+    }
+  
+  /*** ✅ NOTIFICATION LOGIC ENDS HERE ✅ ***/
+  
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,

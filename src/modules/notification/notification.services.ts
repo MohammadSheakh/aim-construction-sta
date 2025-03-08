@@ -32,7 +32,7 @@ const getAdminNotifications = async (
   filters: Partial<INotification>,
   options: PaginateOptions
 ): Promise<PaginateResult<INotification>> => {
-  filters.role = 'admin';
+  filters.role = 'admin'; // Important SQL
   return Notification.paginate(filters, options);
 };
 
@@ -84,6 +84,7 @@ const viewNotification = async (notificationId: string) => {
   return result;
 };
 
+// Test korte hobe .. 
 const deleteNotification = async (notificationId: string) => {
   const result = await Notification.findByIdAndDelete(notificationId);
   if (!result) {
@@ -92,10 +93,11 @@ const deleteNotification = async (notificationId: string) => {
   return result;
 };
 
+// Test korte hobe ... 
 const clearAllNotification = async (userId: string) => {
   const user = await User.findById(userId);
-  if (user?.role === 'admin') {
-    const result = await Notification.deleteMany({ role: 'admin' });
+  if (user?.role === 'projectManager') {
+    const result = await Notification.deleteMany({ role: 'projectManager' });
     return result;
   }
   const result = await Notification.deleteMany({ receiverId: userId });
