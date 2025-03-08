@@ -1,19 +1,19 @@
-import { model, Schema } from 'mongoose';
-import { IPrivacyPolicy } from './privacyPolicy.interface';
+// import { model, Schema } from 'mongoose';
+// import { IPrivacyPolicy } from './privacyPolicy.interface';
 
-const privacyPolicySchema = new Schema<IPrivacyPolicy>(
-  {
-    privacyPolicy: {
-      type: String,
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+// const privacyPolicySchema = new Schema<IPrivacyPolicy>(
+//   {
+//     privacyPolicy: {
+//       type: String,
+//       required: true,
+//     },
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
 
-export const PrivacyPolicy = model<IPrivacyPolicy>(
-  'PrivacyPolicy',
-  privacyPolicySchema
-);
+// export const PrivacyPolicy = model<IPrivacyPolicy>(
+//   'PrivacyPolicy',
+//   privacyPolicySchema
+// );

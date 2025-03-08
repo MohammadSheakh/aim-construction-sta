@@ -25,7 +25,7 @@ const initializeFirebase = () => {
 export const sendPushNotification = async (
   fcmToken: string,
   title: string,
-  receiverId: Schema.Types.ObjectId, // INFO : naki  userId hobe eita 
+  receiverId: Schema.Types.ObjectId | string // INFO : naki  userId hobe eita
 ): Promise<void> => {
   try {
     // Initialize Firebase Admin SDK only once
@@ -41,13 +41,13 @@ export const sendPushNotification = async (
 
     // Send the notification
     await admin.messaging().send(message);
-    
+
     // Log the notification in the database
-    await Notification.create({ title,
-        //  messageBody,
-        receiverId  // INFO : naki  userId hobe eita
-        
-        });
+    await Notification.create({
+      title,
+      //  messageBody,
+      receiverId, // INFO : naki  userId hobe eita
+    });
 
     console.log('Notification sent successfully');
   } catch (error) {
