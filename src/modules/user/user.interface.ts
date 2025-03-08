@@ -22,6 +22,7 @@ export type TUser = {
   email: string;
   password: string;
   profileImage?: TProfileImage;
+  fcmToken : string;
   // photoGallery?: TPhotoGallery[];
   // status: TUserStatus;
   // location: {
