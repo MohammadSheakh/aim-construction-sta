@@ -6,8 +6,8 @@ export interface INotification {
   _id?: Types.ObjectId;
   receiverId?: Types.ObjectId | string;
   title: string;
-  message?: string;
-  image?: string; // age object chilo .. 
+  // message?: string;
+  // image?: string; // age object chilo .. 
   linkId?: Types.ObjectId | string;
   role: UploaderRole.projectManager | UploaderRole.projectSupervisor;
   viewStatus?: boolean;
