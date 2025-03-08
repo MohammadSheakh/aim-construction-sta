@@ -1,10 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
-import { TermsConditionsService } from './termsConditions.service';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
+import { TermsConditionService } from './termsConditions.service';
+
+const termsConditionsService = new TermsConditionService();
 
 const createOrUpdateTermsConditions = catchAsync(async (req, res, next) => {
-  const result = await TermsConditionsService.createOrUpdateTermsConditions(
+  const result = await termsConditionsService.createOrUpdateTermsConditions(
     req.body
   );
   sendResponse(res, {
@@ -15,7 +17,7 @@ const createOrUpdateTermsConditions = catchAsync(async (req, res, next) => {
 });
 
 const getTermsConditions = catchAsync(async (req, res, next) => {
-  const result = await TermsConditionsService.getTermsConditions();
+  const result = await termsConditionsService.getTermsConditions();
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'TermsConditions fetched successfully',

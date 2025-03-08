@@ -7,12 +7,21 @@ import { sendAdminOrSuperAdminCreationEmail } from '../../helpers/emailService';
 
 import { Project } from '../project/project.model';
 import { CreatorRole } from '../contract/contract.constant';
+import { GenericService } from '../Generic Service/generic.services';
 
 interface IAdminOrSuperAdminPayload {
   email: string;
   password: string;
   role: string;
   message?: string;
+}
+
+
+export class UserCustomService extends GenericService<typeof User> {
+    constructor() {
+        super(User);
+    }
+    
 }
 
 const createAdminOrSuperAdmin = async (

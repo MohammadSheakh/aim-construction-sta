@@ -3,8 +3,10 @@ import { PrivacyPolicyService } from './privacyPolicy.service';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 
+const privacyPolicyService = new PrivacyPolicyService();
+
 const createOrUpdatePrivacyPolicy = catchAsync(async (req, res, next) => {
-  const result = await PrivacyPolicyService.createOrUpdatePrivacyPolicy(
+  const result = await privacyPolicyService.createOrUpdatePrivacyPolicy(
     req.body
   );
   sendResponse(res, {
@@ -15,7 +17,7 @@ const createOrUpdatePrivacyPolicy = catchAsync(async (req, res, next) => {
 });
 
 const getPrivacyPolicy = catchAsync(async (req, res, next) => {
-  const result = await PrivacyPolicyService.getPrivacyPolicy();
+  const result = await privacyPolicyService.getPrivacyPolicy();
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Privacy Policy fetched successfully',
