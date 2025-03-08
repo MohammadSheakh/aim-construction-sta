@@ -17,7 +17,6 @@ import { User } from '../user/user.model';
 const noteService = new NoteService();
 const attachmentService = new AttachmentService();
 
-
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createNote = catchAsync(async (req, res) => {
   console.log('req.body 🧪', req.body);
@@ -87,12 +86,14 @@ const createNote = catchAsync(async (req, res) => {
     );
   }
 
- /*** ✅ NOTIFICATION LOGIC STARTS HERE ✅ ***/
+  /*** ✅ NOTIFICATION LOGIC STARTS HERE ✅ ***/
 
   // 1️⃣ Find the ProjectManager for the given projectId
-  
-  const project = await Project.findById(req.body.projectId).populate("projectManagerId");
-/*
+
+  const project = await Project.findById(req.body.projectId).populate(
+    'projectManagerId'
+  );
+  /*
   if (project && project.projectManagerId) {
     const notificationPayload = {
       title: "New Note Created",
@@ -116,17 +117,11 @@ const createNote = catchAsync(async (req, res) => {
 
   */
 
-
-const notificationReceivers = [];
-
-
-
+  const notificationReceivers = [];
 
   if (project && project.projectManagerId) {
     notificationReceivers.push(project.projectManagerId);
   }
-
-
 
   for (const receiverId of notificationReceivers) {
     // Fetch FCM token from User Model
@@ -135,37 +130,35 @@ const notificationReceivers = [];
 
     if (registrationToken) {
       await sendPushNotification(
-        registrationToken, 
-        "New Note Created",
-        // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..    
+        registrationToken,
+        // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
         `A new note of DailyLog ${result.title} has been created.`,
-        receiverId,
-        //5 // Notification timeout before triggering
+        receiverId.toString()
       );
     }
 
     // Save Notification to Database
     const notificationPayload = {
-      title: "New Task Created",
+      title: 'New Task Created',
       message: `A new task "${result.title}" has been created by ${req.user.userName}.`,
       receiverId: receiverId,
-      role: "projectSupervisor", // If receiver is the supervisor
+      role: 'projectSupervisor', // If receiver is the supervisor
       linkId: result._id,
     };
 
-    const notification = await NotificationService.addNotification(notificationPayload);
+    const notification = await NotificationService.addNotification(
+      notificationPayload
+    );
 
     // 3️⃣ Send Real-Time Notification using Socket.io
-    io.to(receiverId.toString()).emit("newNotification", {
+    io.to(receiverId.toString()).emit('newNotification', {
       code: StatusCodes.OK,
-      message: "New notification",
+      message: 'New notification',
       data: notification,
     });
-
   }
 
   /*** ✅ NOTIFICATION LOGIC ENDS HERE ✅ ***/
-
 
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -221,28 +214,28 @@ const updateById = catchAsync(async (req, res) => {
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const deleteById = catchAsync(async (req, res) => {
-
-  // note delete korar age .. note related attachment gula delete korte hobe .. 
+  // note delete korar age .. note related attachment gula delete korte hobe ..
 
   const note = await noteService.getById(req.params.noteId);
-  if(note){
-
-    if(note.attachments && note.attachments.length > 0){
+  if (note) {
+    if (note.attachments && note.attachments.length > 0) {
       await Promise.all(
-        note.attachments.map(async (attachmentId) => {
-          // ei attachment id ta exist kore kina sheta age check korte hobe 
+        note.attachments.map(async attachmentId => {
+          // ei attachment id ta exist kore kina sheta age check korte hobe
           let attachment = await attachmentService.getById(attachmentId);
-          if(attachment){
-            const attachmentDeleteRes = await attachmentService.deleteById(attachmentId);
-            
-          }else{
-            console.log("attachment not found ...");
+          if (attachment) {
+            const attachmentDeleteRes = await attachmentService.deleteById(
+              attachmentId
+            );
+          } else {
+            console.log('attachment not found ...');
           }
         })
-    )}
+      );
+    }
   }
 
-   await noteService.deleteById(req.params.noteId);
+  await noteService.deleteById(req.params.noteId);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Note deleted successfully',
@@ -269,10 +262,16 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
 
 //////////////////////////////
 
-const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId = catchAsync(
-  async (req, res) => {
+const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId =
+  catchAsync(async (req, res) => {
     console.log(req.query);
-    const { projectId, date, noteOrTaskOrProject, imageOrDocument, uploaderRole } = req.query;
+    const {
+      projectId,
+      date,
+      noteOrTaskOrProject,
+      imageOrDocument,
+      uploaderRole,
+    } = req.query;
     let result;
     if (date && projectId) {
       result =
@@ -290,8 +289,7 @@ const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId = catchAsync
       message: 'All notes by date and project id',
       success: true,
     });
-  }
-);
+  });
 
 // TODO  : Deny er jonno function lagbe ..
 // TODO  :  status change korar ei system ta thik ase kina check korte hobe chat gpt er shathe kotha bole

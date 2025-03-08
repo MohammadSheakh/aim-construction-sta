@@ -1,13 +1,13 @@
-import { model, Schema } from 'mongoose';
-import { IAboutUs } from './aboutUs.interface';
-const aboutUsSchema = new Schema<IAboutUs>({
-  aboutUs: {
-    type: String,
-    required: true,
-  },
-},{
-  timestamps: true
-});
+// import { model, Schema } from 'mongoose';
+// import { IAboutUs } from './aboutUs.interface';
+// const aboutUsSchema = new Schema<IAboutUs>({
+//   aboutUs: {
+//     type: String,
+//     required: true,
+//   },
+// },{
+//   timestamps: true
+// });
 
-const AboutUs = model<IAboutUs>('AboutUs', aboutUsSchema);
-export default AboutUs;
+// const AboutUs = model<IAboutUs>('AboutUs', aboutUsSchema);
+// export default AboutUs;
