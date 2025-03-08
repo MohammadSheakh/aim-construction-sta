@@ -10,6 +10,7 @@ import { NoteRoutes } from '../modules/note/note.route';
 import { ContractRoutes } from '../modules/contract/contract.route';
 import { TaskRoutes } from '../modules/task/task.route';
 import { AttachmentRoutes } from '../modules/attachments/attachment.route';
+import { NotificationRoutes } from '../modules/notification/notification.routes';
 
 // import { ChatRoutes } from '../modules/chat/chat.routes';
 // import { MessageRoutes } from '../modules/message/message.routes';
@@ -56,6 +57,10 @@ const apiRoutes = [
     path: '/attachment',
     route: AttachmentRoutes,
   },
+  {
+    path : '/activity',
+    route : NotificationRoutes
+  }
   
   
 ];
