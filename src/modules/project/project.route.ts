@@ -17,7 +17,7 @@ const router = express.Router();
 
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
-  auth('projectManager'),
+  auth('common'), // projectManager
 
   ProjectController.getAllProjectWithPagination
 );
@@ -40,7 +40,7 @@ router.route('/update/:projectId').put(
 );
 
 //[🚧][🧑‍💻✅][🧪] // 🆗
-router.route('/').get(auth('projectManager'), ProjectController.getAllProject);
+router.route('/').get(auth('common'), ProjectController.getAllProject);
 
 //[🚧][🧑‍💻✅][🧪] // 🆗
 router.route('/create').post(

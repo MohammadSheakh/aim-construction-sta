@@ -9,9 +9,12 @@ import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from '../attachments/attachment.constant';
 import { noteStatus } from './note.constant';
+import { Project } from '../project/project.model';
+import { NotificationService } from '../notification/notification.services';
 
 const noteService = new NoteService();
 const attachmentService = new AttachmentService();
+
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createNote = catchAsync(async (req, res) => {
@@ -81,6 +84,36 @@ const createNote = catchAsync(async (req, res) => {
       })
     );
   }
+
+ /*** ✅ NOTIFICATION LOGIC STARTS HERE ✅ ***/
+
+  // 1️⃣ Find the ProjectManager for the given projectId
+  const project = await Project.findById(req.body.projectId).populate("projectManagerId");
+
+  console.log("req.user 🔴🔴", req.user)
+
+  if (project && project.projectManagerId) {
+    const notificationPayload = {
+      title: "New Note Created",
+      message: `A new dailyLog ${result.title} has been created by ${req.user.userName}.`,
+      receiverId: project.projectManagerId, // Send to ProjectManager
+      role: "projectManager",
+      image: project.projectLogo || "", // req.user.profilePicture || "", // Optional
+      linkId: result._id, // Link to the note
+    };
+
+    // 2️⃣ Save Notification to Database
+    const notification = await NotificationService.addNotification(notificationPayload);
+
+    // 3️⃣ Send Real-Time Notification using Socket.io
+    io.to(project.projectManagerId.toString()).emit("newNotification", {
+      code: StatusCodes.OK,
+      message: "New notification",
+      data: notification,
+    });
+  }
+
+  /*** ✅ NOTIFICATION LOGIC ENDS HERE ✅ ***/
 
   sendResponse(res, {
     code: StatusCodes.OK,

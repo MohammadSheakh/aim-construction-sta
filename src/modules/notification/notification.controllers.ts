@@ -70,7 +70,7 @@ const deleteNotification = catchAsync(async (req, res) => {
 });
 
 const clearAllNotification = catchAsync(async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.userId;
   await NotificationService.clearAllNotification(userId);
   sendResponse(res, {
     code: StatusCodes.OK,
