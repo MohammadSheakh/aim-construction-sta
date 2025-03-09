@@ -51,13 +51,11 @@ const attachmentSchema = new Schema<IAttachment>(
       ],
       required: true,
     },
-
     reactions: [
       {
-        userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        userId: { type: Schema.Types.ObjectId, ref: 'User', required: false },
       }
     ],
-   
   },
   { timestamps: true }
 );

@@ -47,8 +47,8 @@ const createUser = async (userData: TUser) => {
   //create verification email token
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   //create verification email otp
-  await OtpService.createVerificationEmailOtp(user.email);
-  return { user, verificationToken };
+  const {otp} = await OtpService.createVerificationEmailOtp(user.email);
+  return { user, verificationToken , otp }; // FIXME  : otp remove korte hobe ekhan theke .. 
 };
 
 const login = async (email: string, reqpassword: string, fcmToken : string) => {
