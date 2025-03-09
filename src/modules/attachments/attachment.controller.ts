@@ -136,6 +136,29 @@ const deleteById = catchAsync(async (req, res) => {
   });
 });
 
+
+const addOrRemoveReact = catchAsync(async (req, res) => {
+  const { attachmentId } = req.params;
+  const { reactionType } = req.body;
+  const { userId } = req.user;
+
+  // FIX ME : FiX korte hobe 
+  // const result = await attachmentService.addOrRemoveReact(
+  //   attachmentId,
+  //   userId,
+  //   reactionType
+  // );
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: null,
+    message: 'Project updated successfully',
+    success: true,
+  });
+}
+);
+
+
 export const AttachmentController = {
   createAttachment,
   getAllAttachment,
@@ -143,4 +166,5 @@ export const AttachmentController = {
   getAAttachment,
   updateById,
   deleteById,
+  addOrRemoveReact
 };

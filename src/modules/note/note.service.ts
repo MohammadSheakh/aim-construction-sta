@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 import { GenericService } from '../Generic Service/generic.services';
 import { Note } from './note.model';
 import { StatusCodes } from 'http-status-codes';
@@ -71,14 +71,98 @@ export class NoteService extends GenericService<typeof Note> {
     const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999));
 
     //🟢 Query Notes with exact date match for the given projectId and date range
-    const result = await Note.find({
-      projectId: projectId,
-      createdAt: { $gte: startOfDay, $lte: endOfDay },
-    }).exec();
+    // const result = await Note.find({
+    //   projectId: projectId,
+    //   createdAt: { $gte: startOfDay, $lte: endOfDay },
+    // }).exec();
 
-    console.log('result :: 🔖🔖🔖', result);
+    const notesWithAttachmentCounts = await Note.aggregate([
+      {
+        $match: {
+          projectId: new mongoose.Types.ObjectId(projectId),
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
+        },
+      },
+      {
+        $lookup: {
+          from: "attachments",
+          localField: "attachments",
+          foreignField: "_id",
+          as: "attachmentDetails",
+        },
+      },
+      {
+        $addFields: {
+          imageCount: {
+            $size: {
+              $filter: {
+                input: "$attachmentDetails",
+                as: "att",
+                cond: { $eq: ["$$att.attachmentType", "image"] },
+              },
+            },
+          },
+          documentCount: {
+            $size: {
+              $filter: {
+                input: "$attachmentDetails",
+                as: "att",
+                cond: { $eq: ["$$att.attachmentType", "document"] },
+              },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          description: 1,
+          isAccepted: 1,
+          createdAt: 1,
+          imageCount: 1,
+          documentCount: 1,
+        },
+      },
+    ]);
 
-    return result;
+    // Global count of images and documents
+    const totalCounts = await Note.aggregate([
+      {
+        $match: {
+          projectId: new mongoose.Types.ObjectId(projectId),
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
+        },
+      },
+      {
+        $lookup: {
+          from: "attachments",
+          localField: "attachments",
+          foreignField: "_id",
+          as: "attachmentDetails",
+        },
+      },
+      {
+        $unwind: "$attachmentDetails",
+      },
+      {
+        $group: {
+          _id: null,
+          totalImages: {
+            $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "image"] }, 1, 0] },
+          },
+          totalDocuments: {
+            $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "document"] }, 1, 0] },
+          },
+        },
+      },
+    ]);
+
+    return {
+      notes: notesWithAttachmentCounts,
+      imageCount: totalCounts.length ? totalCounts[0].totalImages : 0,
+      documentCount: totalCounts.length ? totalCounts[0].totalDocuments : 0
+    }; ;
   }
 
   async getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId(

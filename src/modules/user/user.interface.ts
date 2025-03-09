@@ -38,7 +38,7 @@ export type TUser = {
   };
   companyName : string;
   role: Role;
-  superVisorsManagerId?: Types.ObjectId;
+  superVisorsManagerId?: Types.ObjectId | null;
   isEmailVerified: boolean;
   phoneNumber : string;
   isDeleted: boolean;

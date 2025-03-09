@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../shared/catchAsync';
 import { SettingsService } from './settings.service';
 import sendResponse from '../../shared/sendResponse';
+import { capitalizeFirstLetter } from '../../utils/capitalize';
 
 const settingsService = new SettingsService();
 
@@ -13,7 +14,7 @@ const createOrUpdateSettings = catchAsync(async (req, res, next) => {
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    message: 'Settings updated successfully',
+    message: `${capitalizeFirstLetter(req.query.type?.toString())} updated successfully`,
     data: result,
   });
 });
@@ -23,7 +24,7 @@ const getDetailsByType = catchAsync(async (req, res, next) => {
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    message: 'Settings fetched successfully',
+    message: `${capitalizeFirstLetter(req.query.type?.toString())} fetched successfully`,
     data: result,
   });
 });
