@@ -19,6 +19,14 @@ const validateUserStatus = (user: TUser) => {
   }
 };
 const createUser = async (userData: TUser) => {
+  if(userData.role == 'projectSupervisor'){
+
+    if(userData.superVisorsManagerId == null){
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'SuperVisor Manager Id is required');
+    }else{
+    userData.superVisorsManagerId = null;
+  }
+}
   const existingUser = await User.findOne({ email: userData.email });
   if (existingUser) {
     if (existingUser.isEmailVerified) {

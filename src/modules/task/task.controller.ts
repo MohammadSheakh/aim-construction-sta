@@ -71,10 +71,28 @@ const createTask = catchAsync(async (req, res) => {
     console.log("result🔴🔴", result)
   
     if (project && project.projectSuperVisorId || result.assignedTo) {
+      
+
+      // const registrationToken = user?.fcmToken;
+
+    // if (registrationToken) {
+    //   await sendPushNotification(
+    //     registrationToken,
+    //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
+    //     `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
+    //     project.projectManagerId.toString()
+    //   );
+    // }
+
+      
+      
+      
+      
+      
       const notificationPayload = {
-        title: "New Task Created",
-        message: `A new task ${result.title} has been created by ${req.user.userName}.`,
-        receiverId: project.projectSuperVisorId, // Send to ProjectManager
+        title: `New Task ${result.title} Created has been created by ${req.user.userName}.`,
+        // message: `A new task ${result.title} has been created by ${req.user.userName}.`,
+        receiverId: project.projectSuperVisorId, // receiver is  projectSuperVisor
         role: "projectSupervisor", // TODO :  check korte hobe .. thik ase kina .. 
         image: project.projectLogo || "", // req.user.profilePicture || "", // Optional
         linkId: result._id, // Link to the note

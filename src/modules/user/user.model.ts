@@ -73,19 +73,19 @@ const userSchema = new Schema<TUser, UserModal>(
     address: {
       streetAddress : {
         type: String,
-        required: [true, 'Street Address is required']
+        required: [false, 'Street Address is not required']
       },
       city : {
         type: String,
-        required: [true, 'City is required']
+        required: [false, 'City is not required']
       },
       zipCode : {
         type: String,
-        required: [true, 'Address is required']
+        required: [false, 'Address is not required']
       },
       country : {
         type: String,
-        required: [true, 'Address is required']
+        required: [false, 'Address is not required']
       },
     },
 

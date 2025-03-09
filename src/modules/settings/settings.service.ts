@@ -6,7 +6,15 @@ import { GenericService } from '../Generic Service/generic.services';
 import { settingsType } from './settings.constant';
 import { ISettings } from './settings.interface';
 import { Settings } from './settings.model';
-import e from 'express';
+
+
+const allowedTypes = [
+  settingsType.aboutUs,
+  settingsType.contactUs,
+  settingsType.privacyPolicy,
+  settingsType.termsAndConditions,
+];
+
 
 export class SettingsService extends GenericService<typeof Settings> {
   constructor() {
@@ -16,17 +24,17 @@ export class SettingsService extends GenericService<typeof Settings> {
   async createOrUpdateSettings(type: any, payload: any) {
     // List of allowed settings types
 
-    const allowedTypes = [
-      settingsType.aboutUs,
-      settingsType.contactUs,
-      settingsType.privacyPolicy,
-      settingsType.termsAndConditions,
-    ];
+    // const allowedTypes = [
+    //   settingsType.aboutUs,
+    //   settingsType.contactUs,
+    //   settingsType.privacyPolicy,
+    //   settingsType.termsAndConditions,
+    // ];
 
     if (!allowedTypes.includes(type)) {
       throw new ApiError(
         StatusCodes.NOT_FOUND,
-        `Unsupported settings type: ${type}`
+        `Unsupported settings type: ${type} ... Possible values are ${allowedTypes.join(', ')}`
       );
     }
 
@@ -44,12 +52,21 @@ export class SettingsService extends GenericService<typeof Settings> {
   }
 
   async getDetailsByType(type: any) {
-    const setting = await Settings.findOne({ type }).sort({ createdAt: -1 });
 
-    if (!setting) {
+    if (!allowedTypes.includes(type)) {
       throw new ApiError(
         StatusCodes.NOT_FOUND,
-        `Details not found for type: ${type}`
+        `Unsupported settings type: ${type} ... Possible values are ${allowedTypes.join(', ')}`
+      );
+    }
+
+    const setting = await Settings.find({ type }); // .sort({ createdAt: -1 })
+
+    
+    if (setting.length === 0) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `Details not found for type: ${type}..`
       );
     }
 

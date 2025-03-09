@@ -13,6 +13,7 @@ import { Project } from '../project/project.model';
 import { NotificationService } from '../notification/notification.services';
 import { sendPushNotification } from '../../utils/firebaseUtils';
 import { User } from '../user/user.model';
+import ApiError from '../../errors/ApiError';
 
 const noteService = new NoteService();
 const attachmentService = new AttachmentService();
@@ -117,32 +118,39 @@ const createNote = catchAsync(async (req, res) => {
 
   */
 
-  const notificationReceivers = [];
+  // const notificationReceivers = [];
 
-  if (project && project.projectManagerId) {
-    notificationReceivers.push(project.projectManagerId);
+  // if (project && project.projectManagerId) {
+  //   notificationReceivers.push(project.projectManagerId);
+  // }
+
+
+  if(!project){
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Project not found');
   }
 
-  for (const receiverId of notificationReceivers) {
+  // for (const receiverId of notificationReceivers) {
     // Fetch FCM token from User Model
-    const user = await User.findById(receiverId);
-    const registrationToken = user?.fcmToken;
+    const user = await User.findById(project?.projectManagerId);
 
-    if (registrationToken) {
-      await sendPushNotification(
-        registrationToken,
-        // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
-        `A new note of DailyLog ${result.title} has been created.`,
-        receiverId.toString()
-      );
-    }
+    // 🔴🔴🔴 // INFO :  For push notification
+    // const registrationToken = user?.fcmToken;
+
+    // if (registrationToken) {
+    //   await sendPushNotification(
+    //     registrationToken,
+    //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
+    //     `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
+    //     project.projectManagerId.toString()
+    //   );
+    // }
 
     // Save Notification to Database
     const notificationPayload = {
-      title: 'New Task Created',
-      message: `A new task "${result.title}" has been created by ${req.user.userName}.`,
-      receiverId: receiverId,
-      role: 'projectSupervisor', // If receiver is the supervisor
+      title: `New note ${result.title} has been created by ${req.user.userName}`,
+      // message: `A new task "${result.title}" has been created by `,
+      receiverId: project?.projectManagerId,
+      role: 'projectManager', // If receiver is the projectManager
       linkId: result._id,
     };
 
@@ -151,12 +159,13 @@ const createNote = catchAsync(async (req, res) => {
     );
 
     // 3️⃣ Send Real-Time Notification using Socket.io
-    io.to(receiverId.toString()).emit('newNotification', {
+    io.to(project?.projectManagerId.toString()).emit('newNotification', {
       code: StatusCodes.OK,
       message: 'New notification',
       data: notification,
     });
-  }
+
+  // }
 
   /*** ✅ NOTIFICATION LOGIC ENDS HERE ✅ ***/
 

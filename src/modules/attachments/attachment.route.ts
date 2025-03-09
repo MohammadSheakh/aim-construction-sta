@@ -18,7 +18,6 @@ router.route('/paginate').get(
 
 router.route('/:attachmentId').get(
   auth('common'),
-  
   AttachmentController.getAAttachment
 );
 
@@ -28,9 +27,14 @@ router.route('/update/:attachmentId').put(
   AttachmentController.updateById
 );
 
+router.route('/addOrRemoveReact/:attachmentId').put(
+  auth('common'),
+  // validateRequest(UserValidation.createUserValidationSchema),
+  AttachmentController.addOrRemoveReact
+);
+
 router.route('/').get(
   auth('common'),
-  
   AttachmentController.getAllAttachment
 );
 
