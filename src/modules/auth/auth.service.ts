@@ -49,7 +49,7 @@ const createUser = async (userData: TUser) => {
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   //create verification email otp
   await OtpService.createVerificationEmailOtp(user.email);
-  return { verificationToken };
+  return { user, verificationToken };
 };
 
 const login = async (email: string, reqpassword: string, fcmToken : string) => {
@@ -144,7 +144,7 @@ const verifyEmail = async (email: string, token: string, otp: string) => {
   await user.save();
 
   const tokens = await TokenService.accessAndRefreshToken(user);
-  return tokens;
+  return {user, tokens} ;
 };
 
 const forgotPassword = async (email: string) => {

@@ -6,7 +6,7 @@ import pick from '../../shared/pick';
 import { Attachment } from './attachment.model';
 import { AttachmentService } from './attachment.service';
 import { FolderName } from '../../enums/folderNames';
-import { AttachedToType } from './attachment.constant';
+import { AttachedToType, UploaderRole } from './attachment.constant';
 import ApiError from '../../errors/ApiError';
 import { NoteService } from '../note/note.service';
 import { Project } from '../project/project.model';
@@ -25,10 +25,10 @@ const createAttachment = catchAsync(async (req, res) => {
   }
   let attachments = [];
   
-    if (req.files && req.files.attachments) {
+    if (req.files && req.files.attachments ) {
       attachments.push(
         ...(await Promise.all(
-          req.files.attachments.map(async file => {
+          req.files.attachments.map(async (file : Express.Multer.File) => {
             const attachmentId = await attachmentService.uploadSingleAttachment(
               file,
               FolderName.note,
@@ -47,7 +47,7 @@ const createAttachment = catchAsync(async (req, res) => {
 
     
 
-    if(projectNameAndSuperVisorId){
+    if(projectNameAndSuperVisorId && projectNameAndSuperVisorId.projectSuperVisorId){
 
     // const registrationToken = user?.fcmToken;
          
@@ -66,7 +66,7 @@ const createAttachment = catchAsync(async (req, res) => {
       title: `New attachment of ${projectNameAndSuperVisorId.projectName}  ${noteOrTaskOrProject}  has been uploaded  by ${req.user.userName}`,
       // message: `A new task "${result.title}" has been created by `,
       receiverId: projectNameAndSuperVisorId.projectSuperVisorId,
-      role: 'projectSupervisor', // If receiver is the projectManager
+      role: UploaderRole.projectSupervisor, // If receiver is the projectManager
       // linkId: result._id, // FIXME  // TODO : attachment related notifiation e click korle .. kothay niye jabe ?
     };
 
