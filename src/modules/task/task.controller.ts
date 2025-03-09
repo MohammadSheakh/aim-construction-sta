@@ -84,11 +84,6 @@ const createTask = catchAsync(async (req, res) => {
     //   );
     // }
 
-      
-      
-      
-      
-      
       const notificationPayload = {
         title: `New Task ${result.title} Created has been created by ${req.user.userName}.`,
         // message: `A new task ${result.title} has been created by ${req.user.userName}.`,

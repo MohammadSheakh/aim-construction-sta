@@ -9,14 +9,15 @@ import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from './attachment.constant';
 import ApiError from '../../errors/ApiError';
 import { NoteService } from '../note/note.service';
+import { Project } from '../project/project.model';
+import { NotificationService } from '../notification/notification.services';
 
 const attachmentService = new AttachmentService();
 const noteService = new NoteService();
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const createAttachment = catchAsync(async (req, res) => {
-  console.log('req.body from createAttachment 🧪', req.body);
-
+ 
   const { noteOrTaskOrProject } = req.body;
   if(noteOrTaskOrProject !== AttachedToType.note && noteOrTaskOrProject !== AttachedToType.task && noteOrTaskOrProject !== AttachedToType.project)
   {
@@ -28,18 +29,59 @@ const createAttachment = catchAsync(async (req, res) => {
       attachments.push(
         ...(await Promise.all(
           req.files.attachments.map(async file => {
-            const attachmenId = await attachmentService.uploadSingleAttachment(
+            const attachmentId = await attachmentService.uploadSingleAttachment(
               file,
               FolderName.note,
               req.body.projectId,
               req.user,
               noteOrTaskOrProject
             );
-            return attachmenId;
+            return attachmentId;
           })
         ))
       );
     }
+
+    // give me projectSupervisorId
+    const projectNameAndSuperVisorId = await Project.findById(req.body.projectId).select('projectSuperVisorId projectName');
+
+    
+
+    if(projectNameAndSuperVisorId){
+
+    // const registrationToken = user?.fcmToken;
+         
+    // if (registrationToken) {
+    //   await sendPushNotification(
+    //     registrationToken,
+    //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
+    //     `New attachment of ${projectNameAndSuperVisorId.projectName}  ${noteOrTaskOrProject} has been uploaded by  ${req.user.userName} .`,
+    //     result.projectSuperVisorId.toString()
+    //   );
+    // }
+    
+    // TODO : notification er title ta change kora lagte pare .. 
+    // Save Notification to Database
+    const notificationPayload = {
+      title: `New attachment of ${projectNameAndSuperVisorId.projectName}  ${noteOrTaskOrProject}  has been uploaded  by ${req.user.userName}`,
+      // message: `A new task "${result.title}" has been created by `,
+      receiverId: projectNameAndSuperVisorId.projectSuperVisorId,
+      role: 'projectSupervisor', // If receiver is the projectManager
+      // linkId: result._id, // FIXME  // TODO : attachment related notifiation e click korle .. kothay niye jabe ?
+    };
+
+    const notification = await NotificationService.addNotification(
+      notificationPayload
+    );
+
+    // 3️⃣ Send Real-Time Notification using Socket.io
+    io.to(projectNameAndSuperVisorId.projectSuperVisorId.toString()).emit('newNotification', {
+      code: StatusCodes.OK,
+      message: 'New notification',
+      data: notification,
+    });
+
+  }
 
   // const result = await attachmentService.create(req.body);
 
