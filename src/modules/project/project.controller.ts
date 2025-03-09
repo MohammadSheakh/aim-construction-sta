@@ -12,6 +12,7 @@ import {
   AttachmentType,
 } from '../attachments/attachment.constant';
 import { uploadFileToSpace } from '../../middlewares/digitalOcean';
+import { NotificationService } from '../notification/notification.services';
 
 const projectService = new ProjectService();
 const attachmentService = new AttachmentService();
@@ -66,6 +67,45 @@ const createProject = catchAsync(async (req, res) => {
   req.body.projectLogo = attachments[0]?.attachment;
 
   const result = await projectService.create(req.body);
+
+  console.log(result);
+
+
+  // 🟢 notification send to project supervisor 
+  if(result && result.projectSuperVisorId){
+     // const registrationToken = user?.fcmToken;
+     
+      // if (registrationToken) {
+      //   await sendPushNotification(
+      //     registrationToken,
+      //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
+      //     `A new note of DailyLog ${result.projectName} has been created by  ${req.user.userName} .`,
+      //     result.projectSuperVisorId.toString()
+      //   );
+      // }
+     
+      // TODO : notification er title ta change kora lagte pare .. 
+      // Save Notification to Database
+      const notificationPayload = {
+        title: `New project ${result.projectName} has been created And assigned to you by ${req.user.userName}`,
+        // message: `A new task "${result.title}" has been created by `,
+        receiverId: result?.projectSuperVisorId,
+        role: 'projectSupervisor', // If receiver is the projectManager
+        linkId: result._id,
+      };
+  
+      const notification = await NotificationService.addNotification(
+        notificationPayload
+      );
+  
+      // 3️⃣ Send Real-Time Notification using Socket.io
+      io.to(result?.projectSuperVisorId.toString()).emit('newNotification', {
+        code: StatusCodes.OK,
+        message: 'New notification',
+        data: notification,
+      });
+
+  }
 
   sendResponse(res, {
     code: StatusCodes.OK,
