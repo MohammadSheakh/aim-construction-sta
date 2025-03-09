@@ -181,20 +181,21 @@ const deleteById = catchAsync(async (req, res) => {
 
 const addOrRemoveReact = catchAsync(async (req, res) => {
   const { attachmentId } = req.params;
-  const { reactionType } = req.body;
+  // const { reactionType } = req.body;
   const { userId } = req.user;
 
   // FIX ME : FiX korte hobe 
-  // const result = await attachmentService.addOrRemoveReact(
-  //   attachmentId,
-  //   userId,
-  //   reactionType
-  // );
+  const result = await attachmentService.addOrRemoveReact(
+    attachmentId,
+    userId,
+  );
+
+  console.log("result 🟢", result)
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: null,
-    message: 'Project updated successfully',
+    data: result,
+    message: 'React successfully',
     success: true,
   });
 }

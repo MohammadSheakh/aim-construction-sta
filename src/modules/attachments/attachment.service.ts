@@ -57,4 +57,29 @@ export class AttachmentService extends GenericService<typeof Attachment> {
       // FIXME
     }
   }
+
+  async addOrRemoveReact  (attachmentId: string, userId: string) {
+    const attachment = await this.getById(attachmentId);
+    if (!attachment) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
+    }
+
+    const reaction = await attachment.reactions.find({userId});
+
+    if(!reaction){
+      attachment.reactions.push({userId});
+    }else{
+      attachment.reactions = attachment.reactions.filter(reaction => reaction.userId !== userId);
+    }
+
+    // const index = attachment.reactions.indexOf(userId);
+    // if (index === -1) {
+    //   attachment.reactions.push(userId);
+    // } else {
+    //   attachment.reactions.splice(index, 1);
+    // }
+
+    await attachment.save();
+    return attachment;
+  }
 }
