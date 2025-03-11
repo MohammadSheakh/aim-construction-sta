@@ -286,6 +286,14 @@ const getAllUserWithPagination = catchAsync(async (req, res) => {
   });
 });
 
+const getAllManager  = catchAsync(async (req, res) => {
+  const result = await User.find({ role: 'projectManager' }).select('fname lname');
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All Manager',
+  });
+});
 
 
 
@@ -301,5 +309,6 @@ export const UserController = {
   deleteMyProfile,
   //////////////////////////
   getAllProjectsByUserId, 
-  getAllUserWithPagination
+  getAllUserWithPagination,
+  getAllManager
 };

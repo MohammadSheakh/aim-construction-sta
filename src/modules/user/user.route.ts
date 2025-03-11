@@ -17,6 +17,12 @@ router.route('/paginate').get(
   UserController.getAllUserWithPagination
 );
 
+router.route('/getAllManager').get(
+  // auth('common'),
+  UserController.getAllManager
+);
+
+
 
 
 //[🚧][🧑‍💻✅][🧪🆗] //  
