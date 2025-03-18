@@ -49,7 +49,7 @@ const createUser = async (userData: TUser) => {
   //create verification email otp
   const {otp} = await OtpService.createVerificationEmailOtp(user.email);
   console.log("OTP ::: FIXME 🟢🟢", otp);
-  return { user, verificationToken , otp }; // FIXME  : otp remove korte hobe ekhan theke .. 
+  return { otp, user, verificationToken  }; // FIXME  : otp remove korte hobe ekhan theke .. 
 };
 
 const login = async (email: string, reqpassword: string, fcmToken : string) => {
