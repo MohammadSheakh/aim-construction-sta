@@ -48,6 +48,7 @@ const createUser = async (userData: TUser) => {
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   //create verification email otp
   const {otp} = await OtpService.createVerificationEmailOtp(user.email);
+  console.log("OTP ::: FIXME 🟢🟢", otp);
   return { user, verificationToken , otp }; // FIXME  : otp remove korte hobe ekhan theke .. 
 };
 
