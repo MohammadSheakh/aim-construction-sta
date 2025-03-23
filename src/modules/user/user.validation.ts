@@ -33,7 +33,7 @@ const createUserValidationSchema = z.object({
         invalid_type_error: 'Role must be a string.',
       })
       .refine(role => Roles.includes(role as Role), {
-        message: `Role must be one of the following: ${Roles.join(', ')}`,
+        message: `Role must be selected`, //projectManager  ,  projectSupervisor
       }),
   }),
 });

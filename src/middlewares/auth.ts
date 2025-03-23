@@ -24,6 +24,11 @@ const auth = (...roles: string[]) =>
         config.jwt.accessSecret as Secret,
         TokenType.ACCESS
       );
+
+      // if(verifyUser){
+      //   throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized');
+      // }
+
       // Step 3: Attach user to the request object
       req.user = verifyUser;
 

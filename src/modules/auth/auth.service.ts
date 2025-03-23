@@ -9,6 +9,7 @@ import { config } from '../../config';
 import { TokenService } from '../token/token.service';
 import { TokenType } from '../token/token.interface';
 import { OtpType } from '../otp/otp.interface';
+import { Secret } from 'jsonwebtoken';
 
 const validateUserStatus = (user: TUser) => {
   if (user.isDeleted) {
@@ -221,7 +222,23 @@ const changePassword = async (
 };
 const logout = async (refreshToken: string) => {};
 
-const refreshAuth = async (refreshToken: string) => {};
+const refreshAuth = async (refreshToken: string) => {
+  // console.log("refreshToken🟢🟢", refreshToken);
+
+  const verifyUser = await TokenService.verifyToken(
+          refreshToken,
+          config.jwt.refreshSecret as Secret,
+          TokenType.REFRESH
+        );
+
+  console.log("verify User :: 🧑‍💻🟢", verifyUser)
+  let tokens ;
+  if(verifyUser){
+     tokens = await TokenService.accessAndRefreshTokenForRefreshToken(verifyUser);
+  }
+
+  return tokens;
+};
 
 export const AuthService = {
   createUser,

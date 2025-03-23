@@ -3,10 +3,14 @@ import { UserController } from './user.controller';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { UserValidation } from './user.validation';
-import fileUploadHandler from '../../shared/fileUploadHandler';
-import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
-const UPLOADS_FOLDER = 'uploads/users';
-const upload = fileUploadHandler(UPLOADS_FOLDER);
+// import fileUploadHandler from '../../shared/fileUploadHandler';
+// import convertHeicToPngMiddleware from '../../shared/convertHeicToPngMiddleware';
+// const UPLOADS_FOLDER = 'uploads/users';
+// const upload = fileUploadHandler(UPLOADS_FOLDER);
+
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -40,8 +44,7 @@ router
   .route('/profile-image')
   .post(
     auth('common'),
-    upload.single('profile_image'),
-    convertHeicToPngMiddleware(UPLOADS_FOLDER),
+    [upload.single("profileImage")],
     UserController.updateProfileImage
   );
 // sub routes must be added after the main routes
@@ -52,7 +55,7 @@ router
     auth('common'),
     validateRequest(UserValidation.updateUserValidationSchema),
     upload.single('profile_image'),
-    convertHeicToPngMiddleware(UPLOADS_FOLDER),
+    // convertHeicToPngMiddleware(UPLOADS_FOLDER),
     UserController.updateMyProfile
   )
   .delete(auth('common'), UserController.deleteMyProfile);
