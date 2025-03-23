@@ -21,6 +21,7 @@ const attachmentService = new AttachmentService();
 
 const createProject = catchAsync(async (req, res) => {
   req.body.projectStatus = 'open';
+  req.body.projectManagerId = req.user.userId; // INFO: as project Manager is logged In 
 
   let attachments = [];
 

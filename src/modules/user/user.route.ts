@@ -31,6 +31,11 @@ router.route('/projects').get(auth('common'),
 UserController.getAllProjectsByUserId
 );
 
+// get all Projects by User Id  // :userId
+router.route('/superVisors').get(auth('projectManager'),
+UserController.getAllProjectSupervisorsByProjectManagerId
+);
+
 router
   .route('/profile-image')
   .post(
