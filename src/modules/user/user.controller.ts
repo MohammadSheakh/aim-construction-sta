@@ -175,8 +175,10 @@ const updateProfileImage = catchAsync(async (req, res) => {
                   AttachedToType.project
                 );
 
+    console.log("attachment result ::: 🧑‍💻🧑‍💻", attachmentResult)            
+
     req.body.profileImage = {
-      imageUrl: attachmentResult,
+      imageUrl: attachmentResult.attachment,
     };
   }
   const result = await UserService.updateMyProfile(userId, req.body);
