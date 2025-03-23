@@ -26,12 +26,17 @@ const verifyToken = async (
   secret: Secret,
   tokenType: TokenType
 ) => {
+
+
   const decoded = jwt.verify(token, secret) as JwtPayload;
+  console.log("decoded 🟢🟢", decoded)
   const storedToken = await Token.findOne({
     token,
     user: decoded.userId,
     type: tokenType
   });
+
+  console.log("storedToken 🟢storedToken🟢", storedToken)
 
   if (!storedToken) {
     throw new ApiError(
@@ -90,10 +95,10 @@ const createResetPasswordToken = async (user: TUser) => {
   return resetPasswordToken;
 };
 
-const accessAndRefreshToken = async (user: TUser) => {
+const accessAndRefreshToken = async (user: Partial<TUser>) => {
   const userFullname = user.fname + ' ' + user.lname;
   const payload = { userId: user._id, userName:userFullname , email: user.email, role: user.role };
-  await Token.deleteMany({ user: user._id });
+  // await Token.deleteMany({ user: user._id });
   const accessToken = createToken(
     payload,
     config.jwt.accessSecret,
@@ -120,10 +125,42 @@ const accessAndRefreshToken = async (user: TUser) => {
   return { accessToken, refreshToken };
 };
 
+
+const accessAndRefreshTokenForRefreshToken = async (user: any) => {
+  const userFullname = user.userName;
+  const payload = { userId: user.userId, userName:userFullname , email: user.email, role: user.role };
+  // await Token.deleteMany({ user: user.userId });
+  const accessToken = createToken(
+    payload,
+    config.jwt.accessSecret,
+    config.jwt.accessExpiration
+  );
+  const refreshToken = createToken(
+    payload,
+    config.jwt.refreshSecret,
+    config.jwt.refreshExpiration
+  );
+  await Token.create({
+    token: accessToken,
+    user: user.userId,
+    type: TokenType.ACCESS,
+    expiresAt: getExpirationTime(config.jwt.accessExpiration),
+  });
+  await Token.create({
+    token: refreshToken,
+    user: user.userId,
+    type: TokenType.REFRESH,
+    expiresAt: getExpirationTime(config.jwt.refreshExpiration),
+  });
+
+  return { accessToken, refreshToken };
+};
+
 export const TokenService = {
   createToken,
   verifyToken,
   createVerifyEmailToken,
   createResetPasswordToken,
   accessAndRefreshToken,
+  accessAndRefreshTokenForRefreshToken
 };

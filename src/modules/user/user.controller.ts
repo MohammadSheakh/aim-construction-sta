@@ -6,8 +6,12 @@ import ApiError from '../../errors/ApiError';
 import { UserCustomService, UserService } from './user.service';
 import { User } from './user.model';
 import { Types } from 'mongoose';
+import { AttachmentService } from '../attachments/attachment.service';
+import { FolderName } from '../../enums/folderNames';
+import { AttachedToType } from '../attachments/attachment.constant';
 
 const userCustomService = new UserCustomService();
+const attachmentService = new AttachmentService();
 
 const createAdminOrSuperAdmin = catchAsync(async (req, res) => {
   const payload = req.body;
@@ -161,9 +165,18 @@ const updateProfileImage = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are unauthenticated.');
   }
   if (req.file) {
-    req.body.profile_image = {
-      imageUrl: '/uploads/users/' + req.file.filename,
-      file: req.file,
+
+    const attachmentResult =
+                await attachmentService.uploadSingleAttachment(
+                  req.file,
+                  FolderName.user,
+                  null,
+                  req.user,
+                  AttachedToType.project
+                );
+
+    req.body.profileImage = {
+      imageUrl: attachmentResult,
     };
   }
   const result = await UserService.updateMyProfile(userId, req.body);

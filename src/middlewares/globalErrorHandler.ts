@@ -26,6 +26,18 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
       .join(', ')}`;
     errorMessages = simplifiedError.errorMessages;
   }
+  else if (error.name === "TokenExpiredError"){
+    code = 401;
+    message = error.message || 'jwt expired';
+    errorMessages = error.message
+      ? [
+          {
+            path: '',
+            message: error.message,
+          },
+        ]
+      : [];
+  }
   // Handle ValidationError (e.g., Mongoose)
   else if (error.name === 'ValidationError') {
     const simplifiedError = handleValidationError(error);

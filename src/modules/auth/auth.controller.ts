@@ -106,11 +106,14 @@ const logout = catchAsync(async (req, res) => {
 });
 
 const refreshToken = catchAsync(async (req, res) => {
+  // console.log("req.body.refreshToken 🟢1🟢" , req.body.refreshToken)
   const tokens = await AuthService.refreshAuth(req.body.refreshToken);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'User logged in successfully',
-    data: {
+    data:
+    //  null 
+    {
       tokens,
     },
   });
