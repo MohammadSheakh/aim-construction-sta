@@ -26,7 +26,7 @@ const projectSchema = new Schema<IProject>(
       required: [true, 'Project Manager Id is required'],
     },
 
-    address: {
+    // address: {
       streetAddress: {
         type: String,
         required: [false, 'Street Address is required'],
@@ -43,8 +43,8 @@ const projectSchema = new Schema<IProject>(
         type: String,
         required: [false, 'Address is required'],
       },
-    },
-    deadline: {
+    // },
+    // deadline: {
       startDate: {
         type: Date,
         required: [false, 'Start Date is required'],
@@ -53,7 +53,7 @@ const projectSchema = new Schema<IProject>(
         type: Date,
         required: [false, 'End Date is required'],
       },
-    },
+    // },
 
     attachments: [
       {

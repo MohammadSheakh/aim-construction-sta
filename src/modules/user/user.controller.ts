@@ -295,7 +295,15 @@ const getAllManager  = catchAsync(async (req, res) => {
   });
 });
 
+const getAllProjectSupervisorsByProjectManagerId  = catchAsync(async (req, res) => {
 
+  const result = await User.find({ role: 'projectSupervisor', superVisorsManagerId: req?.user?.userId  }).select('');
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All Supervisors',
+  });
+});
 
 export const UserController = {
   createAdminOrSuperAdmin,
@@ -310,5 +318,6 @@ export const UserController = {
   //////////////////////////
   getAllProjectsByUserId, 
   getAllUserWithPagination,
-  getAllManager
+  getAllManager,
+  getAllProjectSupervisorsByProjectManagerId
 };

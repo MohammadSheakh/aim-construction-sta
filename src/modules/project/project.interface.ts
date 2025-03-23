@@ -10,16 +10,16 @@ export interface IProject {
   projectLogo?: string;
   projectSuperVisorId?: Types.ObjectId | string;
   projectManagerId: Types.ObjectId | string;
-  address?: {
+  // address?: {
     streetAddress?: string;
     city?: string;
     zipCode?: string;
     country?: string;
-  };
-  deadline?: {
+  // };
+  // deadline?: {
     startDate?: Date;
     endDate?: Date;
-  };
+  // };
   attachments?: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdAt?: Date;
   updatedAt?: Date;
