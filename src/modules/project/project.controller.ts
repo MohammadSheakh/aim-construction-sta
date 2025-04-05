@@ -11,8 +11,8 @@ import {
   AttachedToType,
   AttachmentType,
 } from '../attachments/attachment.constant';
-import { uploadFileToSpace } from '../../middlewares/digitalOcean';
 import { NotificationService } from '../notification/notification.services';
+import { io } from '../../server';
 
 const projectService = new ProjectService();
 const attachmentService = new AttachmentService();
@@ -100,7 +100,7 @@ const createProject = catchAsync(async (req, res) => {
       );
   
       // 3️⃣ Send Real-Time Notification using Socket.io
-      io.to(result?.projectSuperVisorId.toString()).emit('newNotification', {
+      io?.to(result?.projectSuperVisorId.toString()).emit('newNotification', {
         code: StatusCodes.OK,
         message: 'New notification',
         data: notification,
