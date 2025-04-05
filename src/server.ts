@@ -13,6 +13,7 @@ process.on('uncaughtException', error => {
 });
 
 let server: any;
+let io : Server | undefined;
 async function main() {
   try {
     await mongoose.connect(config.database.mongoUrl as string);
@@ -27,7 +28,7 @@ async function main() {
       );
     });
     //socket
-    const io = new Server(server, {
+     io = new Server(server, {
       pingTimeout: 60000,
       cors: {
         origin: '*',
@@ -55,6 +56,7 @@ async function main() {
 
 main();
 
+export {io};
 //SIGTERM
 // process.on('SIGTERM', () => {
 //   logger.info('SIGTERM IS RECEIVE');
