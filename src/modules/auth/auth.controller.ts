@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { AuthService } from './auth.service';
+import ApiError from '../../errors/ApiError';
 
 //[🚧][🧑‍💻✅][🧪] // 🆗 
 const register = catchAsync(async (req, res) => {
@@ -86,6 +87,9 @@ const changePassword = catchAsync(async (req, res) => {
 const resetPassword = catchAsync(async (req, res) => {
   const { email, password, otp } = req.body;
   const result = await AuthService.resetPassword(email, password, otp);
+  if(!result){
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized');
+  }
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Password reset successfully',
