@@ -187,11 +187,20 @@ const resetPassword = async (
   if (!user) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
   }
-  await OtpService.verifyOTP(
-    user.email,
+  // await OtpService.verifyOTP(
+  //   user.email,
+  //   otp,
+  //   user?.isResetPassword ? OtpType.RESET_PASSWORD : OtpType.VERIFY,
+  // );
+
+  const isOtpVerified = await OtpService.checkOTP(
     otp,
-    user?.isResetPassword ? OtpType.RESET_PASSWORD : OtpType.VERIFY,
   );
+
+  if(!isOtpVerified){
+    return null;
+  }
+
   user.password = newPassword;
   user.isResetPassword = false;
   await user.save();

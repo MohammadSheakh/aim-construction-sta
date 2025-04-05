@@ -50,6 +50,22 @@ const createOTP = async (
   return otpDoc;
 };
 
+const checkOTP = async (otp:string)=> {
+  const otpDoc = await OTP.findOne({
+    otp,
+  });
+
+  if (!otpDoc ) { 
+    // || otpDoc.expiresAt < new Date()
+    throw new ApiError(StatusCodes.NOT_FOUND, 'OTP not found or expired');
+  }
+
+  if(otpDoc.verified){
+    return true;
+  }
+  return false;
+}
+
 const verifyOTP = async (userEmail: string, otp: string, type: string) => {
   const otpDoc = await OTP.findOne({
     userEmail,
@@ -103,4 +119,5 @@ export const OtpService = {
   verifyOTP,
   createVerificationEmailOtp,
   createResetPasswordOtp,
+  checkOTP
 };
