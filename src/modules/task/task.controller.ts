@@ -132,7 +132,7 @@ const getAllTask = catchAsync(async (req, res) => {
 });
 
 const getAllTaskWithPagination = catchAsync(async (req, res) => {
-  const filters = pick(req.query, [ '_id']); // 'projectName',
+  const filters = pick(req.query, [ '_id', 'task_status', 'projectId']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
   const result = await taskService.getAllWithPagination(filters, options);
