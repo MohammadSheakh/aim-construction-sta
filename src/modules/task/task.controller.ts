@@ -12,6 +12,8 @@ import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from '../attachments/attachment.constant';
 import { NotificationService } from '../notification/notification.services';
 import { Project } from '../project/project.model';
+import { sendPushNotification } from '../../utils/firebaseUtils';
+import ApiError from '../../errors/ApiError';
 
 const taskService = new TaskService();
 const attachmentService = new AttachmentService();
@@ -68,21 +70,29 @@ const createTask = catchAsync(async (req, res) => {
     // 1️⃣ Find the ProjectManager for the given projectId
     const project = await Project.findById(req.body.projectId).populate("projectSuperVisorId");
   
+    if(!project){
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        "Project is not found by projectId also cannot populate by projectSuperVisorId"
+      );
+    }
+
+
     console.log("result🔴🔴", result)
   
     if (project && project.projectSuperVisorId || result.assignedTo) {
       
 
-      // const registrationToken = user?.fcmToken;
+    const registrationToken = req.user?.fcmToken;
 
-    // if (registrationToken) {
-    //   await sendPushNotification(
-    //     registrationToken,
-    //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
-    //     `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
-    //     project.projectManagerId.toString()
-    //   );
-    // }
+    if (registrationToken) {
+      await sendPushNotification(
+        registrationToken,
+        // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
+        `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
+        project.projectManagerId.toString()
+      );
+    }
 
       const notificationPayload = {
         title: `New Task ${result.title} Created has been created by ${req.user.userName}.`,
@@ -135,11 +145,41 @@ const getAllTaskWithPagination = catchAsync(async (req, res) => {
   const filters = pick(req.query, [ '_id', 'task_status', 'projectId']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
+  options.populate = [
+    {
+      path: "assignedTo",
+      // match: isPreviewFilter,
+      select: " -createdAt -updatedAt -__v -failedLoginAttempts -isDeleted -isResetPassword -isEmailVerified -isDeleted -superVisorsManagerId -role -fcmToken -profileImage -email ", //-audioFile
+      // populate: {
+      //   path: "languageId",
+      //   select: "-createdAt -updatedAt -__v",
+      // },
+    },
+    {
+      path: "attachments",
+      select: " -createdAt -updatedAt -__v ",
+    }
+  ];
+
   const result = await taskService.getAllWithPagination(filters, options);
+
+  console.log("result 🔥🔥🔥", result);
+
+   // Process the result to include imageCount and documentCount
+   const modifiedResult = result.results.map(task => {
+    const imageCount = task.attachments.filter(attachment => attachment.attachmentType === "image").length;
+    const documentCount = task.attachments.filter(attachment => attachment.attachmentType === "document").length;
+
+    return {
+      ...task._doc,
+      imageCount,
+      documentCount,
+    };
+  });
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: result,
+    data: modifiedResult ,// result, // modifiedResult, // result,
     message: 'All tasks with Pagination',
   });
 });
