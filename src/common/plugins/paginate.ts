@@ -6,7 +6,7 @@ const paginate = <T>(schema: Schema<T>) => {
     filter: FilterQuery<T>,
     options: PaginateOptions
   ): Promise<PaginateResult<T>> {
-    const limit = options.limit ?? 10;
+    const limit = options.limit ??  Number.MAX_SAFE_INTEGER ; // ?? 10;
     const page = options.page ?? 1;
     const skip = (page - 1) * limit;
     const sort = options.sortBy ?? 'createdAt';

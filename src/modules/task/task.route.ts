@@ -10,7 +10,7 @@ const router = express.Router();
 
 //info : pagination route must be before the route with params
 router.route('/paginate').get(
-  auth('projectManager'),
+  // auth('projectManager'),
   TaskController.getAllTaskWithPagination
 );
 
