@@ -2,3 +2,5 @@ node_modules
 dist
 /winston
 .env
+
+/config/aim-construction-firebasesdk-fbsvc-5fd17ceb32.json
