@@ -11,9 +11,11 @@ import ApiError from '../../errors/ApiError';
 import { NoteService } from '../note/note.service';
 import { Project } from '../project/project.model';
 import { NotificationService } from '../notification/notification.services';
+import { TaskService } from '../task/task.service';
 
 const attachmentService = new AttachmentService();
 const noteService = new NoteService();
+const taskService = new TaskService();
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const createAttachment = catchAsync(async (req, res) => {
@@ -163,6 +165,16 @@ const deleteById = catchAsync(async (req, res) => {
         if(result){
           results = await attachmentService.deleteById(req.params.attachmentId);
         }
+      }else if (attachment.attachedToType == 'task'){
+        // task er jonno kaj korte hobe .. 
+        console.log("🔥🔥🔥 hit... ")
+        const note =  await taskService.getById(attachment.attachedToId);
+        console.log("note 🔥🔥", note)
+        note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
+        const result =  await taskService.updateById(note._id, note)
+        if(result){
+          results = await attachmentService.deleteById(req.params.attachmentId);
+        }
       }
       // TODO :  task er jonno kaj korte hobe ... 
   }else{
@@ -172,7 +184,7 @@ const deleteById = catchAsync(async (req, res) => {
   // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
-    message: 'Project deleted successfully',
+    message: 'Attachments deleted successfully',
     data : results,
     success: true,
   });
