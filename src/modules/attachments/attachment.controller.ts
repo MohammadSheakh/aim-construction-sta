@@ -151,6 +151,9 @@ const deleteById = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
   }
   let results;
+  if(req.user.role != attachment.uploaderRole){
+    StatusCodes.FORBIDDEN, 'You are not authorized to delete this attachment'
+  }
 
   if(req.user.role == attachment.uploaderRole)
   {
