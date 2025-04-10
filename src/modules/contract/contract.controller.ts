@@ -22,6 +22,12 @@ const createContract = catchAsync(async (req, res) => {
       'Only Project Manager can access this.'
     );
   }
+  if(!req.files.attachments){
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'Attachment is required.'
+    );
+  }
 
   if (req.user.userId) {
     req.body.createdBy = req.user.userId;
