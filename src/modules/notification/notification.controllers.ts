@@ -8,6 +8,9 @@ import { notificationFilters } from './notification.constants';
 const getALLNotification = catchAsync(async (req, res) => {
   const filters = pick(req.query, notificationFilters);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+
+ 
+
   const userId = req.user.userId;
   const result = await NotificationService.getALLNotification(
     filters,

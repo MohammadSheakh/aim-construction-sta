@@ -98,11 +98,57 @@ const getAllContractWithPagination = catchAsync(async (req, res) => {
   const filters = pick(req.query, [ '_id']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
+  options.populate = [
+    // {
+    //   path: "assignedTo",
+    //   // match: isPreviewFilter,
+    //   select: " -createdAt -updatedAt -__v -failedLoginAttempts -isDeleted -isResetPassword -isEmailVerified -isDeleted -superVisorsManagerId -role -fcmToken -profileImage -email ", //-audioFile
+    //   // populate: {
+    //   //   path: "languageId",
+    //   //   select: "-createdAt -updatedAt -__v",
+    //   // },
+    // },
+    {
+      path: "attachments",
+      select: "-__v -attachedToId -updatedAt -createdAt -reactions -uploaderRole -uploadedByUserId -projectId -attachedToType -attachmentType", // -createdAt -updatedAt
+    }
+  ];
+
   const result = await contractService.getAllWithPagination(filters, options);
+
+  console.log("result 🔥🔥", result)
+
+  
+
+  // Helper function to format date as "Sunday, February 23, 2025"
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  };
+
+  // Group attachments by date
+  const groupedByDate = result.results.reduce((acc, attachment) => {
+    //const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
+    const dateKey = formatDate(attachment.createdAt);
+    if (!acc[dateKey]) {
+      acc[dateKey] = []; // Initialize array for the date
+    }
+    acc[dateKey].push(attachment); // Add the attachment to the corresponding date
+    return acc;
+  }, {});
+
+  // console.log('Grouped by Date:', groupedByDate);
+
+  // Transform into the desired output format
+  const result1 = Object.keys(groupedByDate).map((date) => ({
+    date: date,
+    attachments: groupedByDate[date]
+  }));
+
 
   sendResponse(res, {
     code: StatusCodes.OK,
-    data: result,
+    data: result1,
     message: 'All Contracts with Pagination',
     success: true,
   });

@@ -215,8 +215,6 @@ export class NoteService extends GenericService<typeof Note> {
     return new Date(date).toLocaleDateString('en-US', options);
   };
 
-
-
   // Group attachments by date
   const groupedByDate = attachments.reduce((acc, attachment) => {
     //const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
