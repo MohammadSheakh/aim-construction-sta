@@ -35,8 +35,8 @@ router.route('/:noteId').get(auth('common'), NoteController.getANote);
 //[🚧][🧑‍💻✅][🧪🆗]
 router
   .route('/changeStatus/:noteId')
-  .get(auth('common'), NoteController.changeStatusOfANote);
-
+  .get(auth('projectManager'), NoteController.changeStatusOfANote);
+  
 router.route('/update/:noteId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
@@ -64,7 +64,6 @@ router.route('/uploadImagesOrDocuments').post(
     upload.fields([
       { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
     ]),
-
   ],
   auth('common'),
   AttachmentController.createAttachment

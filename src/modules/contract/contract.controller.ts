@@ -101,7 +101,7 @@ const getAllContract = catchAsync(async (req, res) => {
 });
 
 const getAllContractWithPagination = catchAsync(async (req, res) => {
-  const filters = pick(req.query, [ '_id']); // 'projectName',
+  const filters = pick(req.query, [ '_id', 'projectId']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
   options.populate = [
