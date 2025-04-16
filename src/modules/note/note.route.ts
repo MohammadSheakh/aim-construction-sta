@@ -52,7 +52,7 @@ router.route('/create').post(
       { name: 'attachments', maxCount: 15 }, // Allow up to 5 cover photos
     ]),
   ],
-  auth('common'), // INFO :  but eta only superVisor er create korar kotha
+  auth('projectSupervisor'), // INFO :  but eta only superVisor er create korar kotha
   // validateRequest(UserValidation.createUserValidationSchema),
   // TODO : attachment upload handle kora lagbe
   NoteController.createNote

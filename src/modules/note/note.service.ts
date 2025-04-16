@@ -158,8 +158,14 @@ export class NoteService extends GenericService<typeof Note> {
       },
     ]);
 
+    const totalNoteCount = await Note.countDocuments({
+      projectId: projectId,
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    })
+
     return {
       notes: notesWithAttachmentCounts,
+      totalNoteCount,
       imageCount: totalCounts.length ? totalCounts[0].totalImages : 0,
       documentCount: totalCounts.length ? totalCounts[0].totalDocuments : 0
     }; ;
@@ -200,6 +206,30 @@ export class NoteService extends GenericService<typeof Note> {
       )
       .exec();
 
+      // Get the total image count of attachments
+      const totalImageCount = await Attachment.countDocuments({
+        attachedToType: noteOrTaskOrProject,
+        projectId: projectId,
+        attachmentType: 'image',
+        uploaderRole: uploaderRole,
+        createdAt: { $gte: startOfDay, $lte: endOfDay },
+      });
+
+       // Get the total document count of attachments
+      const totalDocumentCount = await Attachment.countDocuments({
+        attachedToType: noteOrTaskOrProject,
+        projectId: projectId,
+        attachmentType: 'document',
+        uploaderRole: uploaderRole,
+        createdAt: { $gte: startOfDay, $lte: endOfDay },
+      });
+
+
+      const totalNoteCount = await Note.countDocuments({
+        projectId: projectId,
+        createdAt: { $gte: startOfDay, $lte: endOfDay },
+      })
+
       //////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -231,7 +261,10 @@ export class NoteService extends GenericService<typeof Note> {
   // Transform into the desired output format
   const result = Object.keys(groupedByDate).map((date) => ({
     date: date,
-    attachments: groupedByDate[date]
+    attachments: groupedByDate[date],
+    totalNoteCount,
+    totalImageCount,
+    totalDocumentCount
   }));
 
       //////////////////////////////////////////////////////////////////////////////////////////
