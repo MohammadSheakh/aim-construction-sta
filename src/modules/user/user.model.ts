@@ -71,22 +71,8 @@ const userSchema = new Schema<TUser, UserModal>(
     // },
 
     address: {
-      streetAddress : {
         type: String,
         required: [false, 'Street Address is not required']
-      },
-      city : {
-        type: String,
-        required: [false, 'City is not required']
-      },
-      zipCode : {
-        type: String,
-        required: [false, 'Address is not required']
-      },
-      country : {
-        type: String,
-        required: [false, 'Address is not required']
-      },
     },
 
     companyName: { type: String },

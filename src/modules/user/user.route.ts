@@ -47,6 +47,18 @@ router
     [upload.single("profileImage")],
     UserController.updateProfileImage
   );
+
+  router
+  .route('/update-profile')
+  .put(
+    auth('common'),
+    [upload.single("profileImage")],
+    UserController.updateProfile
+  );
+
+
+
+
 // sub routes must be added after the main routes
 router
   .route('/profile')

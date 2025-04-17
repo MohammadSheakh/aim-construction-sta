@@ -30,12 +30,7 @@ export type TUser = {
   //   longitude: number;
   // };
   // gender: TGender;
-  address: {
-    streetAddress: string;
-    city: string;
-    zipCode: string;
-    country: string;
-  };
+  address: string;
   companyName : string;
   role: Role;
   superVisorsManagerId?: Types.ObjectId | null;

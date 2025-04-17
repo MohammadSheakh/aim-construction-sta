@@ -159,6 +159,37 @@ const getSingleUser = catchAsync(async (req, res) => {
 });
 
 //update profile image
+const updateProfile = catchAsync(async (req, res) => {
+  const userId = req.user.userId;
+  if (!userId) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are unauthenticated.');
+  }
+  if (req.file) {
+
+    const attachmentResult =
+      await attachmentService.uploadSingleAttachment(
+        req.file,
+        FolderName.user,
+        null,
+        req.user,
+        AttachedToType.project
+      );
+
+    console.log("attachment result ::: 🧑‍💻🧑‍💻", attachmentResult)            
+
+    req.body.profileImage = {
+      imageUrl: attachmentResult.attachment,
+    };
+  }
+  const result = await UserService.updateMyProfile(userId, req.body);
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Profile image updated successfully',
+  });
+});
+
+//update profile image
 const updateProfileImage = catchAsync(async (req, res) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -325,12 +356,15 @@ export const UserController = {
   getAllUsers,
   getSingleUser,
   updateMyProfile,
+  ///////////////////////////
+  updateProfile,
   updateProfileImage,
   updateUserStatus,
   getMyProfile,
   updateUserProfile,
   deleteMyProfile,
   //////////////////////////
+  
   getAllProjectsByUserId, 
   getAllUserWithPagination,
   getAllManager,

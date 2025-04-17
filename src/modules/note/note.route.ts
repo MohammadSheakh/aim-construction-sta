@@ -1,6 +1,5 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
-import validateRequest from '../../shared/validateRequest';
 import { NoteController } from './note.controller';
 import { AttachmentController } from '../attachments/attachment.controller';
 const multer = require('multer');
