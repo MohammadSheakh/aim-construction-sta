@@ -127,47 +127,65 @@ export class NoteService extends GenericService<typeof Note> {
     ]);
 
     // Global count of images and documents
-    const totalCounts = await Note.aggregate([
-      {
-        $match: {
-          projectId: new mongoose.Types.ObjectId(projectId),
-          createdAt: { $gte: startOfDay, $lte: endOfDay },
-        },
-      },
-      {
-        $lookup: {
-          from: "attachments",
-          localField: "attachments",
-          foreignField: "_id",
-          as: "attachmentDetails",
-        },
-      },
-      {
-        $unwind: "$attachmentDetails",
-      },
-      {
-        $group: {
-          _id: null,
-          totalImages: {
-            $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "image"] }, 1, 0] },
-          },
-          totalDocuments: {
-            $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "document"] }, 1, 0] },
-          },
-        },
-      },
-    ]);
+    // const totalCounts = await Note.aggregate([
+    //   {
+    //     $match: {
+    //       projectId: new mongoose.Types.ObjectId(projectId),
+    //       createdAt: { $gte: startOfDay, $lte: endOfDay },
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "attachments",
+    //       localField: "attachments",
+    //       foreignField: "_id",
+    //       as: "attachmentDetails",
+    //     },
+    //   },
+    //   {
+    //     $unwind: "$attachmentDetails",
+    //   },
+    //   {
+    //     $group: {
+    //       _id: null,
+    //       totalImages: {
+    //         $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "image"] }, 1, 0] },
+    //       },
+    //       totalDocuments: {
+    //         $sum: { $cond: [{ $eq: ["$attachmentDetails.attachmentType", "document"] }, 1, 0] },
+    //       },
+    //     },
+    //   },
+    // ]);
 
     const totalNoteCount = await Note.countDocuments({
       projectId: projectId,
       createdAt: { $gte: startOfDay, $lte: endOfDay },
     })
 
+    // Get the total image count of attachments
+    const totalImageCount = await Attachment.countDocuments({
+      attachedToType: 'note',
+      projectId: projectId,
+      attachmentType: 'image',
+      uploaderRole: 'projectSupervisor',
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    //  // Get the total document count of attachments
+    const totalDocumentCount = await Attachment.countDocuments({
+      attachedToType: 'note',
+      projectId: projectId,
+      attachmentType: 'document',
+      uploaderRole: 'projectSupervisor',
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
+
     return {
       notes: notesWithAttachmentCounts,
       totalNoteCount,
-      imageCount: totalCounts.length ? totalCounts[0].totalImages : 0,
-      documentCount: totalCounts.length ? totalCounts[0].totalDocuments : 0
+      imageCount: totalImageCount, // totalCounts.length ? totalCounts[0].totalImages : 0,
+      documentCount: totalDocumentCount // totalCounts.length ? totalCounts[0].totalDocuments : 0
     }; ;
   }
 
