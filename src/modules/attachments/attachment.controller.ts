@@ -26,7 +26,13 @@ const createAttachment = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.NOT_FOUND, 'noteOrTaskOrProject should be note or task or project');
   }
   let attachments = [];
-  
+
+  console.log("req.files 📢📢📢📢", req?.files?.attachments)
+
+  if(req?.files?.attachments == undefined){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Please upload at least one attachment');
+  }
+
     if (req.files && req.files.attachments ) {
       attachments.push(
         ...(await Promise.all(
