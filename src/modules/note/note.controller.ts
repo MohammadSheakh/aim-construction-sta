@@ -269,6 +269,22 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
   });
 });
 
+
+const getPreviewByDateAndProjectId = catchAsync(async (req, res) => {
+  console.log(req.query);
+  const { projectId, date } = req.query;
+  let result;
+  if (date && projectId) {
+    result = await noteService.getPreviewByDateAndProjectId(projectId, date);
+  }
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All notes by date and project id',
+    success: true,
+  });
+});
+
 //////////////////////////////
 
 const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId =
@@ -332,6 +348,7 @@ export const NoteController = {
   deleteById,
   /////////
   getAllByDateAndProjectId,
+  getPreviewByDateAndProjectId, 
   getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId,
   changeStatusOfANote,
 };

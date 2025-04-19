@@ -50,14 +50,11 @@ router
 
   router
   .route('/update-profile')
-  .put(
+  .patch(
     auth('common'),
     [upload.single("profileImage")],
     UserController.updateProfile
   );
-
-
-
 
 // sub routes must be added after the main routes
 router

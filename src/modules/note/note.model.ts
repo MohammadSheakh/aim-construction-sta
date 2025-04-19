@@ -28,7 +28,7 @@ const noteSchema = new Schema<INote>(
     
     projectId: {
       type: Schema.Types.ObjectId,
-      ref: 'DailyLog',
+      ref: 'Project',
       required: [false, 'DailyLog is required'],
     },
     

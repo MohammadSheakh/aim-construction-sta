@@ -18,6 +18,12 @@ router
   .route('/getAllByDateAndProjectId/')
   .get(auth('common'), NoteController.getAllByDateAndProjectId);
 
+  router
+  .route('/getPreviewByDateAndProjectId/')
+  .get(auth('common'), NoteController.getPreviewByDateAndProjectId);
+
+  
+
 //[🚧][🧑‍💻✅][🧪🆗] // query :: projectId, date, noteOrTaskOrProject, imageOrDocument
 router
   .route('/getAllImagesOfAllNotesOfADateAndProjectId/')

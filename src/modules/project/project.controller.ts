@@ -145,8 +145,22 @@ const getAllProjectWithPagination = catchAsync(async (req, res) => {
     'projectStatus',
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  
+  const query = {};
 
-  const result = await projectService.getAllWithPagination(filters, options);
+  // Create a copy of filter without isPreview to handle separately
+  const mainFilter = { ...filters };
+
+  // Loop through each filter field and add conditions if they exist
+  for (const key of Object.keys(mainFilter)) {
+    if (key === "projectName" && mainFilter[key] !== "") {
+      query[key] = { $regex: mainFilter[key], $options: "i" }; // Case-insensitive regex search for name
+    } else {
+      query[key] = mainFilter[key];
+    }
+  }
+
+  const result = await projectService.getAllWithPagination(query, options);
 
   sendResponse(res, {
     code: StatusCodes.OK,
