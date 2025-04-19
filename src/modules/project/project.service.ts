@@ -22,7 +22,7 @@ export class ProjectService extends GenericService<typeof Project> {
 
         //🟢 Query Notes with exact date match for the given projectId and date range
         const attachments = await Attachment.find({
-          //attachedToType: noteOrTaskOrProject, // 'note'
+          attachedToType: { $in: ['note', 'task', 'project'] }, // 'note'
           projectId: projectId,
           attachmentType: imageOrDocument, // 'image'
           uploaderRole : uploaderRole
@@ -31,6 +31,9 @@ export class ProjectService extends GenericService<typeof Project> {
             '-projectId -updatedAt -__v -attachedToId -note -_attachmentId -attachmentType'
           )
           .exec();
+
+
+          console.log('attachments 📢📢📢', attachments);
 
           // TODO :  query aro optimize korar try korte hobe 
         
