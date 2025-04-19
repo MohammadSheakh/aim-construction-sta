@@ -15,8 +15,6 @@ import { io } from '../../server';
 const projectService = new ProjectService();
 const attachmentService = new AttachmentService();
 
-///////////////////////////////////////////
-
 const createProject = catchAsync(async (req, res) => {
   req.body.projectStatus = 'open';
   req.body.projectManagerId = req.user.userId; // INFO: as project Manager is logged In 
