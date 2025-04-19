@@ -1,5 +1,4 @@
-import { Project } from './project.model';
-import { GenericService } from '../Generic Service/generic.services';
+
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
@@ -9,7 +8,6 @@ import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import {
   AttachedToType,
-  AttachmentType,
 } from '../attachments/attachment.constant';
 import { NotificationService } from '../notification/notification.services';
 import { io } from '../../server';
