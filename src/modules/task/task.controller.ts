@@ -18,6 +18,26 @@ import ApiError from '../../errors/ApiError';
 const taskService = new TaskService();
 const attachmentService = new AttachmentService();
 
+const changeStatusOfATask = catchAsync(async (req, res) => {
+  const result = await taskService.getById(req.params.taskId);
+  if (result) {
+    if (result.task_status === TaskStatus.open) {
+      result.task_status = TaskStatus.complete;
+    } else if (result.task_status === TaskStatus.complete) {
+      result.task_status = TaskStatus.open;
+    }
+
+    await result.save();
+  }
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Task status changed successfully',
+    success: true,
+  });
+});
+
+
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createTask = catchAsync(async (req, res) => {
   if (req.user.userId) {
@@ -142,7 +162,7 @@ const getAllTask = catchAsync(async (req, res) => {
 });
 
 const getAllTaskWithPagination = catchAsync(async (req, res) => {
-  const filters = pick(req.query, [ '_id', 'task_status', 'projectId']); // 'projectName',
+  const filters = pick(req.query, [ '_id', 'title', 'task_status', 'projectId']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
   options.populate = [
@@ -161,7 +181,21 @@ const getAllTaskWithPagination = catchAsync(async (req, res) => {
     }
   ];
 
-  const result = await taskService.getAllWithPagination(filters, options);
+  const query = {};
+
+  // Create a copy of filter without isPreview to handle separately
+  const mainFilter = { ...filters };
+
+  // Loop through each filter field and add conditions if they exist
+  for (const key of Object.keys(mainFilter)) {
+    if (key === "title" && mainFilter[key] !== "") {
+      query[key] = { $regex: mainFilter[key], $options: "i" }; // Case-insensitive regex search for name
+    } else {
+      query[key] = mainFilter[key];
+    }
+  }
+
+  const result = await taskService.getAllWithPagination(query, options);
 
   console.log("result 🔥🔥🔥", result);
 
@@ -229,4 +263,5 @@ export const TaskController = {
   getATask,
   updateById,
   deleteById,
+  changeStatusOfATask
 };

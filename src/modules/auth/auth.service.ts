@@ -172,12 +172,12 @@ const resendOtp = async (email: string) => {
   if (user?.isResetPassword) {
     const resetPasswordToken =
       await TokenService.createResetPasswordToken(user);
-    await OtpService.createResetPasswordOtp(user.email);
-    return { resetPasswordToken };
+     const otp = await OtpService.createResetPasswordOtp(user.email);
+    return { resetPasswordToken, otp }; // FIXME  :  otp remove korte hobe .. 
   }
   const verificationToken = await TokenService.createVerifyEmailToken(user);
-  await OtpService.createVerificationEmailOtp(user.email);
-  return { verificationToken };
+  const otp = await OtpService.createVerificationEmailOtp(user.email);
+  return { verificationToken , otp }; // FIXME  :  otp remove korte hobe .. 
 };
 
 const resetPassword = async (

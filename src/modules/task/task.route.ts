@@ -15,7 +15,7 @@ router.route('/paginate').get(
 );
 
 router.route('/:taskId').get(
-  auth('projectManager'),
+  auth('common'),
   TaskController.getATask
 );
 
@@ -45,5 +45,11 @@ router.route('/delete/:taskId').delete(
   auth('projectManager'),
   TaskController.deleteById
 );
+
+
+//[🚧][🧑‍💻✅][🧪🆗]
+router
+  .route('/changeStatus/:taskId')
+  .get(auth('common'), TaskController.changeStatusOfATask);
 
 export const TaskRoutes = router;

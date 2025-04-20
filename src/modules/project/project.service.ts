@@ -70,7 +70,4 @@ export class ProjectService extends GenericService<typeof Project> {
 
         return result;
     }
-
-    
-    
 }

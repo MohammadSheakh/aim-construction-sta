@@ -56,8 +56,8 @@ router.route('/create').post(
   ProjectController.createProject
 );
 
-// router
-//   .route('/delete/:projectId')
-//   .delete(auth('projectManager'), ProjectController.deleteById);
+router
+  .route('/soft-delete/:projectId')
+  .delete(auth('projectManager'), ProjectController.softDeleteById);
 
 export const ProjectRoutes = router;

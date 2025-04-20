@@ -55,6 +55,9 @@ const verifyEmail = catchAsync(async (req, res) => {
 const resendOtp = catchAsync(async (req, res) => {
   const { email } = req.body;
   const result = await AuthService.resendOtp(email);
+
+  console.log("result from resend otp 📢📢📢📢", result)
+
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Otp sent successfully',
