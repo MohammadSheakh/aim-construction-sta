@@ -77,12 +77,21 @@ const forgotPassword = catchAsync(async (req, res) => {
 
 const changePassword = catchAsync(async (req, res) => {
   const { userId } = req.user;
+  if(!userId){
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized');
+  }
   const { currentPassword, newPassword } = req.body;
+  if(!currentPassword || !newPassword){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'currentPassword and newPassword  is required');
+  }
   const result = await AuthService.changePassword(
     userId,
     currentPassword,
     newPassword,
   );
+
+  console.log("📢 result change project 📢", result);
+  
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Password changed successfully',
