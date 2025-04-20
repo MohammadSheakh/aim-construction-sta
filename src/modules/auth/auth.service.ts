@@ -20,7 +20,7 @@ const validateUserStatus = (user: TUser) => {
   }
 };
 const createUser = async (userData: TUser) => {
-  console.log("userData 🔥🔥🔥🔥 ", userData);
+  console.log("userData 🔥🔥🔥 ", userData);
   if(userData.role == 'projectSupervisor'){
     if(userData.superVisorsManagerId == null){
       throw new ApiError(StatusCodes.BAD_REQUEST, 'SuperVisor Manager Id is required');
