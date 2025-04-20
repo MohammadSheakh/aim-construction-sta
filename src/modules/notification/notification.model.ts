@@ -30,6 +30,10 @@ const notificationModel = new Schema<INotification>(
       type: String,
     },
     viewStatus: { type: Boolean, default: false },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

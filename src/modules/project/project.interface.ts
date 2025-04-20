@@ -30,7 +30,8 @@ export interface IProject {
       required: [false, 'DailyLogs is not required'],
     },
   ],
-  projectStatus : Status.completed | Status.open
+  projectStatus : Status.completed | Status.open,
+  isDeleted : Boolean
   // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
 }
 

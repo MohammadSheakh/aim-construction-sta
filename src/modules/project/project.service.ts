@@ -10,6 +10,8 @@ export class ProjectService extends GenericService<typeof Project> {
         super(Project);
     }
 
+    // project must be softDeleted // its already implemented in Generic Service .. 
+
     async getAllimagesOrDocumentOFnoteOrTaskByProjectId(
         projectId: string,
         noteOrTaskOrProject: string,
@@ -67,6 +69,8 @@ export class ProjectService extends GenericService<typeof Project> {
   }));
 
         return result;
-      }
+    }
+
+    
     
 }

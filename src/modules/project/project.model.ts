@@ -72,7 +72,11 @@ const projectSchema = new Schema<IProject>(
       // default : Status.open
       // TODO : shob enume  default set korte hobe 
       // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
-    }
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

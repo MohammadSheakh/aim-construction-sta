@@ -179,14 +179,17 @@ const updateById = catchAsync(async (req, res) => {
   });
 });
 
-const deleteById = catchAsync(async (req, res) => {
-  await projectService.deleteById(req.params.projectId);
+
+const softDeleteById = catchAsync(async (req, res) => {
+  const result = await projectService.softDeleteById(req.params.projectId);
   sendResponse(res, {
     code: StatusCodes.OK,
+    data: result,
     message: 'Project deleted successfully',
     success: true,
   });
-});
+}) 
+
 
 ///////////////////////////////////////
 
@@ -220,7 +223,7 @@ export const ProjectController = {
   getAllProjectWithPagination,
   getAProject,
   updateById,
-  deleteById,
+  softDeleteById,
   ///////////////////////
   getAllimagesOrDocumentOFnoteOrTaskOrProjectByProjectId,
   // getProjectByProjectName

@@ -49,4 +49,12 @@ export class GenericService<T> {
   async deleteById(id: string) {
     return await this.model.findByIdAndDelete(id).select('-__v');
   }
+
+  async softDeleteById(id: string) {
+    return await this.model.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true }
+    );
+  }
 }

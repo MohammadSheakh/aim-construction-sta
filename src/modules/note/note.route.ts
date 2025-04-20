@@ -74,6 +74,7 @@ router.route('/uploadImagesOrDocuments').post(
   AttachmentController.createAttachment
 )
 
+// eta front-end e integrate kora lagbe
 router
   .route('/delete/:noteId')
   .delete(auth('common'), NoteController.deleteById);

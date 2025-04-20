@@ -11,6 +11,7 @@ export interface INotification {
   linkId?: Types.ObjectId | string;
   role: UploaderRole.projectManager | UploaderRole.projectSupervisor;
   viewStatus?: boolean;
+  isDeleted: Boolean,
   createdAt?: Date;
   updatedAt?: Date;
 }

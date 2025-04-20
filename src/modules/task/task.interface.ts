@@ -15,6 +15,7 @@ export interface ITask {
   description: string; // Required field for task description
   attachments: Types.ObjectId[]; // Array of ObjectId references to Attachment
   createdBy: Types.ObjectId | string; 
+  isDeleted : Boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -37,6 +37,10 @@ const noteSchema = new Schema<INote>(
       enum: [noteStatus.accepted ,noteStatus.pending],  
       required: [false, 'Status is required. It can be accepted / pending'],
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

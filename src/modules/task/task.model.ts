@@ -43,6 +43,10 @@ const taskSchema = new Schema<ITask>(
         required: [true, 'Attachments is required'],
       }
     ],
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     //viewStatus: { type: Boolean, default: false },
   },
   { timestamps: true }

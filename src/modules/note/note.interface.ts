@@ -14,6 +14,7 @@ export interface INote {
   createdAt?: Date;
   updatedAt?: Date;
   isAccepted? : noteStatus.accepted | noteStatus.pending;
+  isDeleted : Boolean;
 }
 
 export interface INoteModel extends Model<INote> {
