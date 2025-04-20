@@ -20,6 +20,7 @@ const validateUserStatus = (user: TUser) => {
   }
 };
 const createUser = async (userData: TUser) => {
+  console.log("userData 🔥🔥🔥🔥 ", userData);
   if(userData.role == 'projectSupervisor'){
     if(userData.superVisorsManagerId == null){
       throw new ApiError(StatusCodes.BAD_REQUEST, 'SuperVisor Manager Id is required');
@@ -38,8 +39,9 @@ const createUser = async (userData: TUser) => {
       const verificationToken =
         await TokenService.createVerifyEmailToken(existingUser);
       //create verification email otp
-      await OtpService.createVerificationEmailOtp(existingUser.email);
-      return { verificationToken };
+      const {otp} = await OtpService.createVerificationEmailOtp(existingUser.email);
+      console.log("OTP ::: FIXME 🟢🟢", otp);
+      return { otp, verificationToken }; // FIXME  : otp remove korte hobe ekhan theke ..
     }
   }
 

@@ -7,6 +7,9 @@ import ApiError from '../../errors/ApiError';
 //[🚧][🧑‍💻✅][🧪] // 🆗 
 const register = catchAsync(async (req, res) => {
   const result = await AuthService.createUser(req.body);
+
+  console.log("result from auth.controller 📢📢 ", result);
+
   sendResponse(res, {
     code: StatusCodes.CREATED,
     message: 'User created successfully, please verify your email',
