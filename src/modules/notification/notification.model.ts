@@ -29,6 +29,20 @@ const notificationModel = new Schema<INotification>(
     linkId: {
       type: String,
     },
+    notificationFor: {
+      type : String,
+      enum: ['project', 'task', 'note', 'attachment'],
+      required: [true, 'Notification for is required'],
+    },
+    projectId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: [false, 'Project is required'],
+    },
+    extraInformation : {
+      type: String,
+      required: [false, 'Extra information is not required'],
+    },
     viewStatus: { type: Boolean, default: false },
     isDeleted: {
       type: Boolean,

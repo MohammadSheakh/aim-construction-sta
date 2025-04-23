@@ -80,14 +80,23 @@ const createProject = catchAsync(async (req, res) => {
       //     result.projectSuperVisorId.toString()
       //   );
       // }
+
+      const MAX_TITLE_LENGTH = 30; // Set a max length for the title
+
+      const truncatedProjectName = result.projectName.length > MAX_TITLE_LENGTH 
+        ? result.projectName.substring(0, MAX_TITLE_LENGTH) + '...' 
+        : result.projectName;
      
       // TODO : notification er title ta change kora lagte pare .. 
       // Save Notification to Database
       const notificationPayload = {
-        title: `New project ${result.projectName} has been created And assigned to you by ${req.user.userName}`,
+        title: `Project ${truncatedProjectName} has been created And assigned to you by ${req.user.userName}`,
         // message: `A new task "${result.title}" has been created by `,
         receiverId: result?.projectSuperVisorId,
         role: 'projectSupervisor', // If receiver is the projectManager
+        notificationFor: 'project',
+        projectId : result._id, 
+        //extraInformation : result._id,
         linkId: result._id,
       };
   

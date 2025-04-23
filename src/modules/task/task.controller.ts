@@ -114,12 +114,22 @@ const createTask = catchAsync(async (req, res) => {
       );
     }
 
+    const MAX_TITLE_LENGTH = 23; // Set a max length for the title
+
+      const truncatedTaskName = result.title.length > MAX_TITLE_LENGTH 
+        ? result.title.substring(0, MAX_TITLE_LENGTH) + '...' 
+        : result.title;
+
       const notificationPayload = {
-        title: `New Task ${result.title} Created has been created by ${req.user.userName}.`,
+        title: `Task ${truncatedTaskName} Created has been created by ${req.user.userName}.`,
         // message: `A new task ${result.title} has been created by ${req.user.userName}.`,
         receiverId: project.projectSuperVisorId, // receiver is  projectSuperVisor
+        notificationFor: 'task',
         role: "projectSupervisor", // TODO :  check korte hobe .. thik ase kina .. 
         image: project.projectLogo || "", // req.user.profilePicture || "", // Optional
+        projectId : project._id, 
+        extraInformation : project.projectName,
+
         linkId: result._id, // Link to the note
       };
   

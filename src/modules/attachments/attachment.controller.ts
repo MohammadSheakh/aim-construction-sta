@@ -51,9 +51,7 @@ const createAttachment = catchAsync(async (req, res) => {
     }
 
     // give me projectSupervisorId
-    const projectNameAndSuperVisorId = await Project.findById(req.body.projectId).select('projectSuperVisorId projectName');
-
-    
+    const projectNameAndSuperVisorId = await Project.findById(req.body.projectId).select('projectSuperVisorId projectName projectManagerId');
 
     if(projectNameAndSuperVisorId && projectNameAndSuperVisorId.projectSuperVisorId){
 
@@ -74,6 +72,7 @@ const createAttachment = catchAsync(async (req, res) => {
       title: `New attachment of ${projectNameAndSuperVisorId.projectName}  ${noteOrTaskOrProject}  has been uploaded  by ${req.user.userName}`,
       // message: `A new task "${result.title}" has been created by `,
       receiverId: projectNameAndSuperVisorId.projectSuperVisorId,
+      notificationFor: 'attachment',
       role: UploaderRole.projectSupervisor, // If receiver is the projectManager
       // linkId: result._id, // FIXME  // TODO : attachment related notifiation e click korle .. kothay niye jabe ?
     };

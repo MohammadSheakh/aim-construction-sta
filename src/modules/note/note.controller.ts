@@ -145,13 +145,21 @@ const createNote = catchAsync(async (req, res) => {
     //   );
     // }
 
+    const MAX_TITLE_LENGTH = 23; // Set a max length for the title
+
+    const truncatedTitle = result.title.length > MAX_TITLE_LENGTH 
+        ? result.title.substring(0, MAX_TITLE_LENGTH) + '...' 
+        : result.title;
+
     // Save Notification to Database
     const notificationPayload = {
-      title: `New note ${result.title} has been created by ${req.user.userName}`,
+      title: `Note ${truncatedTitle} has been created by ${req.user.userName}`,
       // message: `A new task "${result.title}" has been created by `,
       receiverId: project?.projectManagerId,
       role: 'projectManager', // If receiver is the projectManager
+      notificationFor: 'note',
       linkId: result._id,
+      projectId : project._id, 
     };
 
     const notification = await NotificationService.addNotification(

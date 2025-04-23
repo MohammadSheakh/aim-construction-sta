@@ -10,6 +10,13 @@ export interface INotification {
   // image?: string; // age object chilo .. 
   linkId?: Types.ObjectId | string;
   role: UploaderRole.projectManager | UploaderRole.projectSupervisor;
+  notificationFor: {
+    type : String,
+    enum: ['project', 'task', 'note', 'attachment'],
+    required: [true, 'notificationFor is required'],
+  },
+  projectId ?: Types.ObjectId | undefined ;
+  extraInformation ?: string;
   viewStatus?: boolean;
   isDeleted: Boolean,
   createdAt?: Date;
