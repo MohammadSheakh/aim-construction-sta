@@ -344,7 +344,7 @@ const getAllManager  = catchAsync(async (req, res) => {
 });
 
 const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
-  const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'});
+  const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'}).populate('userId');
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,

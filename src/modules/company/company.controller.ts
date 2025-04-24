@@ -42,11 +42,11 @@ const createCompany = catchAsync(async (req, res) => {
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const getACompanyByName = catchAsync(async (req, res) => {
-  if(req.body.companyName === undefined){
+  if(req.query.companyName === ""){
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Company name is required');
   }
   const result = await Company.findOne({
-    name: { $regex: new RegExp(req.body.companyName, 'i') }, // 'i' makes it case-insensitive
+    name: { $regex: new RegExp(req?.query?.companyName, 'i') }, // 'i' makes it case-insensitive
   });
 
   console.log("result 🚮🚮", result);
