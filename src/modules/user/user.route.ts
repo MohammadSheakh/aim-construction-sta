@@ -26,6 +26,9 @@ router.route('/getAllManager').get(
   UserController.getAllManager
 );
 
+router.route('/getAllManagerByCompanyId').get(
+  UserController.getAllManagerByCompanyId
+);
 
 
 

@@ -334,7 +334,7 @@ const getAllUserWithPagination = catchAsync(async (req, res) => {
 });
 
 const getAllManager  = catchAsync(async (req, res) => {
-  const res = await UserCompany.find({ companyId : req.body.companyId}).populate('userId');
+  //const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'}); // .populate('userId')
   const result = await User.find({ role: 'projectManager' }).select('fname lname');
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -343,6 +343,14 @@ const getAllManager  = catchAsync(async (req, res) => {
   });
 });
 
+const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
+  const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'});
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'All Manager',
+  });
+});
 const getAllProjectSupervisorsByProjectManagerId  = catchAsync(async (req, res) => {
 
   const result = await User.find({ role: 'projectSupervisor', superVisorsManagerId: req?.user?.userId  }).select('');
@@ -370,5 +378,6 @@ export const UserController = {
   getAllProjectsByUserId, 
   getAllUserWithPagination,
   getAllManager,
-  getAllProjectSupervisorsByProjectManagerId
+  getAllProjectSupervisorsByProjectManagerId,
+  getAllManagerByCompanyId
 };
