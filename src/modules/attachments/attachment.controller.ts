@@ -157,8 +157,10 @@ const deleteById = catchAsync(async (req, res) => {
   }
   let results;
   if(req.user.role != attachment.uploaderRole){
-    StatusCodes.FORBIDDEN, 'You are not authorized to delete this attachment'
+    throw new ApiError(StatusCodes.FORBIDDEN, 'You are not authorized to delete this attachment');
   }
+
+  console.log("=========== 📢start📢")
 
   if(req.user.role == attachment.uploaderRole)
   {
@@ -166,14 +168,23 @@ const deleteById = catchAsync(async (req, res) => {
       {
         // taile amra just attachment  delete korbo 
         results = await attachmentService.deleteById(req.params.attachmentId);
-      }else if (attachment.attachedToType == 'note'){
+
+        console.log('project 📢📢📢', results);
+        await attachmentService.deleteAttachment(results.attachment);
+      }
+      else if (attachment.attachedToType == 'note'){
         const note =  await noteService.getById(attachment.attachedToId);
         note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
         const result =  await noteService.updateById(note._id, note)
         if(result){
           results = await attachmentService.deleteById(req.params.attachmentId);
         }
-      }else if (attachment.attachedToType == 'task'){
+
+        await attachmentService.deleteAttachment(results.attachment);
+
+        console.log('note 📢📢📢', results);
+      }
+      else if (attachment.attachedToType == 'task'){
         // task er jonno kaj korte hobe .. 
         console.log("🔥🔥🔥 hit... ")
         const note =  await taskService.getById(attachment.attachedToId);
@@ -183,12 +194,18 @@ const deleteById = catchAsync(async (req, res) => {
         if(result){
           results = await attachmentService.deleteById(req.params.attachmentId);
         }
+
+        await attachmentService.deleteAttachment(results.attachment);
+        console.log('task 📢📢📢', results);
       }
       // TODO :  task er jonno kaj korte hobe ... 
-  }else{
+  }
+  else{
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized to delete this attachment');
   }
   
+  console.log("=========== 📢 end 📢")
+
   // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,

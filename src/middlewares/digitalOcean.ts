@@ -25,7 +25,7 @@ const s3 = new S3Client({
 
 /////////// From Rakib Vai .. 
 // Upload file to DigitalOcean Space
-const uploadFileToSpace = async (
+export const uploadFileToSpace = async (
   file: Express.Multer.File, // : Express.Multer.File
   folder : string // : string
 ) => {
@@ -101,7 +101,7 @@ const uploadFileToSpaceMohammadSheakh = async (
 
 
 // Delete a specific file from DigitalOcean Space
-const deleteFileFromSpace = async (fileUrl : string) => {
+export const deleteFileFromSpace = async (fileUrl : string) => {
   // : string  : Promise<void>
   const fileKey = fileUrl.split(
     `${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/`
@@ -115,8 +115,8 @@ const deleteFileFromSpace = async (fileUrl : string) => {
   try {
     const command = new DeleteObjectCommand(deleteParams);
     const result = await s3.send(command);
-    console.log("command" , command)
-    console.log(`Successfully deleted ${fileKey} from DigitalOcean Space`);
+    console.log("command  🗑️result🚮" , command, result)
+    console.log(`Successfully deleted ${fileKey} from DigitalOcean Space 🗑️🚮`);
   } catch (error) {
     console.error("Error deleting from DigitalOcean Space:", error);
     throw new Error("Failed to delete file from DigitalOcean Space");
