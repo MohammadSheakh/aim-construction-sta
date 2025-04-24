@@ -6,7 +6,7 @@ const companySchema = new Schema<ICompany>(
   {
     name: {
       type: String,
-      required: [true, 'attachment is required'],
+      required: [true, 'name is required'],
     },
   },
   { timestamps: true }

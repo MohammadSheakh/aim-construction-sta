@@ -10,6 +10,8 @@ import { TokenService } from '../token/token.service';
 import { TokenType } from '../token/token.interface';
 import { OtpType } from '../otp/otp.interface';
 import { Secret } from 'jsonwebtoken';
+import { UserCompany } from '../userCompany/userCompany.model';
+import { Company } from '../company/company.model';
 
 const validateUserStatus = (user: TUser) => {
   if (user.isDeleted) {
@@ -21,7 +23,16 @@ const validateUserStatus = (user: TUser) => {
 };
 const createUser = async (userData: TUser) => {
   console.log("userData 🔥🔥🔥 ", userData);
+
+  // as we know userData er companyId must dite hobe .. 
+
+  if(userData.companyId == null){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company Id is required');
+  }
+
   if(userData.role == 'projectSupervisor'){
+
+    
     if(userData.superVisorsManagerId == null){
       throw new ApiError(StatusCodes.BAD_REQUEST, 'SuperVisor Manager Id is required');
     }
@@ -46,6 +57,26 @@ const createUser = async (userData: TUser) => {
   }
 
   const user = await User.create(userData);
+
+  // project manager er jonno user company create korte hobe ... 
+
+  // userData.companyId valid kina .. sheta check korte hobe .. 
+  const company = await Company.findById(userData.companyId);
+  if(!company){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company Name is not valid');
+  }
+
+  // userCompany collection e add korte hobe 
+  const userCompany = await UserCompany.create({
+    userId: user._id,
+    companyId: userData.companyId,
+    role: userData.role,
+  })
+
+  if(!userCompany){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'User Company is not created');
+  }
+  
   // cantunderstand :  
   //create verification email token
   const verificationToken = await TokenService.createVerifyEmailToken(user);

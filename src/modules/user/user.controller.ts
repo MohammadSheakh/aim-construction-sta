@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType } from '../attachments/attachment.constant';
+import { UserCompany } from '../userCompany/userCompany.model';
 
 const userCustomService = new UserCustomService();
 const attachmentService = new AttachmentService();
@@ -333,6 +334,7 @@ const getAllUserWithPagination = catchAsync(async (req, res) => {
 });
 
 const getAllManager  = catchAsync(async (req, res) => {
+  const res = await UserCompany.find({ companyId : req.body.companyId}).populate('userId');
   const result = await User.find({ role: 'projectManager' }).select('fname lname');
   sendResponse(res, {
     code: StatusCodes.OK,
