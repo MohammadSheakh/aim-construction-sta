@@ -17,6 +17,10 @@ const companyService = new CompanyService();
 const createCompany = catchAsync(async (req, res) => {
   // check if the company name already exists ... 
 
+  if(req.body.name === ""){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company name is required');
+  }
+
   // Use $regex for partial matching (case-insensitive)
   const existingCompany = await Company.findOne({
     name: { $regex: new RegExp(req.body.name, 'i') }, // 'i' makes it case-insensitive
@@ -38,9 +42,14 @@ const createCompany = catchAsync(async (req, res) => {
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const getACompanyByName = catchAsync(async (req, res) => {
+  if(req.body.companyName === undefined){
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company name is required');
+  }
   const result = await Company.findOne({
-    name: { $regex: new RegExp(req.body.name, 'i') }, // 'i' makes it case-insensitive
+    name: { $regex: new RegExp(req.body.companyName, 'i') }, // 'i' makes it case-insensitive
   });
+
+  console.log("result 🚮🚮", result);
 
   if (!result) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Company not found');

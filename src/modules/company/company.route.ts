@@ -34,7 +34,6 @@ router.route('/').get(
 
 //[🚧][🧑‍💻✅][🧪🆗 ]
 router.route('/create').post(
-  
   CompanyController.createCompany
 );
 
