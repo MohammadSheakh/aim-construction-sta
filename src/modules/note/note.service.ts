@@ -118,6 +118,11 @@ export class NoteService extends GenericService<typeof Note> {
         },
       },
       {
+        $sort: {
+          createdAt: -1, // Sort by createdAt in descending order (recent first)
+        },
+      },
+      {
         $project: {
           _id: 1,
           title: 1,

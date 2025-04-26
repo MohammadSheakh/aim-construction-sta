@@ -178,12 +178,7 @@ const getAllTaskWithPagination = catchAsync(async (req, res) => {
   options.populate = [
     {
       path: "assignedTo",
-      // match: isPreviewFilter,
       select: " -createdAt -updatedAt -__v -failedLoginAttempts -isDeleted -isResetPassword -isEmailVerified -isDeleted -superVisorsManagerId -role -fcmToken -profileImage -email ", //-audioFile
-      // populate: {
-      //   path: "languageId",
-      //   select: "-createdAt -updatedAt -__v",
-      // },
     },
     {
       path: "attachments",

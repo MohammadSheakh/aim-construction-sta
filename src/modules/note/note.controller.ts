@@ -375,8 +375,6 @@ const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
   });
 });
 
-
-
 // const getAllDailyLog = catchAsync(async (req, res) => {
 
 export const NoteController = {
