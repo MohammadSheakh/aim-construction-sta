@@ -327,7 +327,9 @@ const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId =
 // TODO  : Deny er jonno function lagbe ..
 // TODO  :  status change korar ei system ta thik ase kina check korte hobe chat gpt er shathe kotha bole
 const changeStatusOfANote = catchAsync(async (req, res) => {
+ 
   const result = await noteService.getById(req.params.noteId);
+
   if (result) {
     if (result.isAccepted === noteStatus.accepted) {
       result.isAccepted = noteStatus.pending;
@@ -345,6 +347,36 @@ const changeStatusOfANote = catchAsync(async (req, res) => {
   });
 });
 
+const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
+  
+  const {status} = req.query;
+
+  // Step 1: Check if status is present in req.query
+  if (!status) {
+    return res.status(400).json({ error: 'Status is required' });
+  }
+
+  // Step 2: Check if status is one of the valid values in noteStatus enum
+  if (!Object.values(noteStatus).includes(status as noteStatus)) {
+    return res.status(400).json({ error: `Invalid status value. it can be  ${Object.values(noteStatus).join(', ')}` });
+  }
+
+  const result = await noteService.getById(req.params.noteId);
+
+  result.isAccepted = status;
+
+  await result.save();
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Note status changed successfully',
+    success: true,
+  });
+});
+
+
+
 // const getAllDailyLog = catchAsync(async (req, res) => {
 
 export const NoteController = {
@@ -359,4 +391,5 @@ export const NoteController = {
   getPreviewByDateAndProjectId, 
   getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId,
   changeStatusOfANote,
+  changeStatusOfANoteWithDeny
 };

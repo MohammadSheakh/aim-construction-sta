@@ -13,7 +13,7 @@ export interface INote {
   viewStatus?: boolean; // Optional field for viewStatus
   createdAt?: Date;
   updatedAt?: Date;
-  isAccepted? : noteStatus.accepted | noteStatus.pending;
+  isAccepted? : noteStatus.accepted | noteStatus.pending | noteStatus.denied;
   isDeleted : Boolean;
 }
 

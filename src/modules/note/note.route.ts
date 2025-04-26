@@ -41,6 +41,11 @@ router.route('/:noteId').get(auth('common'), NoteController.getANote);
 router
   .route('/changeStatus/:noteId')
   .get(auth('projectManager'), NoteController.changeStatusOfANote);
+
+//===============================================================[🚧][🧑‍💻✅][🧪🆗V2]
+router
+  .route('/changeStatusOfANote/:noteId')
+  .get(auth('projectManager'), NoteController.changeStatusOfANoteWithDeny);
   
 router.route('/update/:noteId').put(
   auth('projectManager'),
