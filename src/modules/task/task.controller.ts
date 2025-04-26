@@ -18,6 +18,36 @@ import ApiError from '../../errors/ApiError';
 const taskService = new TaskService();
 const attachmentService = new AttachmentService();
 
+
+
+const changeStatusOfATaskFix = catchAsync(async (req, res) => {
+  const {status} = req.query;
+
+  // Step 1: Check if status is present in req.query
+    if (!status) {
+      return res.status(400).json({ error: 'Status is required' });
+    }
+  
+    // Step 2: Check if status is one of the valid values in noteStatus enum
+    if (!Object.values(TaskStatus).includes(status as TaskStatus)) {
+      return res.status(400).json({ error: `Invalid status value. it can be  ${Object.values(noteStatus).join(', ')}` });
+    }
+  
+  const result = await taskService.getById(req.params.taskId);
+
+  result.task_status = status;
+
+  
+  await result.save();
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Task status changed successfully',
+    success: true,
+  });
+});
+
 const changeStatusOfATask = catchAsync(async (req, res) => {
   const result = await taskService.getById(req.params.taskId);
   if (result) {
@@ -268,5 +298,6 @@ export const TaskController = {
   getATask,
   updateById,
   deleteById,
-  changeStatusOfATask
+  changeStatusOfATask,
+  changeStatusOfATaskFix
 };

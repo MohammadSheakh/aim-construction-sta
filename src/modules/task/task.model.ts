@@ -7,7 +7,7 @@ const taskSchema = new Schema<ITask>(
   {
     task_status: {
       type: String,
-      enum: [TaskStatus.complete, TaskStatus.done, TaskStatus.open], // only open or complete hoite pare 
+      enum: [TaskStatus.complete, TaskStatus.denied, TaskStatus.open], // only open or complete hoite pare 
       required: [true, 'Task status is required'],
     },
     assignedTo: {

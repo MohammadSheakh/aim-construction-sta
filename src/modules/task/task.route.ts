@@ -52,4 +52,8 @@ router
   .route('/changeStatus/:taskId')
   .get(auth('common'), TaskController.changeStatusOfATask);
 
+  router
+  .route('/changeStatusOfATask/:taskId')
+  .get(auth('common'), TaskController.changeStatusOfATaskFix);
+
 export const TaskRoutes = router;
