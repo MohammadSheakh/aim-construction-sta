@@ -174,6 +174,11 @@ const deleteById = catchAsync(async (req, res) => {
       }
       else if (attachment.attachedToType == 'note'){
         const note =  await noteService.getById(attachment.attachedToId);
+
+        if(!note){
+          throw new ApiError(StatusCodes.NOT_FOUND, 'Note not found');
+        }
+
         note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
         const result =  await noteService.updateById(note._id, note)
         if(result){
@@ -187,10 +192,13 @@ const deleteById = catchAsync(async (req, res) => {
       else if (attachment.attachedToType == 'task'){
         // task er jonno kaj korte hobe .. 
         console.log("🔥🔥🔥 hit... ")
-        const note =  await taskService.getById(attachment.attachedToId);
-        console.log("note 🔥🔥", note)
-        note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
-        const result =  await taskService.updateById(note._id, note)
+        const task =  await taskService.getById(attachment.attachedToId);
+        if(!task){
+          throw new ApiError(StatusCodes.NOT_FOUND, 'Task not found');
+        }
+        console.log("task 🔥🔥", task);
+        task.attachments = task.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
+        const result =  await taskService.updateById(task._id, task)
         if(result){
           results = await attachmentService.deleteById(req.params.attachmentId);
         }
@@ -215,7 +223,6 @@ const deleteById = catchAsync(async (req, res) => {
   });
 });
 
-
 const addOrRemoveReact = catchAsync(async (req, res) => {
   const { attachmentId } = req.params;
   // const { reactionType } = req.body;
@@ -237,7 +244,6 @@ const addOrRemoveReact = catchAsync(async (req, res) => {
   });
 }
 );
-
 
 export const AttachmentController = {
   createAttachment,

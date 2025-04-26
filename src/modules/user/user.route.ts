@@ -30,8 +30,6 @@ router.route('/getAllManagerByCompanyId').get(
   UserController.getAllManagerByCompanyId
 );
 
-
-
 //[🚧][🧑‍💻✅][🧪🆗] //  
 // get all Projects by User Id  // :userId
 router.route('/projects').get(auth('common'),
