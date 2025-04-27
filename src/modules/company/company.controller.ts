@@ -51,6 +51,10 @@ const getACompanyByName = catchAsync(async (req, res) => {
 
   console.log("result 🚮🚮", result);
 
+  if (result.length === 0) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Company not found');
+  }
+
   if (!result) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Company not found');
   }

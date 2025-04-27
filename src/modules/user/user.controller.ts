@@ -344,15 +344,18 @@ const getAllManager  = catchAsync(async (req, res) => {
 });
 
 const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
-  const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'}).populate('userId');
+  if (!req.query.companyId) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company ID not found in request');
+  }
+  const result = await UserCompany.find({ companyId : req.query.companyId, role : 'projectManager'}).populate('userId');
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
     message: 'All Manager',
   });
 });
-const getAllProjectSupervisorsByProjectManagerId  = catchAsync(async (req, res) => {
 
+const getAllProjectSupervisorsByProjectManagerId  = catchAsync(async (req, res) => {
   const result = await User.find({ role: 'projectSupervisor', superVisorsManagerId: req?.user?.userId  }).select('');
   sendResponse(res, {
     code: StatusCodes.OK,
