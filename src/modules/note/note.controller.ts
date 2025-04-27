@@ -370,7 +370,7 @@ const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
-    message: 'Note status changed successfully',
+    message: `Note is ${status}`,
     success: true,
   });
 });
