@@ -45,7 +45,7 @@ const getACompanyByName = catchAsync(async (req, res) => {
   if(req.query.companyName === ""){
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Company name is required');
   }
-  const result = await Company.findOne({
+  const result = await Company.find({
     name: { $regex: new RegExp(req?.query?.companyName, 'i') }, // 'i' makes it case-insensitive
   });
 
