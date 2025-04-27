@@ -92,6 +92,13 @@ const login = async (email: string, reqpassword: string, fcmToken : string) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
   }
 
+  if(user.isEmailVerified === false){ 
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'User not verified, Please verify your email, Check your email.',
+    );
+  }
+
   validateUserStatus(user);
 
   // if (!user.isEmailVerified) {

@@ -347,7 +347,10 @@ const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
   if (!req.query.companyId) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Company ID not found in request');
   }
-  const result = await UserCompany.find({ companyId : req.query.companyId, role : 'projectManager'}).populate('userId');
+  const result = await UserCompany.find({ companyId : req.query.companyId, role : 'projectManager'}).populate( {
+    path : 'userId',
+    select : 'fname lname'
+  }) ;
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
