@@ -122,10 +122,7 @@ const getAllContractWithPagination = catchAsync(async (req, res) => {
 
   const result = await contractService.getAllWithPagination(filters, options);
 
-  console.log("result 🔥🔥", result)
-
-  
-
+ 
   // Helper function to format date as "Sunday, February 23, 2025"
   const formatDate = (date) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

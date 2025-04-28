@@ -175,9 +175,7 @@ const updateProfile = catchAsync(async (req, res) => {
         req.user,
         AttachedToType.project
       );
-
-    console.log("attachment result ::: 🧑‍💻🧑‍💻", attachmentResult)            
-
+      
     req.body.profileImage = {
       imageUrl: attachmentResult.attachment,
     };
@@ -206,8 +204,6 @@ const updateProfileImage = catchAsync(async (req, res) => {
                   req.user,
                   AttachedToType.project
                 );
-
-    console.log("attachment result ::: 🧑‍💻🧑‍💻", attachmentResult)            
 
     req.body.profileImage = {
       imageUrl: attachmentResult.attachment,
@@ -303,7 +299,6 @@ const getAllProjectsByUserId = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'User ID not found in request');
   }
 
-  console.log("🧪🧪🧪🧪",req.user)
   // const { id } = req.user;
  
   const result = await UserService.getAllProjectsByUserId(req.user.userId);

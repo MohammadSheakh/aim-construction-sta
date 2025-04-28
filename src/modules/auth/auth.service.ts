@@ -22,8 +22,7 @@ const validateUserStatus = (user: TUser) => {
   }
 };
 const createUser = async (userData: TUser) => {
-  console.log("userData 🔥🔥🔥 ", userData);
-
+  
   // as we know userData er companyId must dite hobe .. 
 
   if(userData.companyId == null){

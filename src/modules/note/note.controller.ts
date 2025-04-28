@@ -20,8 +20,7 @@ const attachmentService = new AttachmentService();
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createNote = catchAsync(async (req, res) => {
-  console.log('req.body 🧪', req.body);
-
+  
   if (req.user.userId) {
     req.body.createdBy = req.user.userId;
   }
@@ -69,8 +68,6 @@ const createNote = catchAsync(async (req, res) => {
   req.body.attachments = attachments;
 
   const result = await noteService.create(req.body);
-
-  console.log('attachments 🔴result🔴', result);
 
   // Now loop through the attachments array and update the attachedToId and attachedToType
   if (attachments.length > 0) {

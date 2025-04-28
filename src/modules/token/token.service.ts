@@ -29,14 +29,11 @@ const verifyToken = async (
 
 
   const decoded = jwt.verify(token, secret) as JwtPayload;
-  console.log("decoded 🟢🟢", decoded)
   const storedToken = await Token.findOne({
     token,
     user: decoded.userId,
     type: tokenType
   });
-
-  console.log("storedToken 🟢storedToken🟢", storedToken)
 
   if (!storedToken) {
     throw new ApiError(

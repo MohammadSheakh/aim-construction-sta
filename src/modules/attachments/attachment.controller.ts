@@ -27,8 +27,6 @@ const createAttachment = catchAsync(async (req, res) => {
   }
   let attachments = [];
 
-  console.log("req.files 📢📢📢📢", req?.files?.attachments)
-
   if(req?.files?.attachments == undefined){
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Please upload at least one attachment');
   }
@@ -160,8 +158,6 @@ const deleteById = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.FORBIDDEN, 'You are not authorized to delete this attachment');
   }
 
-  console.log("=========== 📢start📢")
-
   if(req.user.role == attachment.uploaderRole)
   {
     if(attachment.attachedToType == 'project')
@@ -169,7 +165,6 @@ const deleteById = catchAsync(async (req, res) => {
         // taile amra just attachment  delete korbo 
         results = await attachmentService.deleteById(req.params.attachmentId);
 
-        console.log('project 📢📢📢', results);
         await attachmentService.deleteAttachment(results.attachment);
       }
       else if (attachment.attachedToType == 'note'){
@@ -187,16 +182,16 @@ const deleteById = catchAsync(async (req, res) => {
 
         await attachmentService.deleteAttachment(results.attachment);
 
-        console.log('note 📢📢📢', results);
+        
       }
       else if (attachment.attachedToType == 'task'){
         // task er jonno kaj korte hobe .. 
-        console.log("🔥🔥🔥 hit... ")
+        
         const task =  await taskService.getById(attachment.attachedToId);
         if(!task){
           throw new ApiError(StatusCodes.NOT_FOUND, 'Task not found');
         }
-        console.log("task 🔥🔥", task);
+        
         task.attachments = task.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
         const result =  await taskService.updateById(task._id, task)
         if(result){
@@ -204,7 +199,6 @@ const deleteById = catchAsync(async (req, res) => {
         }
 
         await attachmentService.deleteAttachment(results.attachment);
-        console.log('task 📢📢📢', results);
       }
       // TODO :  task er jonno kaj korte hobe ... 
   }
@@ -212,8 +206,6 @@ const deleteById = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized to delete this attachment');
   }
   
-  console.log("=========== 📢 end 📢")
-
   // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -233,8 +225,6 @@ const addOrRemoveReact = catchAsync(async (req, res) => {
     attachmentId,
     userId,
   );
-
-  console.log("result 🟢", result)
 
   sendResponse(res, {
     code: StatusCodes.OK,

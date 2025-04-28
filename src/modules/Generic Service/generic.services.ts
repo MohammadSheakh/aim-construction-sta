@@ -10,7 +10,6 @@ export class GenericService<T> {
   }
 
   async create(data: T) {
-    // console.log('req.body from generic create 🧪🧪', data);
     return await this.model.create(data);
   }
 

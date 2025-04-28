@@ -126,9 +126,6 @@ const createTask = catchAsync(async (req, res) => {
         "Project is not found by projectId also cannot populate by projectSuperVisorId"
       );
     }
-
-
-    console.log("result🔴🔴", result)
   
     if (project && project.projectSuperVisorId || result.assignedTo) {
       
@@ -232,7 +229,6 @@ const getAllTaskWithPagination = catchAsync(async (req, res) => {
 
   const result = await taskService.getAllWithPagination(query, options);
 
-  console.log("result 🔥🔥🔥", result);
 
    // Process the result to include imageCount and documentCount
    const modifiedResult = result.results.map(task => {
@@ -269,7 +265,6 @@ const updateById = catchAsync(async (req, res) => {
 const deleteById = catchAsync(async (req, res) => {
   const task = await taskService.getById(req.params.taskId);
 
-  console.log("task 🧪🧪🧪🧪", task)
   if(task){
     if(task.attachments && task.attachments.length > 0){
       await Promise.all(

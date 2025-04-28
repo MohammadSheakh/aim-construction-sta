@@ -34,9 +34,6 @@ export class ProjectService extends GenericService<typeof Project> {
           )
           .exec();
 
-
-          console.log('attachments 📢📢📢', attachments);
-
           // TODO :  query aro optimize korar try korte hobe 
         
    // Helper function to extract the date portion (YYYY-MM-DD)

@@ -8,7 +8,6 @@ import ApiError from '../../errors/ApiError';
 const register = catchAsync(async (req, res) => {
   const result = await AuthService.createUser(req.body);
 
-  console.log("result from auth.controller 📢📢 ", result);
 
   sendResponse(res, {
     code: StatusCodes.CREATED,
@@ -56,8 +55,6 @@ const resendOtp = catchAsync(async (req, res) => {
   const { email } = req.body;
   const result = await AuthService.resendOtp(email);
 
-  console.log("result from resend otp 📢📢📢📢", result)
-
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Otp sent successfully',
@@ -90,7 +87,6 @@ const changePassword = catchAsync(async (req, res) => {
     newPassword,
   );
 
-  console.log("📢 result change project 📢", result);
   
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -125,7 +121,6 @@ const logout = catchAsync(async (req, res) => {
 });
 
 const refreshToken = catchAsync(async (req, res) => {
-  // console.log("req.body.refreshToken 🟢1🟢" , req.body.refreshToken)
   const tokens = await AuthService.refreshAuth(req.body.refreshToken);
   sendResponse(res, {
     code: StatusCodes.OK,
