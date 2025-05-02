@@ -1,9 +1,7 @@
-import { GenericService } from '../Generic Service/generic.services';
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import pick from '../../shared/pick';
-import { Attachment } from './attachment.model';
 import { AttachmentService } from './attachment.service';
 import { FolderName } from '../../enums/folderNames';
 import { AttachedToType, UploaderRole } from './attachment.constant';
@@ -19,42 +17,54 @@ const taskService = new TaskService();
 
 //[🚧][🧑‍💻✅][🧪🆗]
 const createAttachment = catchAsync(async (req, res) => {
- 
   const { noteOrTaskOrProject } = req.body;
-  if(noteOrTaskOrProject !== AttachedToType.note && noteOrTaskOrProject !== AttachedToType.task && noteOrTaskOrProject !== AttachedToType.project)
-  {
-    throw new ApiError(StatusCodes.NOT_FOUND, 'noteOrTaskOrProject should be note or task or project');
+  if (
+    noteOrTaskOrProject !== AttachedToType.note &&
+    noteOrTaskOrProject !== AttachedToType.task &&
+    noteOrTaskOrProject !== AttachedToType.project
+  ) {
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      'noteOrTaskOrProject should be note or task or project'
+    );
   }
   let attachments = [];
 
-  if(req?.files?.attachments == undefined){
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Please upload at least one attachment');
+  if (req?.files?.attachments == undefined) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'Please upload at least one attachment'
+    );
   }
 
-    if (req.files && req.files.attachments ) {
-      attachments.push(
-        ...(await Promise.all(
-          req.files.attachments.map(async (file : Express.Multer.File) => {
-            const attachmentId = await attachmentService.uploadSingleAttachment(
-              file,
-              FolderName.note,
-              req.body.projectId,
-              req.user,
-              noteOrTaskOrProject
-            );
-            return attachmentId;
-          })
-        ))
-      );
-    }
+  if (req.files && req.files.attachments) {
+    attachments.push(
+      ...(await Promise.all(
+        req.files.attachments.map(async (file: Express.Multer.File) => {
+          const attachmentId = await attachmentService.uploadSingleAttachment(
+            file,
+            FolderName.note,
+            req.body.projectId,
+            req.user,
+            noteOrTaskOrProject
+          );
+          return attachmentId;
+        })
+      ))
+    );
+  }
 
-    // give me projectSupervisorId
-    const projectNameAndSuperVisorId = await Project.findById(req.body.projectId).select('projectSuperVisorId projectName projectManagerId');
+  // give me projectSupervisorId
+  const projectNameAndSuperVisorId = await Project.findById(
+    req.body.projectId
+  ).select('projectSuperVisorId projectName projectManagerId');
 
-    if(projectNameAndSuperVisorId && projectNameAndSuperVisorId.projectSuperVisorId){
-
+  if (
+    projectNameAndSuperVisorId &&
+    projectNameAndSuperVisorId.projectSuperVisorId
+  ) {
     // const registrationToken = user?.fcmToken;
-         
+
     // if (registrationToken) {
     //   await sendPushNotification(
     //     registrationToken,
@@ -63,8 +73,7 @@ const createAttachment = catchAsync(async (req, res) => {
     //     result.projectSuperVisorId.toString()
     //   );
     // }
-    
-    // TODO : notification er title ta change kora lagte pare .. 
+
     // Save Notification to Database
     const notificationPayload = {
       title: `New attachment of ${projectNameAndSuperVisorId.projectName}  ${noteOrTaskOrProject}  has been uploaded  by ${req.user.userName}`,
@@ -72,7 +81,7 @@ const createAttachment = catchAsync(async (req, res) => {
       receiverId: projectNameAndSuperVisorId.projectSuperVisorId,
       notificationFor: 'attachment',
       role: UploaderRole.projectSupervisor, // If receiver is the projectManager
-      // linkId: result._id, // FIXME  // TODO : attachment related notifiation e click korle .. kothay niye jabe ?
+      // linkId: result._id, // FIXME  // TODO  :
     };
 
     const notification = await NotificationService.addNotification(
@@ -80,12 +89,14 @@ const createAttachment = catchAsync(async (req, res) => {
     );
 
     // 3️⃣ Send Real-Time Notification using Socket.io
-    io.to(projectNameAndSuperVisorId.projectSuperVisorId.toString()).emit('newNotification', {
-      code: StatusCodes.OK,
-      message: 'New notification',
-      data: notification,
-    });
-
+    io.to(projectNameAndSuperVisorId.projectSuperVisorId.toString()).emit(
+      'newNotification',
+      {
+        code: StatusCodes.OK,
+        message: 'New notification',
+        data: notification,
+      }
+    );
   }
 
   // const result = await attachmentService.create(req.body);
@@ -148,69 +159,68 @@ const updateById = catchAsync(async (req, res) => {
 //[🚧][🧑‍💻✅][🧪🆗]
 
 const deleteById = catchAsync(async (req, res) => {
-
   const attachment = await attachmentService.getById(req.params.attachmentId);
   if (!attachment) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
   }
   let results;
-  if(req.user.role != attachment.uploaderRole){
-    throw new ApiError(StatusCodes.FORBIDDEN, 'You are not authorized to delete this attachment');
+  if (req.user.role != attachment.uploaderRole) {
+    throw new ApiError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to delete this attachment'
+    );
   }
 
-  if(req.user.role == attachment.uploaderRole)
-  {
-    if(attachment.attachedToType == 'project')
-      {
-        // taile amra just attachment  delete korbo 
+  if (req.user.role == attachment.uploaderRole) {
+    if (attachment.attachedToType == 'project') {
+      // taile amra just attachment  delete korbo
+      results = await attachmentService.deleteById(req.params.attachmentId);
+
+      await attachmentService.deleteAttachment(results.attachment);
+    } else if (attachment.attachedToType == 'note') {
+      const note = await noteService.getById(attachment.attachedToId);
+
+      if (!note) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'Note not found');
+      }
+
+      note.attachments = note.attachments.filter(
+        attachmentId => attachmentId._id.toString() !== req.params.attachmentId
+      );
+      const result = await noteService.updateById(note._id, note);
+      if (result) {
         results = await attachmentService.deleteById(req.params.attachmentId);
-
-        await attachmentService.deleteAttachment(results.attachment);
       }
-      else if (attachment.attachedToType == 'note'){
-        const note =  await noteService.getById(attachment.attachedToId);
 
-        if(!note){
-          throw new ApiError(StatusCodes.NOT_FOUND, 'Note not found');
-        }
-
-        note.attachments = note.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
-        const result =  await noteService.updateById(note._id, note)
-        if(result){
-          results = await attachmentService.deleteById(req.params.attachmentId);
-        }
-
-        await attachmentService.deleteAttachment(results.attachment);
-
-        
+      await attachmentService.deleteAttachment(results.attachment);
+    } else if (attachment.attachedToType == 'task') {
+      const task = await taskService.getById(attachment.attachedToId);
+      if (!task) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'Task not found');
       }
-      else if (attachment.attachedToType == 'task'){
-        // task er jonno kaj korte hobe .. 
-        
-        const task =  await taskService.getById(attachment.attachedToId);
-        if(!task){
-          throw new ApiError(StatusCodes.NOT_FOUND, 'Task not found');
-        }
-        
-        task.attachments = task.attachments.filter(attachmentId => attachmentId._id.toString() !== req.params.attachmentId);
-        const result =  await taskService.updateById(task._id, task)
-        if(result){
-          results = await attachmentService.deleteById(req.params.attachmentId);
-        }
 
-        await attachmentService.deleteAttachment(results.attachment);
+      task.attachments = task.attachments.filter(
+        attachmentId => attachmentId._id.toString() !== req.params.attachmentId
+      );
+      const result = await taskService.updateById(task._id, task);
+      if (result) {
+        results = await attachmentService.deleteById(req.params.attachmentId);
       }
-      // TODO :  task er jonno kaj korte hobe ... 
+
+      await attachmentService.deleteAttachment(results.attachment);
+    }
+  } else {
+    throw new ApiError(
+      StatusCodes.UNAUTHORIZED,
+      'You are not authorized to delete this attachment'
+    );
   }
-  else{
-    throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are not authorized to delete this attachment');
-  }
-  
+
   // await attachmentService.deleteById(req.params.attachmentId);
   sendResponse(res, {
     code: StatusCodes.OK,
     message: 'Attachments deleted successfully',
-    data : results,
+    data: results,
     success: true,
   });
 });
@@ -220,11 +230,8 @@ const addOrRemoveReact = catchAsync(async (req, res) => {
   // const { reactionType } = req.body;
   const { userId } = req.user;
 
-  // FIX ME : FiX korte hobe 
-  const result = await attachmentService.addOrRemoveReact(
-    attachmentId,
-    userId,
-  );
+  // FIX ME : need to fix if this feature is added in future
+  const result = await attachmentService.addOrRemoveReact(attachmentId, userId);
 
   sendResponse(res, {
     code: StatusCodes.OK,
@@ -232,8 +239,7 @@ const addOrRemoveReact = catchAsync(async (req, res) => {
     message: 'React successfully',
     success: true,
   });
-}
-);
+});
 
 export const AttachmentController = {
   createAttachment,
@@ -242,5 +248,5 @@ export const AttachmentController = {
   getAAttachment,
   updateById,
   deleteById,
-  addOrRemoveReact
+  addOrRemoveReact,
 };

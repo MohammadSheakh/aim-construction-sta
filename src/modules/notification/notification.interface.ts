@@ -6,19 +6,17 @@ export interface INotification {
   _id?: Types.ObjectId;
   receiverId?: Types.ObjectId | string;
   title: string;
-  // message?: string;
-  // image?: string; // age object chilo .. 
   linkId?: Types.ObjectId | string;
   role: UploaderRole.projectManager | UploaderRole.projectSupervisor;
   notificationFor: {
-    type : String,
-    enum: ['project', 'task', 'note', 'attachment'],
-    required: [true, 'notificationFor is required'],
-  },
-  projectId ?: Types.ObjectId | undefined ;
-  extraInformation ?: string;
+    type: String;
+    enum: ['project', 'task', 'note', 'attachment'];
+    required: [true, 'notificationFor is required'];
+  };
+  projectId?: Types.ObjectId | undefined;
+  extraInformation?: string;
   viewStatus?: boolean;
-  isDeleted: Boolean,
+  isDeleted: Boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

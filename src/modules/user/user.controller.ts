@@ -166,16 +166,14 @@ const updateProfile = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are unauthenticated.');
   }
   if (req.file) {
+    const attachmentResult = await attachmentService.uploadSingleAttachment(
+      req.file,
+      FolderName.user,
+      null,
+      req.user,
+      AttachedToType.project
+    );
 
-    const attachmentResult =
-      await attachmentService.uploadSingleAttachment(
-        req.file,
-        FolderName.user,
-        null,
-        req.user,
-        AttachedToType.project
-      );
-      
     req.body.profileImage = {
       imageUrl: attachmentResult.attachment,
     };
@@ -195,15 +193,13 @@ const updateProfileImage = catchAsync(async (req, res) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'You are unauthenticated.');
   }
   if (req.file) {
-
-    const attachmentResult =
-                await attachmentService.uploadSingleAttachment(
-                  req.file,
-                  FolderName.user,
-                  null,
-                  req.user,
-                  AttachedToType.project
-                );
+    const attachmentResult = await attachmentService.uploadSingleAttachment(
+      req.file,
+      FolderName.user,
+      null,
+      req.user,
+      AttachedToType.project
+    );
 
     req.body.profileImage = {
       imageUrl: attachmentResult.attachment,
@@ -288,19 +284,16 @@ const deleteMyProfile = catchAsync(async (req, res) => {
   });
 });
 
-
-//////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////// 🚧🚧🚧🚧🚧
 
 //get all Projects by User Id
 const getAllProjectsByUserId = catchAsync(async (req, res) => {
-
-  if (!req.user ) {
+  if (!req.user) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'User ID not found in request');
   }
 
   // const { id } = req.user;
- 
+
   const result = await UserService.getAllProjectsByUserId(req.user.userId);
 
   if (!result) {
@@ -314,9 +307,8 @@ const getAllProjectsByUserId = catchAsync(async (req, res) => {
   });
 });
 
-
 const getAllUserWithPagination = catchAsync(async (req, res) => {
-  const filters = pick(req.query, [ '_id' , 'role', 'fname', 'lname']); // 'projectName',
+  const filters = pick(req.query, ['_id', 'role', 'fname', 'lname']); // 'projectName',
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
 
   const result = await userCustomService.getAllWithPagination(filters, options);
@@ -328,9 +320,11 @@ const getAllUserWithPagination = catchAsync(async (req, res) => {
   });
 });
 
-const getAllManager  = catchAsync(async (req, res) => {
+const getAllManager = catchAsync(async (req, res) => {
   //const result = await UserCompany.find({ companyId : req.body.companyId, role : 'projectManager'}); // .populate('userId')
-  const result = await User.find({ role: 'projectManager' }).select('fname lname');
+  const result = await User.find({ role: 'projectManager' }).select(
+    'fname lname'
+  );
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
@@ -338,14 +332,20 @@ const getAllManager  = catchAsync(async (req, res) => {
   });
 });
 
-const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
+const getAllManagerByCompanyId = catchAsync(async (req, res) => {
   if (!req.query.companyId) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Company ID not found in request');
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'Company ID not found in request'
+    );
   }
-  const result = await UserCompany.find({ companyId : req.query.companyId, role : 'projectManager'}).populate( {
-    path : 'userId',
-    select : 'fname lname'
-  }) ;
+  const result = await UserCompany.find({
+    companyId: req.query.companyId,
+    role: 'projectManager',
+  }).populate({
+    path: 'userId',
+    select: 'fname lname',
+  });
   sendResponse(res, {
     code: StatusCodes.OK,
     data: result,
@@ -353,14 +353,19 @@ const getAllManagerByCompanyId  = catchAsync(async (req, res) => {
   });
 });
 
-const getAllProjectSupervisorsByProjectManagerId  = catchAsync(async (req, res) => {
-  const result = await User.find({ role: 'projectSupervisor', superVisorsManagerId: req?.user?.userId  }).select('');
-  sendResponse(res, {
-    code: StatusCodes.OK,
-    data: result,
-    message: 'All Supervisors',
-  });
-});
+const getAllProjectSupervisorsByProjectManagerId = catchAsync(
+  async (req, res) => {
+    const result = await User.find({
+      role: 'projectSupervisor',
+      superVisorsManagerId: req?.user?.userId,
+    }).select('');
+    sendResponse(res, {
+      code: StatusCodes.OK,
+      data: result,
+      message: 'All Supervisors',
+    });
+  }
+);
 
 export const UserController = {
   createAdminOrSuperAdmin,
@@ -375,10 +380,10 @@ export const UserController = {
   updateUserProfile,
   deleteMyProfile,
   //////////////////////////
-  
-  getAllProjectsByUserId, 
+
+  getAllProjectsByUserId,
   getAllUserWithPagination,
   getAllManager,
   getAllProjectSupervisorsByProjectManagerId,
-  getAllManagerByCompanyId
+  getAllManagerByCompanyId,
 };

@@ -20,39 +20,39 @@ const projectSchema = new Schema<IProject>(
       required: [false, 'ProjectSuperVisorId is not required'],
     },
 
-    projectManagerId : {
+    projectManagerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Project Manager Id is required'],
     },
 
     // address: {
-      streetAddress: {
-        type: String,
-        required: [false, 'Street Address is required'],
-      },
-      city: {
-        type: String,
-        required: [false, 'City is required'],
-      },
-      zipCode: {
-        type: String,
-        required: [false, 'Address is required'],
-      },
-      country: {
-        type: String,
-        required: [false, 'Address is required'],
-      },
+    streetAddress: {
+      type: String,
+      required: [false, 'Street Address is required'],
+    },
+    city: {
+      type: String,
+      required: [false, 'City is required'],
+    },
+    zipCode: {
+      type: String,
+      required: [false, 'Address is required'],
+    },
+    country: {
+      type: String,
+      required: [false, 'Address is required'],
+    },
     // },
     // deadline: {
-      startDate: {
-        type: Date,
-        required: [false, 'Start Date is required'],
-      },
-      endDate: {
-        type: Date,
-        required: [false, 'End Date is required'],
-      },
+    startDate: {
+      type: Date,
+      required: [false, 'Start Date is required'],
+    },
+    endDate: {
+      type: Date,
+      required: [false, 'End Date is required'],
+    },
     // },
 
     attachments: [
@@ -62,16 +62,14 @@ const projectSchema = new Schema<IProject>(
         required: [false, 'Attachments is required'],
       },
     ],
-    projectStatus : {
+    projectStatus: {
       type: String,
-      enum : [
-        Status.completed,
-        Status.open
+      enum: [Status.completed, Status.open],
+      required: [
+        false,
+        'Project Status is required. It can be completed / open',
       ],
-      required: [false, 'Project Status is required. It can be completed / open'],
       // default : Status.open
-      // TODO : shob enume  default set korte hobe 
-      // ISSUE  : project.model er projectStatus er required and default value set kora jacche na 
     },
     isDeleted: {
       type: Boolean,
@@ -81,24 +79,19 @@ const projectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
-
-
 projectSchema.plugin(paginate);
 
-projectSchema.pre('save', function(next) {
-  
+projectSchema.pre('save', function (next) {
   next();
 });
 
 // Use transform to rename _id to _projectId
 projectSchema.set('toJSON', {
   transform: function (doc, ret, options) {
-    ret._projectId = ret._id;  // Rename _id to _projectId
-    delete ret._id;  // Remove the original _id field
+    ret._projectId = ret._id; // Rename _id to _projectId
+    delete ret._id; // Remove the original _id field
     return ret;
-  }
+  },
 });
-
-
 
 export const Project = model<IProject, IProjectModel>('Project', projectSchema);

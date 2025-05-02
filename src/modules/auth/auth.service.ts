@@ -17,25 +17,25 @@ const validateUserStatus = (user: TUser) => {
   if (user.isDeleted) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      'Your account has been deleted. Please contact support',
+      'Your account has been deleted. Please contact support'
     );
   }
 };
 const createUser = async (userData: TUser) => {
-  
-  // as we know userData er companyId must dite hobe .. 
+  // as we know userData er companyId need to provide here .
 
-  if(userData.companyId == null){
+  if (userData.companyId == null) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Company Id is required');
   }
 
-  if(userData.role == 'projectSupervisor'){
-
-    
-    if(userData.superVisorsManagerId == null){
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'SuperVisor Manager Id is required');
+  if (userData.role == 'projectSupervisor') {
+    if (userData.superVisorsManagerId == null) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        'SuperVisor Manager Id is required'
+      );
     }
-  }else{
+  } else {
     userData.superVisorsManagerId = null;
   }
   const existingUser = await User.findOne({ email: userData.email });
@@ -46,55 +46,58 @@ const createUser = async (userData: TUser) => {
       await User.findOneAndUpdate({ email: userData.email }, userData);
 
       //create verification email token
-      const verificationToken =
-        await TokenService.createVerifyEmailToken(existingUser);
+      const verificationToken = await TokenService.createVerifyEmailToken(
+        existingUser
+      );
       //create verification email otp
-      const {otp} = await OtpService.createVerificationEmailOtp(existingUser.email);
-      console.log("OTP ::: FIXME 🟢🟢", otp);
+      const { otp } = await OtpService.createVerificationEmailOtp(
+        existingUser.email
+      );
+      console.log('OTP ::: FIXME 🟢🟢', otp);
       return { otp, verificationToken }; // FIXME  : otp remove korte hobe ekhan theke ..
     }
   }
 
   const user = await User.create(userData);
 
-  // project manager er jonno user company create korte hobe ... 
+  //  company create for project manager
 
-  // userData.companyId valid kina .. sheta check korte hobe .. 
+  // check  userData.companyId valid  or not
   const company = await Company.findById(userData.companyId);
-  if(!company){
+  if (!company) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Company Name is not valid');
   }
 
-  // userCompany collection e add korte hobe 
+  // add to userCompany collection
   const userCompany = await UserCompany.create({
     userId: user._id,
     companyId: userData.companyId,
     role: userData.role,
-  })
+  });
 
-  if(!userCompany){
+  if (!userCompany) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'User Company is not created');
   }
-  
-  // cantunderstand :  
+
+  // cantunderstand :
   //create verification email token
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   //create verification email otp
-  const {otp} = await OtpService.createVerificationEmailOtp(user.email);
-  console.log("OTP ::: FIXME 🟢🟢", otp);
-  return { otp, user, verificationToken  }; // FIXME  : otp remove korte hobe ekhan theke .. 
+  const { otp } = await OtpService.createVerificationEmailOtp(user.email);
+  console.log('OTP ::: FIXME 🟢🟢', otp);
+  return { otp, user, verificationToken }; // FIXME  : otp remove korte hobe ekhan theke ..
 };
 
-const login = async (email: string, reqpassword: string, fcmToken : string) => {
+const login = async (email: string, reqpassword: string, fcmToken: string) => {
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
   }
 
-  if(user.isEmailVerified === false){ 
+  if (user.isEmailVerified === false) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      'User not verified, Please verify your email, Check your email.',
+      'User not verified, Please verify your email, Check your email.'
     );
   }
 
@@ -116,7 +119,7 @@ const login = async (email: string, reqpassword: string, fcmToken : string) => {
   if (user.lockUntil && user.lockUntil > new Date()) {
     throw new ApiError(
       StatusCodes.TOO_MANY_REQUESTS,
-      `Account is locked. Try again after ${config.auth.lockTime} minutes`,
+      `Account is locked. Try again after ${config.auth.lockTime} minutes`
     );
   }
 
@@ -128,12 +131,10 @@ const login = async (email: string, reqpassword: string, fcmToken : string) => {
       await user.save();
       throw new ApiError(
         423,
-        `Account locked for ${config.auth.lockTime} minutes due to too many failed attempts`,
+        `Account locked for ${config.auth.lockTime} minutes due to too many failed attempts`
       );
     }
     // user.fcmToken = fcmToken;
-
-
 
     await user.save();
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
@@ -147,9 +148,9 @@ const login = async (email: string, reqpassword: string, fcmToken : string) => {
 
   const tokens = await TokenService.accessAndRefreshToken(user);
 
-  if(fcmToken){
+  if (fcmToken) {
     user.fcmToken = fcmToken;
-    await user.save();  // INFO :  ekhane fcmToken save kora hocche 
+    await user.save(); // INFO :  here fcmToken is saved
   }
 
   const { password, ...userWithoutPassword } = user.toObject();
@@ -170,21 +171,21 @@ const verifyEmail = async (email: string, token: string, otp: string) => {
   await TokenService.verifyToken(
     token,
     config.token.TokenSecret,
-    user?.isResetPassword ? TokenType.RESET_PASSWORD : TokenType.VERIFY,
+    user?.isResetPassword ? TokenType.RESET_PASSWORD : TokenType.VERIFY
   );
 
   //verify otp
   await OtpService.verifyOTP(
     user.email,
     otp,
-    user?.isResetPassword ? OtpType.RESET_PASSWORD : OtpType.VERIFY,
+    user?.isResetPassword ? OtpType.RESET_PASSWORD : OtpType.VERIFY
   );
 
   user.isEmailVerified = true;
   await user.save();
 
   const tokens = await TokenService.accessAndRefreshToken(user);
-  return {user, tokens} ;
+  return { user, tokens };
 };
 
 const forgotPassword = async (email: string) => {
@@ -194,10 +195,10 @@ const forgotPassword = async (email: string) => {
   }
   //create reset password token
   const resetPasswordToken = await TokenService.createResetPasswordToken(user);
-  const otp =  await OtpService.createResetPasswordOtp(user.email);
+  const otp = await OtpService.createResetPasswordOtp(user.email);
   user.isResetPassword = true;
   await user.save();
-  return { resetPasswordToken, otp }; // FIXME :  otp remove kore dite hobe must .. 
+  return { resetPasswordToken, otp }; // FIXME :  otp remove kore dite hobe must ..
 };
 
 const resendOtp = async (email: string) => {
@@ -207,20 +208,21 @@ const resendOtp = async (email: string) => {
   }
 
   if (user?.isResetPassword) {
-    const resetPasswordToken =
-      await TokenService.createResetPasswordToken(user);
-     const otp = await OtpService.createResetPasswordOtp(user.email);
-    return { resetPasswordToken, otp }; // FIXME  :  otp remove korte hobe .. 
+    const resetPasswordToken = await TokenService.createResetPasswordToken(
+      user
+    );
+    const otp = await OtpService.createResetPasswordOtp(user.email);
+    return { resetPasswordToken, otp }; // FIXME  :  otp remove korte hobe ..
   }
   const verificationToken = await TokenService.createVerifyEmailToken(user);
   const otp = await OtpService.createVerificationEmailOtp(user.email);
-  return { verificationToken , otp }; // FIXME  :  otp remove korte hobe .. 
+  return { verificationToken, otp }; // FIXME  :  otp remove korte hobe ..
 };
 
 const resetPassword = async (
   email: string,
   newPassword: string,
-  otp: string,
+  otp: string
 ) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -232,11 +234,9 @@ const resetPassword = async (
   //   user?.isResetPassword ? OtpType.RESET_PASSWORD : OtpType.VERIFY,
   // );
 
-  const isOtpVerified = await OtpService.checkOTP(
-    otp,
-  );
+  const isOtpVerified = await OtpService.checkOTP(otp);
 
-  if(!isOtpVerified){
+  if (!isOtpVerified) {
     return null;
   }
 
@@ -250,7 +250,7 @@ const resetPassword = async (
 const changePassword = async (
   userId: string,
   currentPassword: string,
-  newPassword: string,
+  newPassword: string
 ) => {
   const user = await User.findById(userId).select('+password');
   if (!user) {
@@ -274,15 +274,17 @@ const refreshAuth = async (refreshToken: string) => {
   // console.log("refreshToken🟢🟢", refreshToken);
 
   const verifyUser = await TokenService.verifyToken(
-          refreshToken,
-          config.jwt.refreshSecret as Secret,
-          TokenType.REFRESH
-        );
+    refreshToken,
+    config.jwt.refreshSecret as Secret,
+    TokenType.REFRESH
+  );
 
-  console.log("verify User :: 🧑‍💻🟢", verifyUser)
-  let tokens ;
-  if(verifyUser){
-     tokens = await TokenService.accessAndRefreshTokenForRefreshToken(verifyUser);
+  console.log('verify User :: 🧑‍💻🟢', verifyUser);
+  let tokens;
+  if (verifyUser) {
+    tokens = await TokenService.accessAndRefreshTokenForRefreshToken(
+      verifyUser
+    );
   }
 
   return tokens;

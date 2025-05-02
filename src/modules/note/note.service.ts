@@ -18,12 +18,6 @@ export class NoteService extends GenericService<typeof Note> {
         path: 'attachments',
         select:
           '-uploadedByUserId -updatedAt  -uploaderRole -reactions -__v -attachedToId -attachedToType -_attachmentId',
-        // populate: [
-        //   {
-        //     path: 'projectId',
-        //     select: 'projectName',
-        //   },
-        // ],
       })
       .populate({
         path: 'projectId',
@@ -35,16 +29,14 @@ export class NoteService extends GenericService<typeof Note> {
           '-address -fname -lname -email -profileImage -isEmailVerified -isDeleted -isResetPassword -failedLoginAttempts -createdAt -updatedAt -__v', // Exclude unwanted fields from Location model
       });
 
-    // TODO : aro fine tune korte hobe query optimize korte hobe ..
-    // FIXME : : must ..
+    // TODO : need more query optimization ..
+
     if (!object) {
       // throw new ApiError(StatusCodes.BAD_REQUEST, 'No file uploaded');
       return null;
     }
     return object;
   }
-
- 
 
   async getAllByDateAndProjectId(projectId: string, date: string) {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -89,10 +81,10 @@ export class NoteService extends GenericService<typeof Note> {
       },
       {
         $lookup: {
-          from: "attachments",
-          localField: "attachments",
-          foreignField: "_id",
-          as: "attachmentDetails",
+          from: 'attachments',
+          localField: 'attachments',
+          foreignField: '_id',
+          as: 'attachmentDetails',
         },
       },
       {
@@ -100,18 +92,18 @@ export class NoteService extends GenericService<typeof Note> {
           imageCount: {
             $size: {
               $filter: {
-                input: "$attachmentDetails",
-                as: "att",
-                cond: { $eq: ["$$att.attachmentType", "image"] },
+                input: '$attachmentDetails',
+                as: 'att',
+                cond: { $eq: ['$$att.attachmentType', 'image'] },
               },
             },
           },
           documentCount: {
             $size: {
               $filter: {
-                input: "$attachmentDetails",
-                as: "att",
-                cond: { $eq: ["$$att.attachmentType", "document"] },
+                input: '$attachmentDetails',
+                as: 'att',
+                cond: { $eq: ['$$att.attachmentType', 'document'] },
               },
             },
           },
@@ -170,7 +162,7 @@ export class NoteService extends GenericService<typeof Note> {
     const totalNoteCount = await Note.countDocuments({
       projectId: projectId,
       createdAt: { $gte: startOfDay, $lte: endOfDay },
-    })
+    });
 
     // Get the total image count of attachments
     const totalImageCount = await Attachment.countDocuments({
@@ -194,10 +186,9 @@ export class NoteService extends GenericService<typeof Note> {
       notes: notesWithAttachmentCounts,
       totalNoteCount,
       imageCount: totalImageCount, // totalCounts.length ? totalCounts[0].totalImages : 0,
-      documentCount: totalDocumentCount // totalCounts.length ? totalCounts[0].totalDocuments : 0
-    }; ;
+      documentCount: totalDocumentCount, // totalCounts.length ? totalCounts[0].totalDocuments : 0
+    };
   }
-
 
   async getPreviewByDateAndProjectId(projectId: string, date: string) {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -231,18 +222,14 @@ export class NoteService extends GenericService<typeof Note> {
     const result = await Note.find({
       projectId: projectId,
       createdAt: { $gte: startOfDay, $lte: endOfDay },
-    }).select('-__v')
-    .populate({
-      path: 'attachments',
-      select:
-        '-uploadedByUserId -updatedAt -projectId -uploaderRole -reactions -__v -attachedToId -attachedToType -_attachmentId',
-      // populate: [
-      //   {
-      //     path: '',
-      //     select: '',
-      //   },
-      // ],
-    }).exec();
+    })
+      .select('-__v')
+      .populate({
+        path: 'attachments',
+        select:
+          '-uploadedByUserId -updatedAt -projectId -uploaderRole -reactions -__v -attachedToId -attachedToType -_attachmentId',
+      })
+      .exec();
 
     // const notesWithAttachmentCounts = await Note.aggregate([
     //   {
@@ -294,11 +281,9 @@ export class NoteService extends GenericService<typeof Note> {
     //   },
     // ]);
 
-    
     return {
       notes: result,
-      
-    }; ;
+    };
   }
 
   async getAllimagesOrDocumentOFnoteOrTaskByDateAndProjectId(
@@ -306,7 +291,7 @@ export class NoteService extends GenericService<typeof Note> {
     date: string,
     noteOrTaskOrProject: string,
     imageOrDocument: string,
-    uploaderRole : string
+    uploaderRole: string
   ) {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Invalid projectId');
@@ -328,7 +313,7 @@ export class NoteService extends GenericService<typeof Note> {
       attachedToType: noteOrTaskOrProject, // 'note'
       projectId: projectId,
       attachmentType: imageOrDocument, // 'image'
-      uploaderRole : uploaderRole,
+      uploaderRole: uploaderRole,
       createdAt: { $gte: startOfDay, $lte: endOfDay },
     })
       .select(
@@ -336,68 +321,71 @@ export class NoteService extends GenericService<typeof Note> {
       )
       .exec();
 
-      // Get the total image count of attachments
-      const totalImageCount = await Attachment.countDocuments({
-        attachedToType: noteOrTaskOrProject,
-        projectId: projectId,
-        attachmentType: 'image',
-        uploaderRole: uploaderRole,
-        createdAt: { $gte: startOfDay, $lte: endOfDay },
-      });
+    // Get the total image count of attachments
+    const totalImageCount = await Attachment.countDocuments({
+      attachedToType: noteOrTaskOrProject,
+      projectId: projectId,
+      attachmentType: 'image',
+      uploaderRole: uploaderRole,
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
 
-       // Get the total document count of attachments
-      const totalDocumentCount = await Attachment.countDocuments({
-        attachedToType: noteOrTaskOrProject,
-        projectId: projectId,
-        attachmentType: 'document',
-        uploaderRole: uploaderRole,
-        createdAt: { $gte: startOfDay, $lte: endOfDay },
-      });
+    // Get the total document count of attachments
+    const totalDocumentCount = await Attachment.countDocuments({
+      attachedToType: noteOrTaskOrProject,
+      projectId: projectId,
+      attachmentType: 'document',
+      uploaderRole: uploaderRole,
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
 
+    const totalNoteCount = await Note.countDocuments({
+      projectId: projectId,
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
 
-      const totalNoteCount = await Note.countDocuments({
-        projectId: projectId,
-        createdAt: { $gte: startOfDay, $lte: endOfDay },
-      })
+    //////////////////////////////////////////////////////////////////////////////////////////
 
-      //////////////////////////////////////////////////////////////////////////////////////////
+    // Helper function to extract the date portion (YYYY-MM-DD)
 
+    //  const extractDate = (date) => {
+    //   return new Date(date).toISOString().split('T')[0]; // Extract YYYY-MM-DD
+    // };
 
-       // Helper function to extract the date portion (YYYY-MM-DD)
+    // Helper function to format date as "Sunday, February 23, 2025"
+    const formatDate = date => {
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      return new Date(date).toLocaleDateString('en-US', options);
+    };
 
-      //  const extractDate = (date) => {
-      //   return new Date(date).toISOString().split('T')[0]; // Extract YYYY-MM-DD
-      // };
+    // Group attachments by date
+    const groupedByDate = attachments.reduce((acc: any, attachment) => {
+      //const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
+      const dateKey = formatDate(attachment.createdAt);
+      if (!acc[dateKey]) {
+        acc[dateKey] = []; // Initialize array for the date
+      }
+      acc[dateKey].push(attachment); // Add the attachment to the corresponding date
+      return acc;
+    }, {});
 
-  // Helper function to format date as "Sunday, February 23, 2025"
-  const formatDate = (date) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString('en-US', options);
-  };
+    // console.log('Grouped by Date:', groupedByDate);
 
-  // Group attachments by date
-  const groupedByDate = attachments.reduce((acc, attachment) => {
-    //const dateKey = extractDate(attachment.createdAt); // Extract YYYY-MM-DD
-    const dateKey = formatDate(attachment.createdAt);
-    if (!acc[dateKey]) {
-      acc[dateKey] = []; // Initialize array for the date
-    }
-    acc[dateKey].push(attachment); // Add the attachment to the corresponding date
-    return acc;
-  }, {});
+    // Transform into the desired output format
+    const result = Object.keys(groupedByDate).map(date => ({
+      date: date,
+      attachments: groupedByDate[date],
+      totalNoteCount,
+      totalImageCount,
+      totalDocumentCount,
+    }));
 
-  // console.log('Grouped by Date:', groupedByDate);
-
-  // Transform into the desired output format
-  const result = Object.keys(groupedByDate).map((date) => ({
-    date: date,
-    attachments: groupedByDate[date],
-    totalNoteCount,
-    totalImageCount,
-    totalDocumentCount
-  }));
-
-      //////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     return result;
   }

@@ -18,11 +18,9 @@ router
   .route('/getAllByDateAndProjectId/')
   .get(auth('common'), NoteController.getAllByDateAndProjectId);
 
-  router
+router
   .route('/getPreviewByDateAndProjectId/')
   .get(auth('common'), NoteController.getPreviewByDateAndProjectId);
-
-  
 
 //[🚧][🧑‍💻✅][🧪🆗] // query :: projectId, date, noteOrTaskOrProject, imageOrDocument
 router
@@ -46,7 +44,7 @@ router
 router
   .route('/changeStatusOfANote/:noteId')
   .get(auth('projectManager'), NoteController.changeStatusOfANoteWithDeny);
-  
+
 router.route('/update/:noteId').put(
   auth('projectManager'),
   // validateRequest(UserValidation.createUserValidationSchema),
@@ -68,7 +66,7 @@ router.route('/create').post(
   NoteController.createNote
 );
 
-// INFO : Create Attachment 
+// INFO : Create Attachment
 router.route('/uploadImagesOrDocuments').post(
   [
     upload.fields([
@@ -77,7 +75,7 @@ router.route('/uploadImagesOrDocuments').post(
   ],
   auth('common'),
   AttachmentController.createAttachment
-)
+);
 
 // eta front-end e integrate kora lagbe
 router

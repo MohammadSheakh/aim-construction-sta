@@ -1,4 +1,3 @@
-
 import catchAsync from '../../shared/catchAsync';
 import sendResponse from '../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
@@ -6,9 +5,7 @@ import pick from '../../shared/pick';
 import { ProjectService } from './project.service';
 import { AttachmentService } from '../attachments/attachment.service';
 import { FolderName } from '../../enums/folderNames';
-import {
-  AttachedToType,
-} from '../attachments/attachment.constant';
+import { AttachedToType } from '../attachments/attachment.constant';
 import { NotificationService } from '../notification/notification.services';
 import { io } from '../../server';
 
@@ -17,7 +14,7 @@ const attachmentService = new AttachmentService();
 
 const createProject = catchAsync(async (req, res) => {
   req.body.projectStatus = 'open';
-  req.body.projectManagerId = req.user.userId; // INFO: as project Manager is logged In 
+  req.body.projectManagerId = req.user.userId; // INFO: as project Manager is logged In
 
   let attachments = [];
 
@@ -67,50 +64,47 @@ const createProject = catchAsync(async (req, res) => {
 
   console.log(result);
 
+  // 🟢 notification send to project supervisor
+  if (result && result.projectSuperVisorId) {
+    // const registrationToken = user?.fcmToken;
 
-  // 🟢 notification send to project supervisor 
-  if(result && result.projectSuperVisorId){
-     // const registrationToken = user?.fcmToken;
-     
-      // if (registrationToken) {
-      //   await sendPushNotification(
-      //     registrationToken,
-      //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
-      //     `A new note of DailyLog ${result.projectName} has been created by  ${req.user.userName} .`,
-      //     result.projectSuperVisorId.toString()
-      //   );
-      // }
+    // if (registrationToken) {
+    //   await sendPushNotification(
+    //     registrationToken,
+    //     `A new note of DailyLog ${result.projectName} has been created by  ${req.user.userName} .`,
+    //     result.projectSuperVisorId.toString()
+    //   );
+    // }
 
-      const MAX_TITLE_LENGTH = 30; // Set a max length for the title
+    const MAX_TITLE_LENGTH = 30; // Set a max length for the title
 
-      const truncatedProjectName = result.projectName.length > MAX_TITLE_LENGTH 
-        ? result.projectName.substring(0, MAX_TITLE_LENGTH) + '...' 
+    const truncatedProjectName =
+      result.projectName.length > MAX_TITLE_LENGTH
+        ? result.projectName.substring(0, MAX_TITLE_LENGTH) + '...'
         : result.projectName;
-     
-      // TODO : notification er title ta change kora lagte pare .. 
-      // Save Notification to Database
-      const notificationPayload = {
-        title: `Project ${truncatedProjectName} has been created And assigned to you by ${req.user.userName}`,
-        // message: `A new task "${result.title}" has been created by `,
-        receiverId: result?.projectSuperVisorId,
-        role: 'projectSupervisor', // If receiver is the projectManager
-        notificationFor: 'project',
-        projectId : result._id, 
-        //extraInformation : result._id,
-        linkId: result._id,
-      };
-  
-      const notification = await NotificationService.addNotification(
-        notificationPayload
-      );
-  
-      // 3️⃣ Send Real-Time Notification using Socket.io
-      io?.to(result?.projectSuperVisorId.toString()).emit('newNotification', {
-        code: StatusCodes.OK,
-        message: 'New notification',
-        data: notification,
-      });
 
+    // TODO : notification er title ta change kora lagte pare ..
+    // Save Notification to Database
+    const notificationPayload = {
+      title: `Project ${truncatedProjectName} has been created And assigned to you by ${req.user.userName}`,
+      receiverId: result?.projectSuperVisorId,
+      role: 'projectSupervisor', // If receiver is the projectManager
+      notificationFor: 'project',
+      projectId: result._id,
+      //extraInformation : result._id,
+      linkId: result._id,
+    };
+
+    const notification = await NotificationService.addNotification(
+      notificationPayload
+    );
+
+    // 3️⃣ Send Real-Time Notification using Socket.io
+    io?.to(result?.projectSuperVisorId.toString()).emit('newNotification', {
+      code: StatusCodes.OK,
+      message: 'New notification',
+      data: notification,
+    });
   }
 
   sendResponse(res, {
@@ -150,7 +144,7 @@ const getAllProjectWithPagination = catchAsync(async (req, res) => {
     'projectStatus',
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
-  
+
   const query = {};
 
   // Create a copy of filter without isPreview to handle separately
@@ -158,8 +152,8 @@ const getAllProjectWithPagination = catchAsync(async (req, res) => {
 
   // Loop through each filter field and add conditions if they exist
   for (const key of Object.keys(mainFilter)) {
-    if (key === "projectName" && mainFilter[key] !== "") {
-      query[key] = { $regex: mainFilter[key], $options: "i" }; // Case-insensitive regex search for name
+    if (key === 'projectName' && mainFilter[key] !== '') {
+      query[key] = { $regex: mainFilter[key], $options: 'i' }; // Case-insensitive regex search for name
     } else {
       query[key] = mainFilter[key];
     }
@@ -188,7 +182,6 @@ const updateById = catchAsync(async (req, res) => {
   });
 });
 
-
 const softDeleteById = catchAsync(async (req, res) => {
   const result = await projectService.softDeleteById(req.params.projectId);
   sendResponse(res, {
@@ -197,8 +190,7 @@ const softDeleteById = catchAsync(async (req, res) => {
     message: 'Project deleted successfully',
     success: true,
   });
-}) 
-
+});
 
 ///////////////////////////////////////
 

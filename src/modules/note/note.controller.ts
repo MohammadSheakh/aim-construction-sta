@@ -20,7 +20,6 @@ const attachmentService = new AttachmentService();
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const createNote = catchAsync(async (req, res) => {
-  
   if (req.user.userId) {
     req.body.createdBy = req.user.userId;
   }
@@ -121,54 +120,53 @@ const createNote = catchAsync(async (req, res) => {
   //   notificationReceivers.push(project.projectManagerId);
   // }
 
-
-  if(!project){
+  if (!project) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Project not found');
   }
 
   // for (const receiverId of notificationReceivers) {
-    // Fetch FCM token from User Model
-    const user = await User.findById(project?.projectManagerId);
+  // Fetch FCM token from User Model
+  const user = await User.findById(project?.projectManagerId);
 
-    // 🔴🔴🔴 // INFO :  For push notification
-    // const registrationToken = user?.fcmToken;
+  // 🔴🔴🔴 // INFO :  For push notification
+  // const registrationToken = user?.fcmToken;
 
-    // if (registrationToken) {
-    //   await sendPushNotification(
-    //     registrationToken,
-    //     // INFO : amar title, message dorkar nai .. just .. title hoilei hobe ..
-    //     `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
-    //     project.projectManagerId.toString()
-    //   );
-    // }
+  // if (registrationToken) {
+  //   await sendPushNotification(
+  //     registrationToken,
+  //     `A new note of DailyLog ${result.title} has been created by  ${req.user.userName} .`,
+  //     project.projectManagerId.toString()
+  //   );
+  // }
 
-    const MAX_TITLE_LENGTH = 23; // Set a max length for the title
+  const MAX_TITLE_LENGTH = 23; // Set a max length for the title
 
-    const truncatedTitle = result.title.length > MAX_TITLE_LENGTH 
-        ? result.title.substring(0, MAX_TITLE_LENGTH) + '...' 
-        : result.title;
+  const truncatedTitle =
+    result.title.length > MAX_TITLE_LENGTH
+      ? result.title.substring(0, MAX_TITLE_LENGTH) + '...'
+      : result.title;
 
-    // Save Notification to Database
-    const notificationPayload = {
-      title: `Note ${truncatedTitle} has been created by ${req.user.userName}`,
-      // message: `A new task "${result.title}" has been created by `,
-      receiverId: project?.projectManagerId,
-      role: 'projectManager', // If receiver is the projectManager
-      notificationFor: 'note',
-      linkId: result._id,
-      projectId : project._id, 
-    };
+  // Save Notification to Database
+  const notificationPayload = {
+    title: `Note ${truncatedTitle} has been created by ${req.user.userName}`,
+    // message: `A new task "${result.title}" has been created by `,
+    receiverId: project?.projectManagerId,
+    role: 'projectManager', // If receiver is the projectManager
+    notificationFor: 'note',
+    linkId: result._id,
+    projectId: project._id,
+  };
 
-    const notification = await NotificationService.addNotification(
-      notificationPayload
-    );
+  const notification = await NotificationService.addNotification(
+    notificationPayload
+  );
 
-    // 3️⃣ Send Real-Time Notification using Socket.io
-    io.to(project?.projectManagerId.toString()).emit('newNotification', {
-      code: StatusCodes.OK,
-      message: 'New notification',
-      data: notification,
-    });
+  // 3️⃣ Send Real-Time Notification using Socket.io
+  io.to(project?.projectManagerId.toString()).emit('newNotification', {
+    code: StatusCodes.OK,
+    message: 'New notification',
+    data: notification,
+  });
 
   // }
 
@@ -228,7 +226,7 @@ const updateById = catchAsync(async (req, res) => {
 
 //[🚧][🧑‍💻✅][🧪🆗] // working perfectly
 const deleteById = catchAsync(async (req, res) => {
-  // note delete korar age .. note related attachment gula delete korte hobe ..
+  // INFO : Before deleting the note , we have to delete the note related attachments first
 
   const note = await noteService.getById(req.params.noteId);
   if (note) {
@@ -273,7 +271,6 @@ const getAllByDateAndProjectId = catchAsync(async (req, res) => {
     success: true,
   });
 });
-
 
 const getPreviewByDateAndProjectId = catchAsync(async (req, res) => {
   console.log(req.query);
@@ -321,10 +318,7 @@ const getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId =
     });
   });
 
-// TODO  : Deny er jonno function lagbe ..
-// TODO  :  status change korar ei system ta thik ase kina check korte hobe chat gpt er shathe kotha bole
 const changeStatusOfANote = catchAsync(async (req, res) => {
- 
   const result = await noteService.getById(req.params.noteId);
 
   if (result) {
@@ -345,8 +339,7 @@ const changeStatusOfANote = catchAsync(async (req, res) => {
 });
 
 const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
-  
-  const {status} = req.query;
+  const { status } = req.query;
 
   // Step 1: Check if status is present in req.query
   if (!status) {
@@ -355,7 +348,11 @@ const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
 
   // Step 2: Check if status is one of the valid values in noteStatus enum
   if (!Object.values(noteStatus).includes(status as noteStatus)) {
-    return res.status(400).json({ error: `Invalid status value. it can be  ${Object.values(noteStatus).join(', ')}` });
+    return res.status(400).json({
+      error: `Invalid status value. it can be  ${Object.values(noteStatus).join(
+        ', '
+      )}`,
+    });
   }
 
   const result = await noteService.getById(req.params.noteId);
@@ -372,8 +369,6 @@ const changeStatusOfANoteWithDeny = catchAsync(async (req, res) => {
   });
 });
 
-// const getAllDailyLog = catchAsync(async (req, res) => {
-
 export const NoteController = {
   createNote,
   getAllNote,
@@ -383,8 +378,8 @@ export const NoteController = {
   deleteById,
   /////////
   getAllByDateAndProjectId,
-  getPreviewByDateAndProjectId, 
+  getPreviewByDateAndProjectId,
   getAllimagesOrDocumentOFnoteOrTaskOrProjectByDateAndProjectId,
   changeStatusOfANote,
-  changeStatusOfANoteWithDeny
+  changeStatusOfANoteWithDeny,
 };

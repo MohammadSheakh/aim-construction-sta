@@ -52,27 +52,9 @@ const userSchema = new Schema<TUser, UserModal>(
 
     fcmToken: { type: String, default: null }, // Store Firebase Token
 
-    // photoGallery: {
-    //   type: [profileImageSchema],
-    //   required: false,
-    // },
-
-    // location: {
-    //   latitude: { type: Number, required: true },
-    //   longitude: { type: Number, required: true },
-    // },
-    // gender: {
-    //   type: String,
-    //   enum: {
-    //     values: Gender,
-    //     message: '{VALUE} is not a valid gender',
-    //   },
-    //   required: [true, 'Gender is required'],
-    // },
-
     address: {
-        type: String,
-        required: [false, 'Street Address is not required']
+      type: String,
+      required: [false, 'Street Address is not required'],
     },
 
     companyName: { type: String },
@@ -84,8 +66,7 @@ const userSchema = new Schema<TUser, UserModal>(
       },
       required: [true, 'Role is required'],
     },
-    superVisorsManagerId : 
-    {
+    superVisorsManagerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [false, 'Created By Manager Id is required'],
@@ -94,7 +75,7 @@ const userSchema = new Schema<TUser, UserModal>(
       type: Boolean,
       default: false,
     },
-    phoneNumber : {
+    phoneNumber: {
       type: String,
     },
     isDeleted: {
@@ -111,13 +92,13 @@ const userSchema = new Schema<TUser, UserModal>(
       type: Number,
       default: 0,
     },
-    lockUntil: { type: Date }, // 🔴 not sure 
+    lockUntil: { type: Date }, // 🔴 not sure
   },
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  },
+  }
 );
 
 // Apply the paginate plugin
@@ -134,19 +115,18 @@ userSchema.statics.isExistUserByEmail = async function (email: string) {
 
 userSchema.statics.isMatchPassword = async function (
   password: string,
-  hashPassword: string,
+  hashPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(password, hashPassword);
 };
 
-// FIX : ts issue 
+// FIX : ts issue
 // Middleware to hash password before saving
 userSchema.pre('save', async function (next) {
-
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(
       this.password,
-      Number(config.bcrypt.saltRounds),
+      Number(config.bcrypt.saltRounds)
     );
   }
   next();
@@ -155,10 +135,10 @@ userSchema.pre('save', async function (next) {
 // Use transform to rename _id to _projectId
 userSchema.set('toJSON', {
   transform: function (doc, ret, options) {
-    ret._userId = ret._id;  // Rename _id to _projectId
-    delete ret._id;  // Remove the original _id field
+    ret._userId = ret._id; // Rename _id to _projectId
+    delete ret._id; // Remove the original _id field
     return ret;
-  }
+  },
 });
 
 // Export the User model

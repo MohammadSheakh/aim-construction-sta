@@ -3,7 +3,6 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../shared/validateRequest';
 import { CompanyController } from './company.controller';
 
-
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -27,25 +26,16 @@ router.route('/update/:contractId').put(
   CompanyController.updateById
 );
 
-router.route('/').get(
-  auth('projectManager'),
-  CompanyController.getAllCompany
-);
+router.route('/').get(auth('projectManager'), CompanyController.getAllCompany);
 
 //[🚧][🧑‍💻✅][🧪🆗 ]
-router.route('/create').post(
-  CompanyController.createCompany
-);
+router.route('/create').post(CompanyController.createCompany);
 
 // [🚧][🧑‍💻✅][🧪🆗 ]
-router.route('/getByName').post(
-  CompanyController.getACompanyByName
-)
+router.route('/getByName').post(CompanyController.getACompanyByName);
 
-router.route('/delete/:contractId').delete(
-  auth('projectManager'),
-  CompanyController.deleteById
-);
-
+router
+  .route('/delete/:contractId')
+  .delete(auth('projectManager'), CompanyController.deleteById);
 
 export const CompanyRoutes = router;

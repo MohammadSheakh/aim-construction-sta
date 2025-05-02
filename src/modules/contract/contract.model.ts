@@ -10,9 +10,9 @@ const contractSchema = new Schema<IContract>(
         type: Schema.Types.ObjectId,
         ref: 'Attachment',
         required: [true, 'Attachments is required'],
-      }
+      },
     ],
-    
+
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
@@ -23,16 +23,14 @@ const contractSchema = new Schema<IContract>(
       ref: 'User',
       required: [false, 'User Id is required'],
     },
-    // IDEA : ekhane creator role nam e ekta field rakhbo kina .. 
-    // INFO :  creatorRole rakhlam 
-    creatorRole : {
-      enum: [
-          CreatorRole.projectManager,
-          CreatorRole.projectSupervisor
-      ],
+    creatorRole: {
+      enum: [CreatorRole.projectManager, CreatorRole.projectSupervisor],
       type: String,
-      required: [true, 'Creator Role is required. It can be projectManager / projectSupervisor'],
-    }
+      required: [
+        true,
+        'Creator Role is required. It can be projectManager / projectSupervisor',
+      ],
+    },
   },
   { timestamps: true }
 );
@@ -42,12 +40,11 @@ contractSchema.plugin(paginate);
 // Use transform to rename _id to _projectId
 contractSchema.set('toJSON', {
   transform: function (doc, ret, options) {
-    ret._contractId = ret._id;  // Rename _id to _projectId
-    delete ret._id;  // Remove the original _id field
+    ret._contractId = ret._id; // Rename _id to _projectId
+    delete ret._id; // Remove the original _id field
     return ret;
-  }
+  },
 });
-
 
 export const Contract = model<IContract, IContractModel>(
   'Contract',

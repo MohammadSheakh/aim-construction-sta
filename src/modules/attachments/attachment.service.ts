@@ -2,7 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../errors/ApiError';
 import { GenericService } from '../Generic Service/generic.services';
 import { Attachment } from './attachment.model';
-import { uploadFileToSpace, deleteFileFromSpace } from '../../middlewares/digitalOcean';
+import {
+  uploadFileToSpace,
+  deleteFileFromSpace,
+} from '../../middlewares/digitalOcean';
 import { AttachmentType } from './attachment.constant';
 
 export class AttachmentService extends GenericService<typeof Attachment> {
@@ -39,9 +42,8 @@ export class AttachmentService extends GenericService<typeof Attachment> {
     });
   }
 
-  // INFO : multiple file upload korar case e .. controller thekei korte hobe .. loop chalate hobe
-  // async uploadMultipleAttachments() {
-  // }
+  // INFO :  If we want to upload multiple files .. we need to loop through all the files in
+  // INFO : Controller and call the uploadSingleAttachment function for each file.
 
   async deleteAttachment(string: string) {
     try {
@@ -53,23 +55,25 @@ export class AttachmentService extends GenericService<typeof Attachment> {
         StatusCodes.INTERNAL_SERVER_ERROR,
         'Failed to delete image'
       );
-      // TODO : kon image delete kortesi shetar hint dite hobe ..
+      // TODO : Give user a hint that what image he is trying to delete ..
       // FIXME
     }
   }
 
-  async addOrRemoveReact  (attachmentId: string, userId: string) {
+  async addOrRemoveReact(attachmentId: string, userId: string) {
     const attachment = await this.getById(attachmentId);
     if (!attachment) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Attachment not found');
     }
 
-    const reaction = await attachment.reactions.find({userId});
+    const reaction = await attachment.reactions.find({ userId });
 
-    if(!reaction){
-      attachment.reactions.push({userId});
-    }else{
-      attachment.reactions = attachment.reactions.filter(reaction => reaction.userId !== userId);
+    if (!reaction) {
+      attachment.reactions.push({ userId });
+    } else {
+      attachment.reactions = attachment.reactions.filter(
+        reaction => reaction.userId !== userId
+      );
     }
 
     // const index = attachment.reactions.indexOf(userId);

@@ -1,7 +1,6 @@
 import express from 'express';
 import { UserRoutes } from '../modules/user/user.route';
 import { AuthRoutes } from '../modules/auth/auth.routes';
-import { AdminRoutes } from '../modules/admin/admin.routes';
 
 import { ProjectRoutes } from '../modules/project/project.route';
 import { NoteRoutes } from '../modules/note/note.route';
@@ -13,8 +12,6 @@ import { NotificationRoutes } from '../modules/notification/notification.routes'
 import { SettingsRoutes } from '../modules/settings/settings.routes';
 import { CompanyRoutes } from '../modules/company/company.route';
 
-// import { ChatRoutes } from '../modules/chat/chat.routes';
-// import { MessageRoutes } from '../modules/message/message.routes';
 const router = express.Router();
 
 const apiRoutes = [
@@ -26,12 +23,8 @@ const apiRoutes = [
     path: '/user',
     route: UserRoutes,
   },
-  {
-    path: '/admin',
-    route: AdminRoutes,
-  },
 
-  ////////////////////// Created By Mohammad Sheakh
+  ////////////////////// Newly Created
 
   {
     path: '/settings',

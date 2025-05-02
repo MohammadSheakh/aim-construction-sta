@@ -14,46 +14,47 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-
 //info : pagination route must be before the route with params
-router.route('/paginate').get(
-  auth('projectManager'),
-  UserController.getAllUserWithPagination
-);
+router
+  .route('/paginate')
+  .get(auth('projectManager'), UserController.getAllUserWithPagination);
 
 router.route('/getAllManager').get(
   // auth('common'),
   UserController.getAllManager
 );
 
-router.route('/getAllManagerByCompanyId').get(
-  UserController.getAllManagerByCompanyId
-);
+router
+  .route('/getAllManagerByCompanyId')
+  .get(UserController.getAllManagerByCompanyId);
 
-//[🚧][🧑‍💻✅][🧪🆗] //  
+//[🚧][🧑‍💻✅][🧪🆗] //
 // get all Projects by User Id  // :userId
-router.route('/projects').get(auth('common'),
-UserController.getAllProjectsByUserId
-);
+router
+  .route('/projects')
+  .get(auth('common'), UserController.getAllProjectsByUserId);
 
 // get all Projects by User Id  // :userId
-router.route('/superVisors').get(auth('projectManager'),
-UserController.getAllProjectSupervisorsByProjectManagerId
-);
+router
+  .route('/superVisors')
+  .get(
+    auth('projectManager'),
+    UserController.getAllProjectSupervisorsByProjectManagerId
+  );
 
 router
   .route('/profile-image')
   .post(
     auth('common'),
-    [upload.single("profileImage")],
+    [upload.single('profileImage')],
     UserController.updateProfileImage
   );
 
-  router
+router
   .route('/update-profile')
   .patch(
     auth('common'),
-    [upload.single("profileImage")],
+    [upload.single('profileImage')],
     UserController.updateProfile
   );
 
@@ -87,9 +88,8 @@ router
     UserController.updateUserStatus
   );
 
-  ///////////////////////////////////////////////
+///////////////////////////////////////////////
 
-  router.get
-  
+router.get;
 
 export const UserRoutes = router;

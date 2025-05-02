@@ -1,9 +1,11 @@
 import { model, Schema } from 'mongoose';
-
 import paginate from '../../common/plugins/paginate';
 import { IAttachment, IAttachmentModel } from './attachment.interface';
-import { Roles } from '../../middlewares/roles';
-import { AttachedToType, AttachmentType, UploaderRole } from './attachment.constant';
+import {
+  AttachedToType,
+  AttachmentType,
+  UploaderRole,
+} from './attachment.constant';
 
 const attachmentSchema = new Schema<IAttachment>(
   {
@@ -11,19 +13,16 @@ const attachmentSchema = new Schema<IAttachment>(
       type: String,
       required: [true, 'attachment is required'],
     },
-    attachmentType : {
+    attachmentType: {
       type: String,
-      enum : [
-         AttachmentType.document,
-         AttachmentType.image,
-      ],
+      enum: [AttachmentType.document, AttachmentType.image],
       required: [true, 'Attached Type is required. It can be pdf / image'],
     },
-    attachedToId : {
+    attachedToId: {
       type: String,
       required: [false, 'AttachedToId is required.'],
     },
-    attachedToType : {
+    attachedToType: {
       enum: [
         AttachedToType.note,
         AttachedToType.task,
@@ -45,16 +44,13 @@ const attachmentSchema = new Schema<IAttachment>(
     },
     uploaderRole: {
       type: String,
-      enum: [
-        UploaderRole.projectManager,
-        UploaderRole.projectSupervisor
-      ],
+      enum: [UploaderRole.projectManager, UploaderRole.projectSupervisor],
       required: true,
     },
     reactions: [
       {
         userId: { type: Schema.Types.ObjectId, ref: 'User', required: false },
-      }
+      },
     ],
   },
   { timestamps: true }
@@ -65,13 +61,11 @@ attachmentSchema.plugin(paginate);
 // Use transform to rename _id to _projectId
 attachmentSchema.set('toJSON', {
   transform: function (doc, ret, options) {
-    ret._attachmentId = ret._id;  // Rename _id to _projectId
-    delete ret._id;  // Remove the original _id field
+    ret._attachmentId = ret._id; // Rename _id to _projectId
+    delete ret._id; // Remove the original _id field
     return ret;
-  }
+  },
 });
-
-
 
 export const Attachment = model<IAttachment, IAttachmentModel>(
   'Attachment',
