@@ -43,7 +43,7 @@ app.use('/api/v1', router);
 
 // live response
 app.get('/test', (req: Request, res: Response) => {
-  res.status(201).json({ message: req.t('welcome') });
+  res.status(201).json({ message: req.t('welcome to the aim construction backend') });
 });
 
 app.get('/test/:lang', (req: Request, res: Response) => {
