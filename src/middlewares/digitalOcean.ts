@@ -18,9 +18,8 @@ const s3 = new S3Client({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
-  endpoint: `https://${process.env.AWS_REGION}.digitaloceanspaces.com`,
+  //endpoint: `https://${process.env.AWS_REGION}.digitaloceanspaces.com`,
 });
-
 
 
 /////////// From Rakib Vai .. 
@@ -34,7 +33,7 @@ export const uploadFileToSpace = async (
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: fileName,
     Body: file.buffer, // file.stream
-    ACL: ObjectCannedACL.public_read,
+    //ACL: ObjectCannedACL.public_read, // 🔴🔴 // eta age chilo 
     ContentType: file.mimetype,
   };
 
@@ -44,7 +43,9 @@ export const uploadFileToSpace = async (
     await s3.send(command);
 
     // Use the CDN URL for better performance
-    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${fileName}`;
+    //const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${fileName}`;
+    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
     return fileUrl;
   } catch (error) {
     console.error("Error uploading to DigitalOcean Space:", error);

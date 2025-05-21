@@ -1,7 +1,7 @@
 export enum FolderName {
-    note = "note",
-    task = "task",
-    aimConstruction = "aimConstruction",
-    user = "user",
-    project = "project",
+    note = "aim-construction/note",
+    task = "aim-construction/task",
+    aimConstruction = "aim-construction/aimConstruction",
+    user = "aim-construction/user",
+    project = "aim-construction/project",
 }
