@@ -50,5 +50,11 @@ router.route('/delete/:attachmentId').delete(
   AttachmentController.deleteById
 );
 
+//[🚧][🧑‍💻✅][🧪🆗] 
+// Working Perfectly ... 
+router.route("/delete-by-file-url").delete(
+  AttachmentController.deleteByFileUrl  
+)
+
 
 export const AttachmentRoutes = router;

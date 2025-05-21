@@ -44,6 +44,7 @@ export const uploadFileToSpace = async (
 
     // Use the CDN URL for better performance
     //const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${fileName}`;
+    
     const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
     return fileUrl;
@@ -104,9 +105,18 @@ const uploadFileToSpaceMohammadSheakh = async (
 // Delete a specific file from DigitalOcean Space
 export const deleteFileFromSpace = async (fileUrl : string) => {
   // : string  : Promise<void>
-  const fileKey = fileUrl.split(
-    `${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/`
-  )[1]; // Extract the file path from the CDN URL
+  /*
+    const fileKey = fileUrl.split(
+      `${process.env.AWS_BUCKET_NAME}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/`
+    )[1]; // Extract the file path from the CDN URL
+  */
+
+
+  const urlPrefix = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`;
+
+    const fileKey = fileUrl.startsWith(urlPrefix)
+    ? fileUrl.substring(urlPrefix.length)
+    : fileUrl; // fallback if url format different
 
   const deleteParams = {
     Bucket: process.env.AWS_BUCKET_NAME,

@@ -241,6 +241,22 @@ const addOrRemoveReact = catchAsync(async (req, res) => {
   });
 });
 
+const deleteByFileUrl = catchAsync(async (req, res) => {
+  const { fileUrl } = req.body;
+  if (!fileUrl) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Please provide a file URL');
+  }
+  
+  const result = await attachmentService.deleteAttachment(fileUrl);
+
+  sendResponse(res, {
+    code: StatusCodes.OK,
+    data: result,
+    message: 'Attachment deleted successfully',
+    success: true,
+  });
+});
+
 export const AttachmentController = {
   createAttachment,
   getAllAttachment,
@@ -249,4 +265,5 @@ export const AttachmentController = {
   updateById,
   deleteById,
   addOrRemoveReact,
+  deleteByFileUrl
 };
