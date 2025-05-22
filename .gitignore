@@ -4,3 +4,5 @@ dist
 .env
 
 /config/aim-construction-firebasesdk-fbsvc-5fd17ceb32.json
+
+src/config/aim-construction-firebase-adminsdk-fbsvc-5fd17ceb32.json

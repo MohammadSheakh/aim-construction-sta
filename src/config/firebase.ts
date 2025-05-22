@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import path from 'path';
+import path from 'path'; //
 
 // Initialize Firebase Admin SDK
  // const serviceAccount = require(''); // path.resolve(__dirname, '../../../../../')
