@@ -133,7 +133,7 @@ export const deleteFileFromSpace = async (fileUrl : string) => {
     throw new Error("Failed to delete file from DigitalOcean Space");
   }
 };
-
+// test
 // Delete all images from a specific folder in DigitalOcean Space
 const deleteAllImagesFromSpace = async (folder = "") => {
   // : Promise<void>
