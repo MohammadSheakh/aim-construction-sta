@@ -58,6 +58,13 @@ const createUser = async (userData: TUser) => {
     }
   }
 
+  console.log('password before hash 🟢🟢', userData.password);
+
+  // hash password
+  userData.password = await bcrypt.hash(userData.password, 12);
+
+  console.log('password after hash 🟢🟢', userData.password);
+
   const user = await User.create(userData);
 
   //  company create for project manager
