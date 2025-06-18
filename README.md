@@ -8,7 +8,7 @@ Template Used :  Typescript Backend Boilerplate  https://github.com/bdCalling-Sd
 
 I use Inheritance...  Example:: All Service inherits from GenericService.  and Generic Programming here .. 
 
-![alt text](./__Documentation/__Documentation/AIMConstruction_Schema_Design_V2_Updated.png)
+![alt text](./__Documentation/AIMConstruction_Schema_Design_V2_Updated.png)
 
 -------- Written By :  https://github.com/rakibislam2233
 
