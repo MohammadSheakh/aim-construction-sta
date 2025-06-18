@@ -10,7 +10,6 @@ I use Inheritance...  Example:: All Service inherits from GenericService.  and G
 
 ![alt text](./__Documentation/__Documentation/AIMConstruction_Schema_Design_V2_Updated.png)
 
-
 -------- Written By :  https://github.com/rakibislam2233
 
 backend applications using **Node.js**, **Express**, **TypeScript**, **Mongoose**, **JWT**, **Bcrypt**, **Stripe**, and more. It aims to reduce setup time for new backend projects by providing a preconfigured environment.
